@@ -19,7 +19,7 @@ type TopoPath = SvgPathConfig & {
 
 type TopoFullscreenViewerProps = {
   visible: boolean;
-  svgViewBox?: string;
+  svgViewBox: string;
   paths: TopoPath[];
   imageSource: ImageSourcePropType;
   onClose: () => void;

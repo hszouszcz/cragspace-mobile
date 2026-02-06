@@ -1,7 +1,9 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
 import {
   Dimensions,
+  ImageSourcePropType,
   Modal,
   Pressable,
   ScrollView,
@@ -9,11 +11,34 @@ import {
 } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
-import { IconSymbol } from './ui/icon-symbol';
+import { IconSymbol } from '../ui/icon-symbol';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
-export default function RouteDetailModal({ visible, route, onClose }) {
+type RouteConfig = SvgPathConfig & {
+  name: string;
+  length: number;
+  bolts: number;
+  grade: string;
+  type: string;
+  description?: string;
+};
+
+type RouteDetailModalProps = {
+  visible: boolean;
+  route: RouteConfig | null;
+  svgViewBox: string;
+  imageSource: ImageSourcePropType;
+  onClose: () => void;
+};
+
+export default function RouteDetailModal({
+  visible,
+  route,
+  svgViewBox,
+  imageSource,
+  onClose,
+}: RouteDetailModalProps) {
   if (!route) return null;
 
   return (
@@ -24,7 +49,6 @@ export default function RouteDetailModal({ visible, route, onClose }) {
       onRequestClose={onClose}
     >
       <ThemedView style={styles.container}>
-        {/* Header with close button */}
         <ThemedView style={styles.header}>
           <ThemedText type="title">{route.name}</ThemedText>
           <Pressable onPress={onClose} style={styles.closeButton}>
@@ -32,17 +56,16 @@ export default function RouteDetailModal({ visible, route, onClose }) {
           </Pressable>
         </ThemedView>
 
-        {/* Image with path - 50% height */}
         <ThemedView style={styles.imageContainer}>
           <Animated.Image
-            source={require('@/assets/topo/dSlonia.jpeg')}
+            source={imageSource}
             style={styles.image}
             resizeMode="contain"
           />
           <Svg
             width={SCREEN_WIDTH}
             height={SCREEN_HEIGHT * 0.5}
-            viewBox="0 0 2200 1466"
+            viewBox={svgViewBox}
             style={styles.svgOverlay}
           >
             <Path
@@ -54,10 +77,9 @@ export default function RouteDetailModal({ visible, route, onClose }) {
           </Svg>
         </ThemedView>
 
-        {/* Route details - 50% height */}
         <ScrollView style={styles.detailsContainer}>
           <ThemedView style={styles.detailSection}>
-            <ThemedText type="subtitle">Szczegóły drogi</ThemedText>
+            <ThemedText type="subtitle">Szczegoly drogi</ThemedText>
 
             <ThemedView style={styles.detailRow}>
               <ThemedText style={styles.label}>Nazwa:</ThemedText>
@@ -65,17 +87,17 @@ export default function RouteDetailModal({ visible, route, onClose }) {
             </ThemedView>
 
             <ThemedView style={styles.detailRow}>
-              <ThemedText style={styles.label}>Długość:</ThemedText>
+              <ThemedText style={styles.label}>Dlugosc:</ThemedText>
               <ThemedText style={styles.value}>{route.length} m</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.detailRow}>
-              <ThemedText style={styles.label}>Ilość przelotów:</ThemedText>
+              <ThemedText style={styles.label}>Ilosc przelotow:</ThemedText>
               <ThemedText style={styles.value}>{route.bolts}</ThemedText>
             </ThemedView>
 
             <ThemedView style={styles.detailRow}>
-              <ThemedText style={styles.label}>Trudność:</ThemedText>
+              <ThemedText style={styles.label}>Trudnosc:</ThemedText>
               <ThemedText style={styles.value}>{route.grade}</ThemedText>
             </ThemedView>
 

@@ -1,6 +1,6 @@
-import RouteDetailModal from '@/components/route-detail-modal';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import RouteDetailModal from '@/components/topo/route-detail-modal';
 import TopoFullscreenViewer from '@/components/topo/topo-fullscreen-viewer';
 import { useEffect, useRef, useState } from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet } from 'react-native';
@@ -36,7 +36,8 @@ export default function TopoView() {
   const [isFullscreenVisible, setIsFullscreenVisible] = useState(false);
   const lastPathPressTs = useRef(0);
   const [imageRatio, setImageRatio] = useState<number | null>(null);
-  const [svgViewBox, setSvgViewBox] = useState<string | undefined>(undefined);
+  const [isImageReady, setIsImageReady] = useState(false);
+  const [svgViewBox, setSvgViewBox] = useState<string | null>(null);
 
   useEffect(() => {
     const loadSvgPaths = async () => {
@@ -45,7 +46,7 @@ export default function TopoView() {
           require('@/assets/topo/dSlonia_test.svg'),
         );
 
-        setSvgViewBox(viewBox);
+        setSvgViewBox(viewBox ?? null);
 
         const parsedPaths = svgPaths.map((path, index) => {
           // Generate climbing route data
@@ -156,34 +157,41 @@ export default function TopoView() {
                   styles.image,
                   { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
                   imageRatio ? { aspectRatio: imageRatio } : {},
+                  !isImageReady ? { opacity: 0 } : null,
                 ]}
+                onLoadStart={() => setIsImageReady(false)}
                 onLoad={(e) => {
                   const { width, height } = e.nativeEvent.source;
                   setImageRatio(width / height);
+                  setIsImageReady(true);
                 }}
                 resizeMode="contain"
               />
-              <Svg
-                width={SCREEN_WIDTH}
-                height={imageRatio ? SCREEN_WIDTH / imageRatio : '100%'}
-                viewBox={svgViewBox}
-                style={styles.svgOverlay}
-              >
-                {pathsConfig.map((pathConfig) => (
-                  <Path
-                    key={pathConfig.id}
-                    d={pathConfig.d}
-                    stroke={
-                      pressedPaths[pathConfig.id] ? '#ff0000' : pathConfig.color
-                    }
-                    strokeWidth={pathConfig.strokeWidth}
-                    fill="none"
-                    onPressIn={() => handlePathPressIn(pathConfig.id)}
-                    onPressOut={() => handlePathPressOut(pathConfig.id)}
-                    onPress={() => handlePathPress(pathConfig.id)}
-                  />
-                ))}
-              </Svg>
+              {svgViewBox && isImageReady && imageRatio && (
+                <Svg
+                  width={SCREEN_WIDTH}
+                  height={imageRatio ? SCREEN_WIDTH / imageRatio : '100%'}
+                  viewBox={svgViewBox}
+                  style={styles.svgOverlay}
+                >
+                  {pathsConfig.map((pathConfig) => (
+                    <Path
+                      key={pathConfig.id}
+                      d={pathConfig.d}
+                      stroke={
+                        pressedPaths[pathConfig.id]
+                          ? '#ff0000'
+                          : pathConfig.color
+                      }
+                      strokeWidth={pathConfig.strokeWidth}
+                      fill="none"
+                      onPressIn={() => handlePathPressIn(pathConfig.id)}
+                      onPressOut={() => handlePathPressOut(pathConfig.id)}
+                      onPress={() => handlePathPress(pathConfig.id)}
+                    />
+                  ))}
+                </Svg>
+              )}
             </Animated.View>
           </GestureDetector>
         </GestureHandlerRootView>
@@ -221,19 +229,25 @@ export default function TopoView() {
         </ScrollView>
       </ThemedView>
 
-      <RouteDetailModal
-        visible={isModalVisible}
-        route={selectedRoute}
-        onClose={handleCloseModal}
-      />
-      <TopoFullscreenViewer
-        visible={isFullscreenVisible}
-        svgViewBox={svgViewBox}
-        paths={pathsConfig}
-        imageSource={TOPO_IMAGE_SOURCE}
-        onClose={handleCloseFullscreen}
-        onPathPress={handlePathPress}
-      />
+      {svgViewBox && (
+        <RouteDetailModal
+          visible={isModalVisible}
+          route={selectedRoute}
+          svgViewBox={svgViewBox}
+          imageSource={TOPO_IMAGE_SOURCE}
+          onClose={handleCloseModal}
+        />
+      )}
+      {svgViewBox && (
+        <TopoFullscreenViewer
+          visible={isFullscreenVisible}
+          svgViewBox={svgViewBox}
+          paths={pathsConfig}
+          imageSource={TOPO_IMAGE_SOURCE}
+          onClose={handleCloseFullscreen}
+          onPathPress={handlePathPress}
+        />
+      )}
     </ThemedView>
   );
 }
