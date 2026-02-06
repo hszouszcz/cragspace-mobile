@@ -1,6 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import RouteDetailModal from '@/components/topo/route-detail-modal';
+import { TopoSvgOverlay } from '@/components/topo/topo-svg-overlay';
 import TopoFullscreenViewer from '@/components/topo/topo-fullscreen-viewer';
 import { useEffect, useRef, useState } from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet } from 'react-native';
@@ -9,7 +10,6 @@ import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
 
 import { useZoomableGestures } from '@/hooks/topo/use-zoomable-gestures';
 import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
@@ -168,29 +168,17 @@ export default function TopoView() {
                 resizeMode="contain"
               />
               {svgViewBox && isImageReady && imageRatio && (
-                <Svg
+                <TopoSvgOverlay
                   width={SCREEN_WIDTH}
                   height={imageRatio ? SCREEN_WIDTH / imageRatio : '100%'}
                   viewBox={svgViewBox}
                   style={styles.svgOverlay}
-                >
-                  {pathsConfig.map((pathConfig) => (
-                    <Path
-                      key={pathConfig.id}
-                      d={pathConfig.d}
-                      stroke={
-                        pressedPaths[pathConfig.id]
-                          ? '#ff0000'
-                          : pathConfig.color
-                      }
-                      strokeWidth={pathConfig.strokeWidth}
-                      fill="none"
-                      onPressIn={() => handlePathPressIn(pathConfig.id)}
-                      onPressOut={() => handlePathPressOut(pathConfig.id)}
-                      onPress={() => handlePathPress(pathConfig.id)}
-                    />
-                  ))}
-                </Svg>
+                  paths={pathsConfig}
+                  pressedPaths={pressedPaths}
+                  onPathPressIn={handlePathPressIn}
+                  onPathPressOut={handlePathPressOut}
+                  onPathPress={handlePathPress}
+                />
               )}
             </Animated.View>
           </GestureDetector>

@@ -1,6 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
+import { TopoSvgOverlay } from '@/components/topo/topo-svg-overlay';
 import {
   Dimensions,
   ImageSourcePropType,
@@ -10,7 +11,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
 import { IconSymbol } from '../ui/icon-symbol';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -62,19 +62,14 @@ export default function RouteDetailModal({
             style={styles.image}
             resizeMode="contain"
           />
-          <Svg
+          <TopoSvgOverlay
             width={SCREEN_WIDTH}
             height={SCREEN_HEIGHT * 0.5}
             viewBox={svgViewBox}
             style={styles.svgOverlay}
-          >
-            <Path
-              d={route.d}
-              stroke={route.color}
-              strokeWidth="12"
-              fill="none"
-            />
-          </Svg>
+            paths={[route]}
+            defaultStrokeWidth={12}
+          />
         </ThemedView>
 
         <ScrollView style={styles.detailsContainer}>

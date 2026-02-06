@@ -1,6 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
+import { TopoSvgOverlay } from '@/components/topo/topo-svg-overlay';
 import {
   Dimensions,
   ImageSourcePropType,
@@ -9,7 +10,6 @@ import {
   StyleSheet,
 } from 'react-native';
 import Animated from 'react-native-reanimated';
-import Svg, { Path } from 'react-native-svg';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
@@ -51,23 +51,14 @@ export default function TopoFullscreenViewer({
             style={styles.image}
             resizeMode="contain"
           />
-          <Svg
+          <TopoSvgOverlay
             width={SCREEN_HEIGHT}
             height={SCREEN_WIDTH}
             viewBox={svgViewBox}
             style={styles.svg}
-          >
-            {paths.map((path) => (
-              <Path
-                key={`fullscreen-${path.id}`}
-                d={path.d}
-                stroke={path.color}
-                strokeWidth={path.strokeWidth}
-                fill="none"
-                onPress={() => onPathPress(path.id)}
-              />
-            ))}
-          </Svg>
+            paths={paths}
+            onPathPress={onPathPress}
+          />
         </ThemedView>
       </ThemedView>
     </Modal>
