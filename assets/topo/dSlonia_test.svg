@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg1"
+   width="2200"
+   height="1466"
+   viewBox="0 0 2200 1466"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  
+  <g
+     id="layer1">
+    <path
+       style="fill:#00ff00;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 372.82769,1153.0041 472.93882,788.80672 410.80088,604.11894 371.10163,500.55569 414.25298,410.80088 462.5825,260.63417"
+       id="path1" />
+    <path
+       style="fill:#ff0000;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 300,900 L 450,650 L 380,520 L 450,350 L 520,200"
+       id="path2" />
+    <path
+       style="fill:#0000ff;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 500,1100 L 600,950 L 550,800 L 620,650 L 700,500"
+       id="path3" />
+    <path
+       style="fill:#ffff00;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 800,1200 L 900,1000 L 850,850 L 920,700 L 1000,550"
+       id="path4" />
+    <path
+       style="fill:#ff00ff;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 1100,1150 L 1200,950 L 1150,800 L 1220,650 L 1300,500"
+       id="path5" />
+    <path
+       style="fill:#00ffff;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 1400,1100 L 1500,900 L 1450,750 L 1520,600 L 1600,450"
+       id="path6" />
+    <path
+       style="fill:#ffa500;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 1700,1050 L 1800,850 L 1750,700 L 1820,550 L 1900,400"
+       id="path7" />
+    <path
+       style="fill:#800080;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 200,1000 L 300,800 L 250,650 L 320,500 L 400,350"
+       id="path8" />
+    <path
+       style="fill:#008000;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 600,1300 L 700,1100 L 650,950 L 720,800 L 800,650"
+       id="path9" />
+    <path
+       style="fill:#ffc0cb;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 1000,1250 L 1100,1050 L 1050,900 L 1120,750 L 1200,600"
+       id="path10" />
+    <path
+       style="fill:#a52a2a;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 1500,1300 L 1600,1100 L 1550,950 L 1620,800 L 1700,650"
+       id="path11" />
+  </g>
+</svg>

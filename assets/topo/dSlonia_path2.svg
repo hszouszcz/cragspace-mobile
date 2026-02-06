@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   version="1.1"
+   id="svg2"
+   width="2200"
+   height="1466"
+   viewBox="0 0 2200 1466"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  
+  <g
+     id="layer2">
+    <path
+       style="fill:#ff0000;stroke-width:0.9;paint-order:stroke fill markers"
+       d="M 300,900 L 450,650 L 380,520 L 450,350 L 520,200"
+       id="path2" />
+  </g>
+</svg>
