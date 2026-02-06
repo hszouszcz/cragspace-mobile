@@ -1,7 +1,7 @@
 import RouteDetailModal from '@/components/route-detail-modal';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
   Modal,
@@ -10,17 +10,13 @@ import {
   StyleSheet,
 } from 'react-native';
 import {
-  Gesture,
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 
+import { useZoomableGestures } from '@/hooks/topo/use-zoomable-gestures';
 import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
@@ -36,13 +32,6 @@ type RouteConfig = SvgPathConfig & {
 };
 
 export default function TopoView() {
-  const scale = useSharedValue(1);
-  const savedScale = useSharedValue(1);
-  const translateX = useSharedValue(0);
-  const translateY = useSharedValue(0);
-  const savedTranslateX = useSharedValue(0);
-  const savedTranslateY = useSharedValue(0);
-
   const [pressedPaths, setPressedPaths] = useState<Record<string, boolean>>({});
   const [pathsConfig, setPathsConfig] = useState<RouteConfig[]>([]);
   const [selectedRoute, setSelectedRoute] = useState<RouteConfig | null>(null);
@@ -93,93 +82,15 @@ export default function TopoView() {
     loadSvgPaths();
   }, []);
 
-  const pinchGesture = Gesture.Pinch()
-    .onUpdate((e) => {
-      if (e.scale < 1) {
-        scale.value = 1;
-        return;
-      }
-      scale.value = savedScale.value * e.scale;
-    })
-    .onEnd(() => {
-      // Limit zoom level
-
-      if (scale.value <= 1) {
-        scale.value = withTiming(1);
-        // Reset position when zoom out to minimum
-        translateX.value = withTiming(0);
-        translateY.value = withTiming(0);
-        savedTranslateX.value = 0;
-        savedTranslateY.value = 0;
-      } else if (scale.value > 5) {
-        scale.value = withTiming(5);
-      }
-      savedScale.value = scale.value;
-    });
-
-  const panGesture = Gesture.Pan()
-    .onUpdate((e) => {
-      // Only allow pan when zoomed in
-      if (savedScale.value > 1) {
-        translateX.value = savedTranslateX.value + e.translationX;
-        translateY.value = savedTranslateY.value + e.translationY;
-      }
-    })
-    .onEnd(() => {
-      if (savedScale.value > 1) {
-        savedTranslateX.value = translateX.value;
-        savedTranslateY.value = translateY.value;
-      }
-    });
-
-  const handleImagePress = () => {
+  const handleImagePress = useCallback(() => {
     if (Date.now() - lastPathPressTs.current < 250) {
       return;
     }
     setIsFullscreenVisible(true);
-  };
+  }, [setIsFullscreenVisible]);
 
-  const doubleTapGesture = Gesture.Tap()
-    .numberOfTaps(2)
-    .onEnd(() => {
-      if (scale.value > 1) {
-        // Reset to original size
-        scale.value = withTiming(1);
-        savedScale.value = 1;
-        translateX.value = withTiming(0);
-        translateY.value = withTiming(0);
-        savedTranslateX.value = 0;
-        savedTranslateY.value = 0;
-      } else {
-        // Zoom in
-        scale.value = withTiming(3);
-        savedScale.value = 3;
-      }
-    });
-
-  const singleTapGesture = Gesture.Tap()
-    .numberOfTaps(1)
-    .maxDuration(250)
-    .runOnJS(true)
-    .onEnd(() => {
-      handleImagePress();
-    });
-
-  const tapGesture = Gesture.Exclusive(doubleTapGesture, singleTapGesture);
-
-  const composedGesture = Gesture.Race(
-    tapGesture,
-    Gesture.Simultaneous(pinchGesture, panGesture),
-  );
-
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [
-        { translateX: translateX.value },
-        { translateY: translateY.value },
-        { scale: scale.value },
-      ],
-    };
+  const { gesture: composedGesture, animatedStyle } = useZoomableGestures({
+    onSingleTap: handleImagePress,
   });
 
   const handlePathPressIn = (pathId) => {
