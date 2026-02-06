@@ -1,8 +1,8 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import RouteDetailModal from '@/components/topo/route-detail-modal';
-import { TopoSvgOverlay } from '@/components/topo/topo-svg-overlay';
 import TopoFullscreenViewer from '@/components/topo/topo-fullscreen-viewer';
+import { TopoSvgOverlay } from '@/components/topo/topo-svg-overlay';
 import { useEffect, useRef, useState } from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet } from 'react-native';
 import {

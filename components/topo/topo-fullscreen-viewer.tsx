@@ -1,7 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
 import { TopoSvgOverlay } from '@/components/topo/topo-svg-overlay';
+import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
 import {
   Dimensions,
   ImageSourcePropType,
