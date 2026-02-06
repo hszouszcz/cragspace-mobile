@@ -1,8 +1,6 @@
 import RouteDetailModal from '@/components/route-detail-modal';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { Asset } from 'expo-asset';
-import { XMLParser } from 'fast-xml-parser';
 import { useEffect, useRef, useState } from 'react';
 import {
   Dimensions,
@@ -23,7 +21,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 
+import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
+
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+
+type RouteConfig = SvgPathConfig & {
+  strokeWidth: number;
+  name: string;
+  length: number;
+  bolts: number;
+  grade: string;
+  type: string;
+  description: string;
+};
 
 export default function TopoView() {
   const scale = useSharedValue(1);
@@ -33,62 +43,46 @@ export default function TopoView() {
   const savedTranslateX = useSharedValue(0);
   const savedTranslateY = useSharedValue(0);
 
-  const [pressedPaths, setPressedPaths] = useState({});
-  const [pathsConfig, setPathsConfig] = useState([]);
-  const [selectedRoute, setSelectedRoute] = useState(null);
+  const [pressedPaths, setPressedPaths] = useState<Record<string, boolean>>({});
+  const [pathsConfig, setPathsConfig] = useState<RouteConfig[]>([]);
+  const [selectedRoute, setSelectedRoute] = useState<RouteConfig | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [pressedListItem, setPressedListItem] = useState(null);
+  const [pressedListItem, setPressedListItem] = useState<string | null>(null);
   const [isFullscreenVisible, setIsFullscreenVisible] = useState(false);
   const lastPathPressTs = useRef(0);
+  const [imageRatio, setImageRatio] = useState<number | null>(null);
+  const [svgViewBox, setSvgViewBox] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const loadSvgPaths = async () => {
       try {
-        const svgAsset = Asset.fromModule(
+        const { paths: svgPaths, viewBox } = await loadTopoSvgPaths(
           require('@/assets/topo/dSlonia_test.svg'),
         );
-        await svgAsset.downloadAsync();
 
-        const response = await fetch(svgAsset.localUri);
-        const svgContent = await response.text();
+        setSvgViewBox(viewBox);
 
-        const parser = new XMLParser({
-          ignoreAttributes: false,
-          attributeNamePrefix: '',
+        const parsedPaths = svgPaths.map((path, index) => {
+          // Generate climbing route data
+          const routeData = {
+            name: `Droga ${index + 1}`,
+            length: Math.floor(15 + Math.random() * 35), // 15-50m
+            bolts: Math.floor(5 + Math.random() * 15), // 5-20 przelotów
+            grade: ['5a', '5b', '5c', '6a', '6a+', '6b', '6b+', '6c', '7a'][
+              Math.floor(Math.random() * 9)
+            ],
+            type: ['Sport', 'Trad', 'Multi-pitch'][
+              Math.floor(Math.random() * 3)
+            ],
+            description: `Piękna droga wspinaczkowa na ścianie Słonia. ${['Wymaga dobrej techniki.', 'Idealna dla początkujących.', 'Trudne ruchy w górnej części.'][Math.floor(Math.random() * 3)]}`,
+          };
+
+          return {
+            ...path,
+            strokeWidth: 9,
+            ...routeData,
+          };
         });
-
-        const result = parser.parse(svgContent);
-        const paths = result.svg.g.path;
-
-        const parsedPaths = (Array.isArray(paths) ? paths : [paths]).map(
-          (path, index) => {
-            const styleAttr = path.style || '';
-            const fillMatch = styleAttr.match(/fill:(#[0-9a-fA-F]{6})/);
-            const color = fillMatch ? fillMatch[1] : '#00ff00';
-
-            // Generate climbing route data
-            const routeData = {
-              name: `Droga ${index + 1}`,
-              length: Math.floor(15 + Math.random() * 35), // 15-50m
-              bolts: Math.floor(5 + Math.random() * 15), // 5-20 przelotów
-              grade: ['5a', '5b', '5c', '6a', '6a+', '6b', '6b+', '6c', '7a'][
-                Math.floor(Math.random() * 9)
-              ],
-              type: ['Sport', 'Trad', 'Multi-pitch'][
-                Math.floor(Math.random() * 3)
-              ],
-              description: `Piękna droga wspinaczkowa na ścianie Słonia. ${['Wymaga dobrej techniki.', 'Idealna dla początkujących.', 'Trudne ruchy w górnej części.'][Math.floor(Math.random() * 3)]}`,
-            };
-
-            return {
-              id: path.id || `path-${Math.random()}`,
-              d: path.d,
-              color: color,
-              strokeWidth: 9,
-              ...routeData,
-            };
-          },
-        );
 
         setPathsConfig(parsedPaths);
       } catch (error) {
@@ -101,11 +95,16 @@ export default function TopoView() {
 
   const pinchGesture = Gesture.Pinch()
     .onUpdate((e) => {
+      if (e.scale < 1) {
+        scale.value = 1;
+        return;
+      }
       scale.value = savedScale.value * e.scale;
     })
     .onEnd(() => {
-      // Limit zoom levels
-      if (scale.value < 1) {
+      // Limit zoom level
+
+      if (scale.value <= 1) {
         scale.value = withTiming(1);
         // Reset position when zoom out to minimum
         translateX.value = withTiming(0);
@@ -229,19 +228,38 @@ export default function TopoView() {
   return (
     <ThemedView style={styles.container}>
       {/* Image section with gestures - 60% height */}
-      <ThemedView style={styles.imageSection}>
+      <ThemedView
+        style={[
+          styles.imageSection,
+          { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
+        ]}
+      >
         <GestureHandlerRootView style={styles.gestureContainer}>
           <GestureDetector gesture={composedGesture}>
-            <Animated.View style={[styles.imageContainer, animatedStyle]}>
+            <Animated.View
+              style={[
+                styles.imageContainer,
+                animatedStyle,
+                { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
+              ]}
+            >
               <Animated.Image
                 source={require('@/assets/topo/dSlonia.jpeg')}
-                style={styles.image}
+                style={[
+                  styles.image,
+                  { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
+                  imageRatio ? { aspectRatio: imageRatio } : {},
+                ]}
+                onLoad={(e) => {
+                  const { width, height } = e.nativeEvent.source;
+                  setImageRatio(width / height);
+                }}
                 resizeMode="contain"
               />
               <Svg
                 width={SCREEN_WIDTH}
-                height={SCREEN_HEIGHT * 0.6}
-                viewBox="0 0 2200 1466"
+                height={imageRatio ? SCREEN_WIDTH / imageRatio : '100%'}
+                viewBox={svgViewBox}
                 style={styles.svgOverlay}
               >
                 {pathsConfig.map((pathConfig) => (
@@ -324,7 +342,7 @@ export default function TopoView() {
             <Svg
               width={SCREEN_HEIGHT}
               height={SCREEN_WIDTH}
-              viewBox="0 0 2200 1466"
+              viewBox={svgViewBox}
               style={styles.fullscreenSvg}
             >
               {pathsConfig.map((pathConfig) => (
@@ -350,8 +368,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageSection: {
-    height: SCREEN_HEIGHT * 0.6,
     width: SCREEN_WIDTH,
+    height: SCREEN_HEIGHT * 0.6,
   },
   gestureContainer: {
     flex: 1,
