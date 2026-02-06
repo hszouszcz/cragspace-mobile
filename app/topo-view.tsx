@@ -1,14 +1,9 @@
 import RouteDetailModal from '@/components/route-detail-modal';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Dimensions,
-  Modal,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-} from 'react-native';
+import TopoFullscreenViewer from '@/components/topo/topo-fullscreen-viewer';
+import { useEffect, useRef, useState } from 'react';
+import { Dimensions, Pressable, ScrollView, StyleSheet } from 'react-native';
 import {
   GestureDetector,
   GestureHandlerRootView,
@@ -20,6 +15,7 @@ import { useZoomableGestures } from '@/hooks/topo/use-zoomable-gestures';
 import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const TOPO_IMAGE_SOURCE = require('@/assets/topo/dSlonia.jpeg');
 
 type RouteConfig = SvgPathConfig & {
   strokeWidth: number;
@@ -82,12 +78,12 @@ export default function TopoView() {
     loadSvgPaths();
   }, []);
 
-  const handleImagePress = useCallback(() => {
+  const handleImagePress = () => {
     if (Date.now() - lastPathPressTs.current < 250) {
       return;
     }
     setIsFullscreenVisible(true);
-  }, [setIsFullscreenVisible]);
+  };
 
   const { gesture: composedGesture, animatedStyle } = useZoomableGestures({
     onSingleTap: handleImagePress,
@@ -155,7 +151,7 @@ export default function TopoView() {
               ]}
             >
               <Animated.Image
-                source={require('@/assets/topo/dSlonia.jpeg')}
+                source={TOPO_IMAGE_SOURCE}
                 style={[
                   styles.image,
                   { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
@@ -230,46 +226,14 @@ export default function TopoView() {
         route={selectedRoute}
         onClose={handleCloseModal}
       />
-
-      <Modal
+      <TopoFullscreenViewer
         visible={isFullscreenVisible}
-        animationType="fade"
-        transparent={false}
-        onRequestClose={handleCloseFullscreen}
-      >
-        <ThemedView style={styles.fullscreenContainer}>
-          <Pressable
-            onPress={handleCloseFullscreen}
-            style={styles.fullscreenClose}
-          >
-            <ThemedText style={styles.fullscreenCloseText}>X</ThemedText>
-          </Pressable>
-          <ThemedView style={styles.fullscreenStage}>
-            <Animated.Image
-              source={require('@/assets/topo/dSlonia.jpeg')}
-              style={styles.fullscreenImage}
-              resizeMode="contain"
-            />
-            <Svg
-              width={SCREEN_HEIGHT}
-              height={SCREEN_WIDTH}
-              viewBox={svgViewBox}
-              style={styles.fullscreenSvg}
-            >
-              {pathsConfig.map((pathConfig) => (
-                <Path
-                  key={`fullscreen-${pathConfig.id}`}
-                  d={pathConfig.d}
-                  stroke={pathConfig.color}
-                  strokeWidth={pathConfig.strokeWidth}
-                  fill="none"
-                  onPress={() => handlePathPress(pathConfig.id)}
-                />
-              ))}
-            </Svg>
-          </ThemedView>
-        </ThemedView>
-      </Modal>
+        svgViewBox={svgViewBox}
+        paths={pathsConfig}
+        imageSource={TOPO_IMAGE_SOURCE}
+        onClose={handleCloseFullscreen}
+        onPathPress={handlePathPress}
+      />
     </ThemedView>
   );
 }
@@ -345,37 +309,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: '#007AFF',
-  },
-  fullscreenContainer: {
-    flex: 1,
-    backgroundColor: '#000',
-  },
-  fullscreenClose: {
-    position: 'absolute',
-    top: 50,
-    right: 20,
-    zIndex: 2,
-    padding: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 18,
-  },
-  fullscreenCloseText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
-  },
-  fullscreenStage: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  fullscreenImage: {
-    width: SCREEN_HEIGHT,
-    height: SCREEN_WIDTH,
-    transform: [{ rotate: '90deg' }],
-  },
-  fullscreenSvg: {
-    position: 'absolute',
-    transform: [{ rotate: '90deg' }],
   },
 });
