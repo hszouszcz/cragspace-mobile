@@ -11,7 +11,7 @@ import {
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import { useZoomableGestures } from '@/hooks/topo/use-zoomable-gestures';
+import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
 import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');

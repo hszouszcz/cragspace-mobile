@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-native';
-import { useZoomableGestures } from '../use-zoomable-gestures';
+import { useZoomableGestures } from '../useZoomableGestures';
 
 type MockGesture = {
   type: string;
