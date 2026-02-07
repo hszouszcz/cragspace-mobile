@@ -1,8 +1,8 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import RouteDetailModal from '@/components/topo/route-detail-modal';
-import TopoFullscreenViewer from '@/components/topo/topo-fullscreen-viewer';
-import { TopoSvgOverlay } from '@/components/topo/topo-svg-overlay';
+import RouteDetailModal from '@/components/topo/RouteDetailModal';
+import TopoFullscreenViewer from '@/components/topo/TopoFullScreenViewer';
+import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
 import { useEffect, useRef, useState } from 'react';
 import { Dimensions, Pressable, ScrollView, StyleSheet } from 'react-native';
 import {
@@ -88,6 +88,10 @@ export default function TopoView() {
 
   const { gesture: composedGesture, animatedStyle } = useZoomableGestures({
     onSingleTap: handleImagePress,
+    containerWidth: SCREEN_WIDTH,
+    containerHeight: imageRatio ? SCREEN_WIDTH / imageRatio : undefined,
+    contentWidth: SCREEN_WIDTH,
+    contentHeight: imageRatio ? SCREEN_WIDTH / imageRatio : undefined,
   });
 
   const handlePathPressIn = (pathId) => {
@@ -247,6 +251,7 @@ const styles = StyleSheet.create({
   imageSection: {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT * 0.6,
+    overflow: 'hidden',
   },
   gestureContainer: {
     flex: 1,
@@ -258,6 +263,7 @@ const styles = StyleSheet.create({
     height: SCREEN_HEIGHT * 0.6,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
   image: {
     width: SCREEN_WIDTH,

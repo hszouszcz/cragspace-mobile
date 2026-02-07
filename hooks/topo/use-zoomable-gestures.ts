@@ -11,6 +11,10 @@ type UseZoomableGestureOptions = {
   minScale?: number;
   maxScale?: number;
   doubleTapScale?: number;
+  containerWidth?: number;
+  containerHeight?: number;
+  contentWidth?: number;
+  contentHeight?: number;
 };
 
 type UseZoomableGestureResult = {
@@ -27,6 +31,10 @@ export const useZoomableGestures = (
     maxScale,
     Math.max(minScale, options.doubleTapScale ?? 3),
   );
+  const containerWidth = options.containerWidth;
+  const containerHeight = options.containerHeight;
+  const contentWidth = options.contentWidth;
+  const contentHeight = options.contentHeight;
 
   const scale = useSharedValue(minScale);
   const savedScale = useSharedValue(minScale);
@@ -34,6 +42,30 @@ export const useZoomableGestures = (
   const translateY = useSharedValue(0);
   const savedTranslateX = useSharedValue(0);
   const savedTranslateY = useSharedValue(0);
+
+  const clamp = (value: number, min: number, max: number) => {
+    'worklet';
+    return Math.min(Math.max(value, min), max);
+  };
+
+  const getBounds = () => {
+    'worklet';
+    if (
+      containerWidth === undefined ||
+      containerHeight === undefined ||
+      contentWidth === undefined ||
+      contentHeight === undefined
+    ) {
+      return null;
+    }
+
+    const scaledWidth = contentWidth * scale.value;
+    const scaledHeight = contentHeight * scale.value;
+    const maxX = Math.max(0, (scaledWidth - containerWidth) / 2);
+    const maxY = Math.max(0, (scaledHeight - containerHeight) / 2);
+
+    return { maxX, maxY };
+  };
 
   const pinchGesture = useMemo(
     () =>
@@ -44,6 +76,20 @@ export const useZoomableGestures = (
             return;
           }
           scale.value = savedScale.value * e.scale;
+
+          const bounds = getBounds();
+          if (bounds) {
+            translateX.value = clamp(
+              translateX.value,
+              -bounds.maxX,
+              bounds.maxX,
+            );
+            translateY.value = clamp(
+              translateY.value,
+              -bounds.maxY,
+              bounds.maxY,
+            );
+          }
         })
         .onEnd(() => {
           if (scale.value <= minScale) {
@@ -52,12 +98,35 @@ export const useZoomableGestures = (
             translateY.value = withTiming(0);
             savedTranslateX.value = 0;
             savedTranslateY.value = 0;
+            savedScale.value = minScale;
+            return;
           } else if (scale.value > maxScale) {
             scale.value = withTiming(maxScale);
+          }
+
+          const bounds = getBounds();
+          if (bounds) {
+            translateX.value = clamp(
+              translateX.value,
+              -bounds.maxX,
+              bounds.maxX,
+            );
+            translateY.value = clamp(
+              translateY.value,
+              -bounds.maxY,
+              bounds.maxY,
+            );
+            savedTranslateX.value = translateX.value;
+            savedTranslateY.value = translateY.value;
           }
           savedScale.value = scale.value;
         }),
     [
+      containerHeight,
+      containerWidth,
+      contentHeight,
+      contentWidth,
+      getBounds,
       maxScale,
       minScale,
       savedScale,
@@ -74,8 +143,17 @@ export const useZoomableGestures = (
       Gesture.Pan()
         .onUpdate((e) => {
           if (savedScale.value > minScale) {
-            translateX.value = savedTranslateX.value + e.translationX;
-            translateY.value = savedTranslateY.value + e.translationY;
+            const nextX = savedTranslateX.value + e.translationX;
+            const nextY = savedTranslateY.value + e.translationY;
+            const bounds = getBounds();
+
+            if (bounds) {
+              translateX.value = clamp(nextX, -bounds.maxX, bounds.maxX);
+              translateY.value = clamp(nextY, -bounds.maxY, bounds.maxY);
+            } else {
+              translateX.value = nextX;
+              translateY.value = nextY;
+            }
           }
         })
         .onEnd(() => {
@@ -85,6 +163,11 @@ export const useZoomableGestures = (
           }
         }),
     [
+      containerHeight,
+      containerWidth,
+      contentHeight,
+      contentWidth,
+      getBounds,
       minScale,
       savedScale,
       savedTranslateX,

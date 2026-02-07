@@ -23,7 +23,7 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <Link href="/topo-view" asChild>
+        <Link href="/TopoView" asChild>
           <ThemedText type="subtitle" style={styles.linkText}>
             📍 Zobacz Topo - dSlonia
           </ThemedText>

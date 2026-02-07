@@ -229,4 +229,38 @@ describe('useZoomableGestures', () => {
     expect(getTransformValues(animatedStyle).translateX).toBe(12);
     expect(getTransformValues(animatedStyle).translateY).toBe(-5);
   });
+
+  it('clamps pan translation to image bounds when zoomed', () => {
+    const { result } = renderHook(() =>
+      useZoomableGestures({
+        containerWidth: 100,
+        containerHeight: 100,
+        contentWidth: 100,
+        contentHeight: 100,
+      }),
+    );
+    const pinch = findGestureByType(
+      result.current.gesture as unknown as MockGesture,
+      'Pinch',
+    );
+    const pan = findGestureByType(
+      result.current.gesture as unknown as MockGesture,
+      'Pan',
+    );
+    const animatedStyle = result.current.animatedStyle as unknown as () => {
+      transform: unknown;
+    };
+
+    expect(pan).not.toBeNull();
+    expect(pinch).not.toBeNull();
+
+    act(() => {
+      pinch?.handlers.onUpdate?.({ scale: 2 });
+      pinch?.handlers.onEnd?.({});
+      pan?.handlers.onUpdate?.({ translationX: 200, translationY: -200 });
+    });
+
+    expect(getTransformValues(animatedStyle).translateX).toBe(50);
+    expect(getTransformValues(animatedStyle).translateY).toBe(-50);
+  });
 });
