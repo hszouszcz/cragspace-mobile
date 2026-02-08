@@ -1,16 +1,16 @@
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import RouteDetailModal from '@/components/topo/RouteDetailModal';
 import TopoFullscreenViewer from '@/components/topo/TopoFullScreenViewer';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
 import { useEffect, useRef, useState } from 'react';
-import { Dimensions, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import {
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
+import TopoBottomSheet from '@/components/TopoBottomSheet';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
 import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
 
@@ -190,7 +190,7 @@ export default function TopoView() {
       </ThemedView>
 
       {/* Routes list section - 40% height */}
-      <ThemedView style={styles.listSection}>
+      {/* <ThemedView style={styles.listSection}>
         <ThemedView style={styles.listHeader}>
           <ThemedText type="subtitle">Drogi wspinaczkowe</ThemedText>
         </ThemedView>
@@ -219,7 +219,7 @@ export default function TopoView() {
             </Pressable>
           ))}
         </ScrollView>
-      </ThemedView>
+      </ThemedView> */}
 
       {svgViewBox && (
         <RouteDetailModal
@@ -240,6 +240,7 @@ export default function TopoView() {
           onPathPress={handlePathPress}
         />
       )}
+      <TopoBottomSheet data={pathsConfig} />
     </ThemedView>
   );
 }
