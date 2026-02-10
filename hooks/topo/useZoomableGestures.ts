@@ -1,3 +1,5 @@
+import { SNAP_POINTS_IN_NUMBERS } from '@/components/TopoBottomSheet';
+import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import { useMemo } from 'react';
 import { Gesture, type GestureType } from 'react-native-gesture-handler';
 import {
@@ -162,7 +164,12 @@ export const useZoomableGestures = (
 
             if (bounds) {
               translateX.value = clamp(nextX, -bounds.maxX, bounds.maxX);
-              translateY.value = clamp(nextY, -bounds.maxY, bounds.maxY);
+              translateY.value = clamp(
+                nextY,
+                -bounds.maxY / 2,
+                //TODO: Adjust this because still doesn't snap exactly where I want (bottomSheet handle is larger?)
+                bounds.maxY - SCREEN_HEIGHT * SNAP_POINTS_IN_NUMBERS[0],
+              );
             } else {
               translateX.value = nextX;
               translateY.value = nextY;

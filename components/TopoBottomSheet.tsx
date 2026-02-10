@@ -10,6 +10,11 @@ const PRIMARY_COLOR = '#f94f06';
 const STAR_COUNT = 5;
 const ESTIMATED_ITEM_SIZE = 76;
 
+export const SNAP_POINTS = ['20%', '52%', '100%'];
+export const SNAP_POINTS_IN_NUMBERS = SNAP_POINTS.map(
+  (point) => Number(point.replace('%', '')) / 100,
+);
+
 type RouteListItemData = {
   id: string;
   name: string;
@@ -122,10 +127,6 @@ const TopoBottomSheet = ({
     () => getColorTokens(colorScheme === 'dark' ? 'dark' : 'light'),
     [colorScheme],
   );
-  const sheetSnapPoints = useMemo(
-    () => snapPoints ?? ['20%', '52%', '88%'],
-    [snapPoints],
-  );
 
   const renderHandle = useCallback(
     () => (
@@ -187,7 +188,7 @@ const TopoBottomSheet = ({
 
   return (
     <BottomSheet
-      snapPoints={sheetSnapPoints}
+      snapPoints={SNAP_POINTS}
       index={1}
       enablePanDownToClose={false}
       animatedIndex={animatedIndex}
