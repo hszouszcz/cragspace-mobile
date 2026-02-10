@@ -3,12 +3,17 @@ import RouteDetailModal from '@/components/topo/RouteDetailModal';
 import TopoFullscreenViewer from '@/components/topo/TopoFullScreenViewer';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
 import { useEffect, useRef, useState } from 'react';
-import { Dimensions, StyleSheet } from 'react-native';
+import { Dimensions, Image, StyleSheet } from 'react-native';
 import {
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+} from 'react-native-reanimated';
 
 import TopoBottomSheet from '@/components/TopoBottomSheet';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
@@ -16,6 +21,14 @@ import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 const TOPO_IMAGE_SOURCE = require('@/assets/topo/dSlonia.jpeg');
+const TOPO_IMAGE_META = Image.resolveAssetSource(TOPO_IMAGE_SOURCE);
+const INITIAL_IMAGE_RATIO =
+  TOPO_IMAGE_META?.width && TOPO_IMAGE_META?.height
+    ? TOPO_IMAGE_META.width / TOPO_IMAGE_META.height
+    : null;
+const SHOULD_MEASURE_ON_LOAD = INITIAL_IMAGE_RATIO === null;
+const SNAP_POINTS = ['20%', '52%', '88%'] as const;
+const SNAP_POINT_VALUES = [0.2, 0.52, 0.88] as const;
 
 type RouteConfig = SvgPathConfig & {
   strokeWidth: number;
@@ -35,9 +48,15 @@ export default function TopoView() {
   const [pressedListItem, setPressedListItem] = useState<string | null>(null);
   const [isFullscreenVisible, setIsFullscreenVisible] = useState(false);
   const lastPathPressTs = useRef(0);
-  const [imageRatio, setImageRatio] = useState<number | null>(null);
-  const [isImageReady, setIsImageReady] = useState(false);
+  const [imageRatio, setImageRatio] = useState<number | null>(
+    INITIAL_IMAGE_RATIO,
+  );
+  const [isImageReady, setIsImageReady] = useState(
+    Boolean(INITIAL_IMAGE_RATIO),
+  );
   const [svgViewBox, setSvgViewBox] = useState<string | null>(null);
+  const animatedIndexSharedValue = useSharedValue(1);
+  const imageRatioSharedValue = useSharedValue(INITIAL_IMAGE_RATIO ?? 1);
 
   useEffect(() => {
     const loadSvgPaths = async () => {
@@ -79,6 +98,69 @@ export default function TopoView() {
     loadSvgPaths();
   }, []);
 
+  const containerSize = useDerivedValue(() => {
+    const ratio = imageRatioSharedValue.value || 1;
+    const baseWidth = svgViewBox
+      ? parseFloat(svgViewBox.split(' ')[2]) / ratio
+      : SCREEN_WIDTH;
+    const baseHeight = svgViewBox
+      ? parseFloat(svgViewBox.split(' ')[3])
+      : SCREEN_HEIGHT;
+    const maxWidth = (baseWidth * SCREEN_HEIGHT) / baseHeight;
+    const width = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [SCREEN_WIDTH, SCREEN_WIDTH, SCREEN_WIDTH],
+    );
+    const height = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [SCREEN_HEIGHT, SCREEN_HEIGHT * 0.45, SCREEN_WIDTH * 0.45],
+    );
+    return { width, height };
+  });
+
+  const containerAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      width: containerSize.value.width,
+      height: containerSize.value.height,
+    };
+  });
+
+  const contentAnimatedStyle = useAnimatedStyle(() => {
+    const ratio = imageRatioSharedValue.value || 1;
+    const containerWidth = containerSize.value.width;
+    const containerHeight = containerSize.value.height;
+    const coverWidth = Math.max(containerWidth, containerHeight * ratio);
+    const coverHeight = coverWidth / ratio;
+    const containWidth = containerWidth;
+    const containHeight = containerWidth / ratio;
+    const width = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [containWidth, coverWidth, coverWidth],
+    );
+    const height = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [containHeight, coverHeight, coverHeight],
+    );
+    return { width, height };
+  });
+
+  const imageContainerOffsetStyle = useAnimatedStyle(() => {
+    const sheetHeight = SCREEN_HEIGHT * SNAP_POINT_VALUES[0];
+    const centeredOffset = -sheetHeight / 2;
+    const translateY = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [centeredOffset, 0, 0],
+    );
+    return {
+      transform: [{ translateY }],
+    };
+  });
+
   const handleImagePress = () => {
     if (Date.now() - lastPathPressTs.current < 250) {
       return;
@@ -92,6 +174,7 @@ export default function TopoView() {
     containerHeight: imageRatio ? SCREEN_WIDTH / imageRatio : undefined,
     contentWidth: SCREEN_WIDTH,
     contentHeight: imageRatio ? SCREEN_WIDTH / imageRatio : undefined,
+    minScaleResetThreshold: 1,
   });
 
   const handlePathPressIn = (pathId) => {
@@ -143,7 +226,7 @@ export default function TopoView() {
       <ThemedView
         style={[
           styles.imageSection,
-          { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
+          //   { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
         ]}
       >
         <GestureHandlerRootView style={styles.gestureContainer}>
@@ -151,75 +234,50 @@ export default function TopoView() {
             <Animated.View
               style={[
                 styles.imageContainer,
-                animatedStyle,
-                { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
+                containerAnimatedStyle,
+                imageContainerOffsetStyle,
               ]}
             >
-              <Animated.Image
-                source={TOPO_IMAGE_SOURCE}
-                style={[
-                  styles.image,
-                  { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
-                  imageRatio ? { aspectRatio: imageRatio } : {},
-                  !isImageReady ? { opacity: 0 } : null,
-                ]}
-                onLoadStart={() => setIsImageReady(false)}
-                onLoad={(e) => {
-                  const { width, height } = e.nativeEvent.source;
-                  setImageRatio(width / height);
-                  setIsImageReady(true);
-                }}
-                resizeMode="contain"
-              />
-              {svgViewBox && isImageReady && imageRatio && (
-                <TopoSvgOverlay
-                  width={SCREEN_WIDTH}
-                  height={imageRatio ? SCREEN_WIDTH / imageRatio : '100%'}
-                  viewBox={svgViewBox}
-                  style={styles.svgOverlay}
-                  paths={pathsConfig}
-                  pressedPaths={pressedPaths}
-                  onPathPressIn={handlePathPressIn}
-                  onPathPressOut={handlePathPressOut}
-                  onPathPress={handlePathPress}
+              <Animated.View style={[styles.gestureContent, animatedStyle]}>
+                <Animated.Image
+                  source={TOPO_IMAGE_SOURCE}
+                  style={[
+                    styles.image,
+                    !isImageReady ? { opacity: 0 } : null,
+                    contentAnimatedStyle,
+                  ]}
+                  onLoadStart={() => {
+                    if (SHOULD_MEASURE_ON_LOAD) {
+                      setIsImageReady(false);
+                    }
+                  }}
+                  onLoad={(e) => {
+                    if (!SHOULD_MEASURE_ON_LOAD) {
+                      return;
+                    }
+                    const { width, height } = e.nativeEvent.source;
+                    setImageRatio(width / height);
+                    imageRatioSharedValue.value = width / height;
+                    setIsImageReady(true);
+                  }}
+                  resizeMode="cover"
                 />
-              )}
+                {svgViewBox && isImageReady && imageRatio && (
+                  <TopoSvgOverlay
+                    viewBox={svgViewBox}
+                    style={[styles.svgOverlay, contentAnimatedStyle]}
+                    paths={pathsConfig}
+                    pressedPaths={pressedPaths}
+                    onPathPressIn={handlePathPressIn}
+                    onPathPressOut={handlePathPressOut}
+                    onPathPress={handlePathPress}
+                  />
+                )}
+              </Animated.View>
             </Animated.View>
           </GestureDetector>
         </GestureHandlerRootView>
       </ThemedView>
-
-      {/* Routes list section - 40% height */}
-      {/* <ThemedView style={styles.listSection}>
-        <ThemedView style={styles.listHeader}>
-          <ThemedText type="subtitle">Drogi wspinaczkowe</ThemedText>
-        </ThemedView>
-        <ScrollView style={styles.scrollView}>
-          {pathsConfig.map((route) => (
-            <Pressable
-              key={route.id}
-              onPressIn={() => handleListItemPressIn(route.id)}
-              onPressOut={handleListItemPressOut}
-              onPress={() => handleListItemPress(route.id)}
-              style={[
-                styles.listItem,
-                pressedListItem === route.id && styles.listItemPressed,
-              ]}
-            >
-              <ThemedView
-                style={[
-                  styles.colorIndicator,
-                  { backgroundColor: route.color },
-                ]}
-              />
-              <ThemedView style={styles.listItemContent}>
-                <ThemedText style={styles.routeName}>{route.name}</ThemedText>
-                <ThemedText style={styles.routeGrade}>{route.grade}</ThemedText>
-              </ThemedView>
-            </Pressable>
-          ))}
-        </ScrollView>
-      </ThemedView> */}
 
       {svgViewBox && (
         <RouteDetailModal
@@ -240,7 +298,11 @@ export default function TopoView() {
           onPathPress={handlePathPress}
         />
       )}
-      <TopoBottomSheet data={pathsConfig} />
+      <TopoBottomSheet
+        data={pathsConfig}
+        animatedIndex={animatedIndexSharedValue}
+        snapPoints={SNAP_POINTS}
+      />
     </ThemedView>
   );
 }
@@ -250,73 +312,39 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   imageSection: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.6,
+    width: 'auto',
+    // height: SCREEN_HEIGHT * 0.6,
     overflow: 'hidden',
+    flex: 1,
+    backgroundColor: 'transparent',
   },
   gestureContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
   },
   imageContainer: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.6,
-    justifyContent: 'center',
+    width: 'auto',
+    height: 'auto',
     alignItems: 'center',
+    justifyContent: 'center',
     overflow: 'hidden',
   },
-  image: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.6,
+  gestureContent: {
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  //   image: {
+  //     width: SCREEN_WIDTH,
+  //     height: SCREEN_HEIGHT * 0.6,
+  //   },
   svgOverlay: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-  },
-  listSection: {
-    height: SCREEN_HEIGHT * 0.4,
-    borderTopWidth: 2,
-    borderTopColor: '#ccc',
-  },
-  listHeader: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  listItemPressed: {
-    backgroundColor: '#f0f0f0',
   },
   colorIndicator: {
     width: 20,
     height: 20,
     borderRadius: 10,
     marginRight: 12,
-  },
-  listItemContent: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  routeName: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  routeGrade: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#007AFF',
   },
 });

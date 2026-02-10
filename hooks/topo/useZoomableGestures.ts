@@ -11,6 +11,7 @@ type UseZoomableGestureOptions = {
   minScale?: number;
   maxScale?: number;
   doubleTapScale?: number;
+  minScaleResetThreshold?: number;
   containerWidth?: number;
   containerHeight?: number;
   contentWidth?: number;
@@ -27,6 +28,7 @@ export const useZoomableGestures = (
 ): UseZoomableGestureResult => {
   const minScale = options.minScale ?? 1;
   const maxScale = options.maxScale ?? 5;
+  const minScaleResetThreshold = options.minScaleResetThreshold ?? 0.02;
   const doubleTapScale = Math.min(
     maxScale,
     Math.max(minScale, options.doubleTapScale ?? 3),
@@ -46,6 +48,22 @@ export const useZoomableGestures = (
   const clamp = (value: number, min: number, max: number) => {
     'worklet';
     return Math.min(Math.max(value, min), max);
+  };
+
+  const resetTransform = (animate: boolean) => {
+    'worklet';
+    if (animate) {
+      scale.value = withTiming(minScale);
+      translateX.value = withTiming(0);
+      translateY.value = withTiming(0);
+    } else {
+      scale.value = minScale;
+      translateX.value = 0;
+      translateY.value = 0;
+    }
+    savedTranslateX.value = 0;
+    savedTranslateY.value = 0;
+    savedScale.value = minScale;
   };
 
   const getBounds = () => {
@@ -92,13 +110,8 @@ export const useZoomableGestures = (
           }
         })
         .onEnd(() => {
-          if (scale.value <= minScale) {
-            scale.value = withTiming(minScale);
-            translateX.value = withTiming(0);
-            translateY.value = withTiming(0);
-            savedTranslateX.value = 0;
-            savedTranslateY.value = 0;
-            savedScale.value = minScale;
+          if (scale.value <= minScale + minScaleResetThreshold) {
+            resetTransform(true);
             return;
           } else if (scale.value > maxScale) {
             scale.value = withTiming(maxScale);
@@ -183,12 +196,7 @@ export const useZoomableGestures = (
         .numberOfTaps(2)
         .onEnd(() => {
           if (scale.value > minScale) {
-            scale.value = withTiming(minScale);
-            savedScale.value = minScale;
-            translateX.value = withTiming(0);
-            translateY.value = withTiming(0);
-            savedTranslateX.value = 0;
-            savedTranslateY.value = 0;
+            resetTransform(true);
           } else {
             scale.value = withTiming(doubleTapScale);
             savedScale.value = doubleTapScale;

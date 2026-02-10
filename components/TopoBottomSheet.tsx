@@ -4,6 +4,7 @@ import { useCallback, useMemo } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { SharedValue } from 'react-native-reanimated';
 
 const PRIMARY_COLOR = '#f94f06';
 const STAR_COUNT = 5;
@@ -24,6 +25,8 @@ type TopoBottomSheetProps = {
   sectorTitle?: string;
   onRoutePress?: (route: RouteListItemData) => void;
   onFilterPress?: () => void;
+  animatedIndex: SharedValue<number>;
+  snapPoints?: string[];
 };
 
 type ColorTokens = {
@@ -111,13 +114,18 @@ const TopoBottomSheet = ({
   sectorTitle = 'The Diamond',
   onRoutePress,
   onFilterPress,
+  animatedIndex,
+  snapPoints,
 }: TopoBottomSheetProps) => {
   const colorScheme = useColorScheme();
   const colors = useMemo(
     () => getColorTokens(colorScheme === 'dark' ? 'dark' : 'light'),
     [colorScheme],
   );
-  const snapPoints = useMemo(() => ['20%', '52%', '88%'], []);
+  const sheetSnapPoints = useMemo(
+    () => snapPoints ?? ['20%', '52%', '88%'],
+    [snapPoints],
+  );
 
   const renderHandle = useCallback(
     () => (
@@ -179,11 +187,14 @@ const TopoBottomSheet = ({
 
   return (
     <BottomSheet
-      snapPoints={snapPoints}
-      index={0}
+      snapPoints={sheetSnapPoints}
+      index={1}
+      enablePanDownToClose={false}
+      animatedIndex={animatedIndex}
       enableContentPanningGesture={false}
       enableHandlePanningGesture
       handleComponent={renderHandle}
+      animateOnMount={false}
       backgroundStyle={[
         styles.sheetBackground,
         {
