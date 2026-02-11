@@ -7,6 +7,7 @@ import TopoBottomSheet, {
   SNAP_POINTS_IN_NUMBERS,
 } from '@/components/TopoBottomSheet';
 import { useLoadRouteSvgPaths } from '@/features/TopoPreview/useLoadRouteSvgPaths';
+import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimations';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
 import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
 import { useRef, useState } from 'react';
@@ -18,7 +19,6 @@ import {
 import Animated, {
   interpolate,
   useAnimatedStyle,
-  useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
 
@@ -63,34 +63,40 @@ export default function TopoView() {
 
   const { paths, viewBox } = useLoadRouteSvgPaths(TOPO_SVG_SOURCE);
 
-  const containerSize = useDerivedValue(() => {
-    const ratio = imageRatioSharedValue.value || 1;
-    const baseWidth = viewBox
-      ? parseFloat(viewBox.split(' ')[2]) / ratio
-      : SCREEN_WIDTH;
-    const baseHeight = viewBox
-      ? parseFloat(viewBox.split(' ')[3])
-      : SCREEN_HEIGHT;
-    const maxWidth = (baseWidth * SCREEN_HEIGHT) / baseHeight;
-    const width = interpolate(
-      animatedIndexSharedValue.value,
-      [0, 1, 2],
-      [SCREEN_WIDTH, SCREEN_WIDTH, SCREEN_WIDTH],
-    );
-    const height = interpolate(
-      animatedIndexSharedValue.value,
-      [0, 1, 2],
-      [SCREEN_HEIGHT, SCREEN_HEIGHT * 0.45, SCREEN_WIDTH * 0.45],
-    );
-    return { width, height };
-  });
+  const { containerSize, containerAnimatedStyle } = useTopoViewAnimations(
+    imageRatioSharedValue,
+    animatedIndexSharedValue,
+    viewBox,
+  );
 
-  const containerAnimatedStyle = useAnimatedStyle(() => {
-    return {
-      width: containerSize.value.width,
-      height: containerSize.value.height,
-    };
-  });
+  // const containerSize = useDerivedValue(() => {
+  //   const ratio = imageRatioSharedValue.value || 1;
+  //   const baseWidth = viewBox
+  //     ? parseFloat(viewBox.split(' ')[2]) / ratio
+  //     : SCREEN_WIDTH;
+  //   const baseHeight = viewBox
+  //     ? parseFloat(viewBox.split(' ')[3])
+  //     : SCREEN_HEIGHT;
+  //   const maxWidth = (baseWidth * SCREEN_HEIGHT) / baseHeight;
+  //   const width = interpolate(
+  //     animatedIndexSharedValue.value,
+  //     [0, 1, 2],
+  //     [SCREEN_WIDTH, SCREEN_WIDTH, SCREEN_WIDTH],
+  //   );
+  //   const height = interpolate(
+  //     animatedIndexSharedValue.value,
+  //     [0, 1, 2],
+  //     [SCREEN_HEIGHT, SCREEN_HEIGHT * 0.45, SCREEN_WIDTH * 0.45],
+  //   );
+  //   return { width, height };
+  // });
+
+  // const containerAnimatedStyle = useAnimatedStyle(() => {
+  //   return {
+  //     width: containerSize.value.width,
+  //     height: containerSize.value.height,
+  //   };
+  // });
 
   const contentAnimatedStyle = useAnimatedStyle(() => {
     const ratio = imageRatioSharedValue.value || 1;
