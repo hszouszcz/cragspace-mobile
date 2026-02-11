@@ -1,16 +1,6 @@
+import { TopoSvgData } from '@/features/TopoPreview/topo.types';
 import { Asset } from 'expo-asset';
 import { XMLParser } from 'fast-xml-parser';
-
-export type SvgPathConfig = {
-  id: string;
-  d: string;
-  color: string;
-};
-
-export type TopoSvgData = {
-  paths: SvgPathConfig[];
-  viewBox?: string;
-};
 
 export async function loadTopoSvgPaths(
   assetModule: number,

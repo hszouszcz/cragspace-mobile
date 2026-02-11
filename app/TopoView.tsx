@@ -2,27 +2,20 @@ import { ThemedView } from '@/components/themed-view';
 import RouteDetailModal from '@/components/topo/RouteDetailModal';
 import TopoFullscreenViewer from '@/components/topo/TopoFullScreenViewer';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
-import TopoBottomSheet, {
-  SNAP_POINTS,
-  SNAP_POINTS_IN_NUMBERS,
-} from '@/components/TopoBottomSheet';
+import TopoBottomSheet, { SNAP_POINTS } from '@/components/TopoBottomSheet';
+import { RouteConfig } from '@/features/TopoPreview/topo.types';
 import { useLoadRouteSvgPaths } from '@/features/TopoPreview/useLoadRouteSvgPaths';
 import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimations';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
-import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
 import { useRef, useState } from 'react';
 import { Dimensions, Image, StyleSheet } from 'react-native';
 import {
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue } from 'react-native-reanimated';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const TOPO_IMAGE_SOURCE = require('@/assets/topo/dSlonia.jpeg');
 const TOPO_IMAGE_META = Image.resolveAssetSource(TOPO_IMAGE_SOURCE);
 const INITIAL_IMAGE_RATIO =
@@ -31,19 +24,7 @@ const INITIAL_IMAGE_RATIO =
     : null;
 const SHOULD_MEASURE_ON_LOAD = INITIAL_IMAGE_RATIO === null;
 
-type RouteData = {
-  strokeWidth: number;
-  name: string;
-  length: number;
-  bolts: number;
-  grade: string;
-  type: string;
-  description: string;
-};
-
 const TOPO_SVG_SOURCE = require('@/assets/topo/dSlonia_test.svg');
-
-type RouteConfig = SvgPathConfig & RouteData;
 
 export default function TopoView() {
   const [pressedPaths, setPressedPaths] = useState<Record<string, boolean>>({});
@@ -63,73 +44,15 @@ export default function TopoView() {
 
   const { paths, viewBox } = useLoadRouteSvgPaths(TOPO_SVG_SOURCE);
 
-  const { containerSize, containerAnimatedStyle } = useTopoViewAnimations(
-    imageRatioSharedValue,
+  const {
+    containerAnimatedStyle,
+    containerSize,
+    contentAnimatedStyle,
+    imageContainerOffsetStyle,
+  } = useTopoViewAnimations({
+    imageRatio: imageRatioSharedValue,
     animatedIndexSharedValue,
     viewBox,
-  );
-
-  // const containerSize = useDerivedValue(() => {
-  //   const ratio = imageRatioSharedValue.value || 1;
-  //   const baseWidth = viewBox
-  //     ? parseFloat(viewBox.split(' ')[2]) / ratio
-  //     : SCREEN_WIDTH;
-  //   const baseHeight = viewBox
-  //     ? parseFloat(viewBox.split(' ')[3])
-  //     : SCREEN_HEIGHT;
-  //   const maxWidth = (baseWidth * SCREEN_HEIGHT) / baseHeight;
-  //   const width = interpolate(
-  //     animatedIndexSharedValue.value,
-  //     [0, 1, 2],
-  //     [SCREEN_WIDTH, SCREEN_WIDTH, SCREEN_WIDTH],
-  //   );
-  //   const height = interpolate(
-  //     animatedIndexSharedValue.value,
-  //     [0, 1, 2],
-  //     [SCREEN_HEIGHT, SCREEN_HEIGHT * 0.45, SCREEN_WIDTH * 0.45],
-  //   );
-  //   return { width, height };
-  // });
-
-  // const containerAnimatedStyle = useAnimatedStyle(() => {
-  //   return {
-  //     width: containerSize.value.width,
-  //     height: containerSize.value.height,
-  //   };
-  // });
-
-  const contentAnimatedStyle = useAnimatedStyle(() => {
-    const ratio = imageRatioSharedValue.value || 1;
-    const containerWidth = containerSize.value.width;
-    const containerHeight = containerSize.value.height;
-    const coverWidth = Math.max(containerWidth, containerHeight * ratio);
-    const coverHeight = coverWidth / ratio;
-    const containWidth = containerWidth;
-    const containHeight = containerWidth / ratio;
-    const width = interpolate(
-      animatedIndexSharedValue.value,
-      [0, 1, 2],
-      [containWidth, coverWidth, coverWidth],
-    );
-    const height = interpolate(
-      animatedIndexSharedValue.value,
-      [0, 1, 2],
-      [containHeight, coverHeight, coverHeight],
-    );
-    return { width, height };
-  });
-
-  const imageContainerOffsetStyle = useAnimatedStyle(() => {
-    const sheetHeight = SCREEN_HEIGHT * SNAP_POINTS_IN_NUMBERS[0];
-    const centeredOffset = -sheetHeight / 2;
-    const translateY = interpolate(
-      animatedIndexSharedValue.value,
-      [0, 1, 2],
-      [centeredOffset, 0, 0],
-    );
-    return {
-      transform: [{ translateY }],
-    };
   });
 
   const handleImagePress = () => {
@@ -148,15 +71,15 @@ export default function TopoView() {
     minScaleResetThreshold: 1,
   });
 
-  const handlePathPressIn = (pathId) => {
+  const handlePathPressIn = (pathId: string) => {
     setPressedPaths((prev) => ({ ...prev, [pathId]: true }));
   };
 
-  const handlePathPressOut = (pathId) => {
+  const handlePathPressOut = (pathId: string) => {
     setPressedPaths((prev) => ({ ...prev, [pathId]: false }));
   };
 
-  const handlePathPress = (pathId) => {
+  const handlePathPress = (pathId: string) => {
     const route = paths.find((p) => p.id === pathId);
     if (route) {
       lastPathPressTs.current = Date.now();
@@ -173,22 +96,6 @@ export default function TopoView() {
 
   const handleCloseFullscreen = () => {
     setIsFullscreenVisible(false);
-  };
-
-  const handleListItemPressIn = (routeId) => {
-    setPressedListItem(routeId);
-  };
-
-  const handleListItemPressOut = () => {
-    setPressedListItem(null);
-  };
-
-  const handleListItemPress = (routeId) => {
-    const route = paths.find((p) => p.id === routeId);
-    if (route) {
-      setSelectedRoute(route);
-      setIsModalVisible(true);
-    }
   };
 
   return (
@@ -213,7 +120,6 @@ export default function TopoView() {
                 <Animated.Image
                   source={TOPO_IMAGE_SOURCE}
                   style={[
-                    styles.image,
                     !isImageReady ? { opacity: 0 } : null,
                     contentAnimatedStyle,
                   ]}

@@ -1,3 +1,4 @@
+import { SNAP_POINTS_IN_NUMBERS } from '@/components/TopoBottomSheet';
 import { Dimensions } from 'react-native';
 import {
   interpolate,
@@ -6,11 +7,24 @@ import {
   useDerivedValue,
 } from 'react-native-reanimated';
 
-export const useTopoViewAnimations = (
-  imageRatio: SharedValue<number>,
-  animatedIndexSharedValue: SharedValue<number>,
-  viewBox: string | null,
-) => {
+type UseTopoViewAnimationsParams = {
+  imageRatio: SharedValue<number>;
+  animatedIndexSharedValue: SharedValue<number>;
+  viewBox?: string | null;
+};
+
+type useTopoViewAnimationsReturn = {
+  containerSize: ReturnType<typeof useDerivedValue>;
+  containerAnimatedStyle: ReturnType<typeof useAnimatedStyle>;
+  contentAnimatedStyle: ReturnType<typeof useAnimatedStyle>;
+  imageContainerOffsetStyle: ReturnType<typeof useAnimatedStyle>;
+};
+
+export const useTopoViewAnimations = ({
+  imageRatio,
+  animatedIndexSharedValue,
+  viewBox,
+}: UseTopoViewAnimationsParams): useTopoViewAnimationsReturn => {
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
     Dimensions.get('window');
 
@@ -43,8 +57,44 @@ export const useTopoViewAnimations = (
     };
   });
 
+  const contentAnimatedStyle = useAnimatedStyle(() => {
+    const ratio = imageRatio.value || 1;
+    const containerWidth = containerSize.value.width;
+    const containerHeight = containerSize.value.height;
+    const coverWidth = Math.max(containerWidth, containerHeight * ratio);
+    const coverHeight = coverWidth / ratio;
+    const containWidth = containerWidth;
+    const containHeight = containerWidth / ratio;
+    const width = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [containWidth, coverWidth, coverWidth],
+    );
+    const height = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [containHeight, coverHeight, coverHeight],
+    );
+    return { width, height };
+  });
+
+  const imageContainerOffsetStyle = useAnimatedStyle(() => {
+    const sheetHeight = SCREEN_HEIGHT * SNAP_POINTS_IN_NUMBERS[0];
+    const centeredOffset = -sheetHeight / 2;
+    const translateY = interpolate(
+      animatedIndexSharedValue.value,
+      [0, 1, 2],
+      [centeredOffset, 0, 0],
+    );
+    return {
+      transform: [{ translateY }],
+    };
+  });
+
   return {
     containerSize,
     containerAnimatedStyle,
+    contentAnimatedStyle,
+    imageContainerOffsetStyle,
   };
 };

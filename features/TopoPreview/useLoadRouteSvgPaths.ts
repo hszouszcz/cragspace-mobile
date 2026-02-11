@@ -1,8 +1,9 @@
-import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
+import { loadTopoSvgPaths } from '@/services/topo/loadSvgPaths';
 import { useEffect, useState } from 'react';
+import { RouteConfig } from './topo.types';
 
 export const useLoadRouteSvgPaths = (imageSvgUrl: number) => {
-  const [paths, setPaths] = useState<SvgPathConfig[]>([]);
+  const [paths, setPaths] = useState<RouteConfig[]>([]);
   const [viewBox, setViewBox] = useState<string | null>(null);
 
   useEffect(() => {
