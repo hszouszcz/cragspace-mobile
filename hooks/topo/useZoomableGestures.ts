@@ -1,6 +1,7 @@
 import { SNAP_POINTS_IN_NUMBERS } from '@/components/TopoBottomSheet';
 import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import { useMemo } from 'react';
+import type { ViewStyle } from 'react-native';
 import { Gesture, type GestureType } from 'react-native-gesture-handler';
 import {
   useAnimatedStyle,
@@ -22,7 +23,7 @@ type UseZoomableGestureOptions = {
 
 type UseZoomableGestureResult = {
   gesture: GestureType;
-  animatedStyle: ReturnType<typeof useAnimatedStyle>;
+  animatedStyle: ViewStyle;
 };
 
 export const useZoomableGestures = (
@@ -242,7 +243,7 @@ export const useZoomableGestures = (
     [doubleTapGesture, panGesture, pinchGesture, singleTapGesture],
   );
 
-  const animatedStyle = useAnimatedStyle(() => ({
+  const animatedStyle = useAnimatedStyle<ViewStyle>(() => ({
     transform: [
       { translateX: translateX.value },
       { translateY: translateY.value },

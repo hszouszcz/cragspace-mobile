@@ -1,5 +1,6 @@
 import { SNAP_POINTS_IN_NUMBERS } from '@/components/TopoBottomSheet';
-import { Dimensions } from 'react-native';
+import { Dimensions, ImageStyle, ViewStyle } from 'react-native';
+import type { DerivedValue } from 'react-native-reanimated';
 import {
   interpolate,
   SharedValue,
@@ -14,10 +15,11 @@ type UseTopoViewAnimationsParams = {
 };
 
 type useTopoViewAnimationsReturn = {
-  containerSize: ReturnType<typeof useDerivedValue>;
-  containerAnimatedStyle: ReturnType<typeof useAnimatedStyle>;
-  contentAnimatedStyle: ReturnType<typeof useAnimatedStyle>;
-  imageContainerOffsetStyle: ReturnType<typeof useAnimatedStyle>;
+  containerSize: DerivedValue<{ width: number; height: number }>;
+  containerAnimatedStyle: ViewStyle;
+  contentImageAnimatedStyle: ImageStyle;
+  contentViewAnimatedStyle: ViewStyle;
+  imageContainerOffsetStyle: ViewStyle;
 };
 
 export const useTopoViewAnimations = ({
@@ -50,14 +52,14 @@ export const useTopoViewAnimations = ({
     return { width, height };
   });
 
-  const containerAnimatedStyle = useAnimatedStyle(() => {
+  const containerAnimatedStyle = useAnimatedStyle<ViewStyle>(() => {
     return {
       width: containerSize.value.width,
       height: containerSize.value.height,
     };
   });
 
-  const contentAnimatedStyle = useAnimatedStyle(() => {
+  const contentSize = useDerivedValue(() => {
     const ratio = imageRatio.value || 1;
     const containerWidth = containerSize.value.width;
     const containerHeight = containerSize.value.height;
@@ -78,7 +80,21 @@ export const useTopoViewAnimations = ({
     return { width, height };
   });
 
-  const imageContainerOffsetStyle = useAnimatedStyle(() => {
+  const contentImageAnimatedStyle = useAnimatedStyle<ImageStyle>(() => {
+    return {
+      width: contentSize.value.width,
+      height: contentSize.value.height,
+    };
+  });
+
+  const contentViewAnimatedStyle = useAnimatedStyle<ViewStyle>(() => {
+    return {
+      width: contentSize.value.width,
+      height: contentSize.value.height,
+    };
+  });
+
+  const imageContainerOffsetStyle = useAnimatedStyle<ViewStyle>(() => {
     const sheetHeight = SCREEN_HEIGHT * SNAP_POINTS_IN_NUMBERS[0];
     const centeredOffset = -sheetHeight / 2;
     const translateY = interpolate(
@@ -94,7 +110,8 @@ export const useTopoViewAnimations = ({
   return {
     containerSize,
     containerAnimatedStyle,
-    contentAnimatedStyle,
+    contentImageAnimatedStyle,
+    contentViewAnimatedStyle,
     imageContainerOffsetStyle,
   };
 };

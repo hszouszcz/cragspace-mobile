@@ -46,8 +46,8 @@ export default function TopoView() {
 
   const {
     containerAnimatedStyle,
-    containerSize,
-    contentAnimatedStyle,
+    contentImageAnimatedStyle,
+    contentViewAnimatedStyle,
     imageContainerOffsetStyle,
   } = useTopoViewAnimations({
     imageRatio: imageRatioSharedValue,
@@ -100,13 +100,7 @@ export default function TopoView() {
 
   return (
     <ThemedView style={styles.container}>
-      {/* Image section with gestures - 60% height */}
-      <ThemedView
-        style={[
-          styles.imageSection,
-          //   { height: imageRatio ? SCREEN_WIDTH / imageRatio : '100%' },
-        ]}
-      >
+      <ThemedView style={[styles.imageSection]}>
         <GestureHandlerRootView style={styles.gestureContainer}>
           <GestureDetector gesture={composedGesture}>
             <Animated.View
@@ -121,7 +115,7 @@ export default function TopoView() {
                   source={TOPO_IMAGE_SOURCE}
                   style={[
                     !isImageReady ? { opacity: 0 } : null,
-                    contentAnimatedStyle,
+                    contentImageAnimatedStyle,
                   ]}
                   onLoadStart={() => {
                     if (SHOULD_MEASURE_ON_LOAD) {
@@ -142,7 +136,7 @@ export default function TopoView() {
                 {viewBox && isImageReady && imageRatio && (
                   <TopoSvgOverlay
                     viewBox={viewBox}
-                    style={[styles.svgOverlay, contentAnimatedStyle]}
+                    style={[styles.svgOverlay, contentViewAnimatedStyle]}
                     paths={paths}
                     pressedPaths={pressedPaths}
                     onPathPressIn={handlePathPressIn}
@@ -160,7 +154,7 @@ export default function TopoView() {
         <RouteDetailModal
           visible={isModalVisible}
           route={selectedRoute}
-          viewBox={viewBox}
+          svgViewBox={viewBox}
           imageSource={TOPO_IMAGE_SOURCE}
           onClose={handleCloseModal}
         />
@@ -168,7 +162,7 @@ export default function TopoView() {
       {viewBox && (
         <TopoFullscreenViewer
           visible={isFullscreenVisible}
-          viewBox={viewBox}
+          svgViewBox={viewBox}
           paths={paths}
           imageSource={TOPO_IMAGE_SOURCE}
           onClose={handleCloseFullscreen}
