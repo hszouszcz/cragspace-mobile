@@ -8,14 +8,13 @@ import { useLoadRouteSvgPaths } from '@/features/TopoPreview/useLoadRouteSvgPath
 import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimations';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
 import { useRef, useState } from 'react';
-import { Dimensions, Image, StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import {
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import Animated, { useSharedValue } from 'react-native-reanimated';
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 const TOPO_IMAGE_SOURCE = require('@/assets/topo/dSlonia.jpeg');
 const TOPO_IMAGE_META = Image.resolveAssetSource(TOPO_IMAGE_SOURCE);
 const INITIAL_IMAGE_RATIO =
@@ -45,6 +44,8 @@ export default function TopoView() {
   const { paths, viewBox } = useLoadRouteSvgPaths(TOPO_SVG_SOURCE);
 
   const {
+    containerSize,
+    contentSize,
     containerAnimatedStyle,
     contentImageAnimatedStyle,
     contentViewAnimatedStyle,
@@ -64,10 +65,8 @@ export default function TopoView() {
 
   const { gesture: composedGesture, animatedStyle } = useZoomableGestures({
     onSingleTap: handleImagePress,
-    containerWidth: SCREEN_WIDTH,
-    containerHeight: imageRatio ? SCREEN_WIDTH / imageRatio : undefined,
-    contentWidth: SCREEN_WIDTH,
-    contentHeight: imageRatio ? SCREEN_WIDTH / imageRatio : undefined,
+    containerSize,
+    contentSize,
     minScaleResetThreshold: 1,
   });
 

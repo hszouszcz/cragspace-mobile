@@ -4,6 +4,7 @@ import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
 import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
 import {
   Dimensions,
+  Image,
   ImageSourcePropType,
   Modal,
   Pressable,
@@ -41,6 +42,30 @@ export default function RouteDetailModal({
 }: RouteDetailModalProps) {
   if (!route) return null;
 
+  // Calculate actual image dimensions with resizeMode="contain"
+  const imageSourceResolved = Image.resolveAssetSource(imageSource);
+  const imageAspectRatio =
+    imageSourceResolved?.width && imageSourceResolved?.height
+      ? imageSourceResolved.width / imageSourceResolved.height
+      : SCREEN_WIDTH / (SCREEN_HEIGHT * 0.5);
+
+  const containerWidth = SCREEN_WIDTH;
+  const containerHeight = SCREEN_HEIGHT * 0.5;
+  const containerAspectRatio = containerWidth / containerHeight;
+
+  let actualImageWidth: number;
+  let actualImageHeight: number;
+
+  if (imageAspectRatio > containerAspectRatio) {
+    // Image is wider - fit to width
+    actualImageWidth = containerWidth;
+    actualImageHeight = containerWidth / imageAspectRatio;
+  } else {
+    // Image is taller - fit to height
+    actualImageHeight = containerHeight;
+    actualImageWidth = containerHeight * imageAspectRatio;
+  }
+
   return (
     <Modal
       visible={visible}
@@ -63,10 +88,11 @@ export default function RouteDetailModal({
             resizeMode="contain"
           />
           <TopoSvgOverlay
-            width={SCREEN_WIDTH}
-            height={SCREEN_HEIGHT * 0.5}
             viewBox={svgViewBox}
-            style={styles.svgOverlay}
+            style={[
+              styles.svgOverlay,
+              { width: actualImageWidth, height: actualImageHeight },
+            ]}
             paths={[route]}
             defaultStrokeWidth={12}
           />
@@ -145,8 +171,6 @@ const styles = StyleSheet.create({
   },
   svgOverlay: {
     position: 'absolute',
-    top: 0,
-    left: 0,
   },
   detailsContainer: {
     flex: 1,

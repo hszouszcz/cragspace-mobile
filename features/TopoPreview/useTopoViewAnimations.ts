@@ -16,6 +16,7 @@ type UseTopoViewAnimationsParams = {
 
 type useTopoViewAnimationsReturn = {
   containerSize: DerivedValue<{ width: number; height: number }>;
+  contentSize: DerivedValue<{ width: number; height: number }>;
   containerAnimatedStyle: ViewStyle;
   contentImageAnimatedStyle: ImageStyle;
   contentViewAnimatedStyle: ViewStyle;
@@ -109,6 +110,7 @@ export const useTopoViewAnimations = ({
 
   return {
     containerSize,
+    contentSize,
     containerAnimatedStyle,
     contentImageAnimatedStyle,
     contentViewAnimatedStyle,

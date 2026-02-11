@@ -1,9 +1,8 @@
-import { SNAP_POINTS_IN_NUMBERS } from '@/components/TopoBottomSheet';
-import { SCREEN_HEIGHT } from '@gorhom/bottom-sheet';
 import { useMemo } from 'react';
 import type { ViewStyle } from 'react-native';
 import { Gesture, type GestureType } from 'react-native-gesture-handler';
 import {
+  type DerivedValue,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -19,6 +18,8 @@ type UseZoomableGestureOptions = {
   containerHeight?: number;
   contentWidth?: number;
   contentHeight?: number;
+  containerSize?: DerivedValue<{ width: number; height: number }>;
+  contentSize?: DerivedValue<{ width: number; height: number }>;
 };
 
 type UseZoomableGestureResult = {
@@ -40,6 +41,8 @@ export const useZoomableGestures = (
   const containerHeight = options.containerHeight;
   const contentWidth = options.contentWidth;
   const contentHeight = options.contentHeight;
+  const containerSize = options.containerSize;
+  const contentSize = options.contentSize;
 
   const scale = useSharedValue(minScale);
   const savedScale = useSharedValue(minScale);
@@ -71,19 +74,26 @@ export const useZoomableGestures = (
 
   const getBounds = () => {
     'worklet';
+    const resolvedContainerWidth =
+      containerSize?.value?.width ?? containerWidth;
+    const resolvedContainerHeight =
+      containerSize?.value?.height ?? containerHeight;
+    const resolvedContentWidth = contentSize?.value?.width ?? contentWidth;
+    const resolvedContentHeight = contentSize?.value?.height ?? contentHeight;
+
     if (
-      containerWidth === undefined ||
-      containerHeight === undefined ||
-      contentWidth === undefined ||
-      contentHeight === undefined
+      resolvedContainerWidth === undefined ||
+      resolvedContainerHeight === undefined ||
+      resolvedContentWidth === undefined ||
+      resolvedContentHeight === undefined
     ) {
       return null;
     }
 
-    const scaledWidth = contentWidth * scale.value;
-    const scaledHeight = contentHeight * scale.value;
-    const maxX = Math.max(0, (scaledWidth - containerWidth) / 2);
-    const maxY = Math.max(0, (scaledHeight - containerHeight) / 2);
+    const scaledWidth = resolvedContentWidth * scale.value;
+    const scaledHeight = resolvedContentHeight * scale.value;
+    const maxX = Math.max(0, (scaledWidth - resolvedContainerWidth) / 2);
+    const maxY = Math.max(0, (scaledHeight - resolvedContainerHeight) / 2);
 
     return { maxX, maxY };
   };
@@ -140,8 +150,10 @@ export const useZoomableGestures = (
     [
       containerHeight,
       containerWidth,
+      containerSize,
       contentHeight,
       contentWidth,
+      contentSize,
       getBounds,
       maxScale,
       minScale,
@@ -165,12 +177,7 @@ export const useZoomableGestures = (
 
             if (bounds) {
               translateX.value = clamp(nextX, -bounds.maxX, bounds.maxX);
-              translateY.value = clamp(
-                nextY,
-                -bounds.maxY / 2,
-                //TODO: Adjust this because still doesn't snap exactly where I want (bottomSheet handle is larger?)
-                bounds.maxY - SCREEN_HEIGHT * SNAP_POINTS_IN_NUMBERS[0],
-              );
+              translateY.value = clamp(nextY, -bounds.maxY, bounds.maxY);
             } else {
               translateX.value = nextX;
               translateY.value = nextY;
@@ -186,8 +193,10 @@ export const useZoomableGestures = (
     [
       containerHeight,
       containerWidth,
+      containerSize,
       contentHeight,
       contentWidth,
+      contentSize,
       getBounds,
       minScale,
       savedScale,

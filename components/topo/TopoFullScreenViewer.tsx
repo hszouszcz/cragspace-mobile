@@ -52,10 +52,8 @@ export default function TopoFullscreenViewer({
             resizeMode="contain"
           />
           <TopoSvgOverlay
-            width={SCREEN_HEIGHT}
-            height={SCREEN_WIDTH}
             viewBox={svgViewBox}
-            style={styles.svg}
+            style={[styles.svg, { width: SCREEN_HEIGHT, height: SCREEN_WIDTH }]}
             paths={paths}
             onPathPress={onPathPress}
           />

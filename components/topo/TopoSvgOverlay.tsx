@@ -1,4 +1,4 @@
-import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
+import { SvgPathConfig } from '@/features/TopoPreview/topo.types';
 import type { StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
