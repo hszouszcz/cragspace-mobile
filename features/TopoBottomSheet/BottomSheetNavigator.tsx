@@ -5,19 +5,11 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { RouteDetails } from './RouteDetails';
 import { RoutesList } from './RoutesList';
+import { type RouteListItemData } from './types';
 
 type SheetStackParamList = {
   List: undefined;
   Details: { routeId: string };
-};
-
-type RouteListItemData = {
-  id: string;
-  name: string;
-  grade?: string;
-  rating?: number;
-  isHighlighted?: boolean;
-  isMuted?: boolean;
 };
 
 const Stack = createNativeStackNavigator<SheetStackParamList>();
@@ -45,7 +37,7 @@ const BottomSheetNavigator = ({
             )}
           </Stack.Screen>
           <Stack.Screen name="Details">
-            {(props) => <RouteDetails {...props} details={data} />}
+            {(props) => <RouteDetails {...props} details={data[0]} />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>

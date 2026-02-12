@@ -1,48 +1,15 @@
+import { PRIMARY_COLOR, type TopoColorTokens } from '@/constants/theme';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { type RouteListItemData } from './types';
 
-const PRIMARY_COLOR = '#f94f06';
 const STAR_COUNT = 5;
 
 type RouteListItemProps = {
   item: RouteListItemData;
   index: number;
-  colors: ColorTokens;
+  colors: TopoColorTokens;
   onPress?: (route: RouteListItemData) => void;
-};
-
-type ColorTokens = {
-  sheetBackground: string;
-  sheetBorder: string;
-  handle: string;
-  headerTitle: string;
-  headerSubtitle: string;
-  rowBase: string;
-  rowBackground: string;
-  rowBorder: string;
-  rowMuted: string;
-  rowMutedBorder: string;
-  rowPressed: string;
-  badgeBackground: string;
-  badgeText: string;
-  badgeMutedBackground: string;
-  badgeMutedText: string;
-  gradeBackground: string;
-  gradeText: string;
-  chevron: string;
-  starEmpty: string;
-  textPrimary: string;
-  textMuted: string;
-  filterBackground: string;
-};
-
-type RouteListItemData = {
-  id: string;
-  name: string;
-  grade?: string;
-  rating?: number;
-  isHighlighted?: boolean;
-  isMuted?: boolean;
 };
 
 export const RouteListItem = ({

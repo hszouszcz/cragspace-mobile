@@ -1,17 +1,7 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Dimensions, ScrollView, StyleSheet } from 'react-native';
-
-type RouteListItemData = {
-  id: string;
-  name: string;
-  grade?: string;
-  rating?: number;
-  length: number;
-  bolts: number;
-  type: string;
-  description?: string;
-};
+import { type RouteListItemData } from './types';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
