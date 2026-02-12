@@ -1,13 +1,15 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import BottomSheet, { BottomSheetFlashList } from '@gorhom/bottom-sheet';
-import { useCallback, useMemo } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import BottomSheet from '@gorhom/bottom-sheet';
+import { useEffect, useState } from 'react';
+import { Button, Pressable, StyleSheet, Text, View } from 'react-native';
 
+import BottomSheetNavigator from '@/features/TopoBottomSheet/BottomSheetNavigator';
+import { RouteListItem } from '@/features/TopoBottomSheet/RouteListItem';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useNavigationContainerRef } from 'expo-router';
 import { SharedValue } from 'react-native-reanimated';
 
 const PRIMARY_COLOR = '#f94f06';
-const STAR_COUNT = 5;
 const ESTIMATED_ITEM_SIZE = 76;
 
 export const SNAP_POINTS = ['20%', '52%', '100%'];
@@ -122,68 +124,81 @@ const TopoBottomSheet = ({
   animatedIndex,
   snapPoints,
 }: TopoBottomSheetProps) => {
+  const sheetNavigationRef = useNavigationContainerRef();
   const colorScheme = useColorScheme();
-  const colors = useMemo(
-    () => getColorTokens(colorScheme === 'dark' ? 'dark' : 'light'),
-    [colorScheme],
-  );
+  const colors = getColorTokens(colorScheme === 'dark' ? 'dark' : 'light');
 
-  const renderHandle = useCallback(
-    () => (
+  const [canGoBack, setCanGoBack] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = sheetNavigationRef.addListener('state', () => {
+      const ready = sheetNavigationRef.isReady();
+      const canBack = ready && sheetNavigationRef.canGoBack();
+      setCanGoBack(canBack);
+    });
+
+    return unsubscribe;
+  }, [sheetNavigationRef]);
+
+  const renderHandle = () => (
+    <View
+      style={[
+        styles.handleContainer,
+        { backgroundColor: colors.sheetBackground },
+      ]}
+    >
       <View
-        style={[
-          styles.handleContainer,
-          { backgroundColor: colors.sheetBackground },
-        ]}
-      >
-        <View
-          style={[styles.handleIndicator, { backgroundColor: colors.handle }]}
-        />
-        <View style={styles.headerRow}>
-          <View style={styles.headerTitles}>
-            <Text
-              style={[styles.headerSubtitle, { color: colors.headerSubtitle }]}
-            >
-              {sectorName.toUpperCase()}
-            </Text>
-            <Text style={[styles.headerTitle, { color: colors.headerTitle }]}>
-              {sectorTitle}
-            </Text>
-          </View>
-          <Pressable
-            onPress={onFilterPress}
-            style={({ pressed }) => [
-              styles.filterButton,
-              { backgroundColor: colors.filterBackground },
-              pressed && styles.filterButtonPressed,
-            ]}
+        style={[styles.handleIndicator, { backgroundColor: colors.handle }]}
+      />
+      <View style={styles.headerRow}>
+        {canGoBack && (
+          <Button title=" < Back" onPress={() => sheetNavigationRef.goBack()} />
+        )}
+        <View style={styles.headerTitles}>
+          <Text
+            style={[styles.headerSubtitle, { color: colors.headerSubtitle }]}
           >
-            <MaterialIcons
-              name="filter-list"
-              size={16}
-              color={PRIMARY_COLOR}
-              style={styles.filterIcon}
-            />
-            <Text style={[styles.filterLabel, { color: PRIMARY_COLOR }]}>
-              Filter
-            </Text>
-          </Pressable>
+            {sectorName.toUpperCase()}
+          </Text>
+          <Text style={[styles.headerTitle, { color: colors.headerTitle }]}>
+            {sectorTitle}
+          </Text>
         </View>
+        <Pressable
+          onPress={onFilterPress}
+          style={({ pressed }) => [
+            styles.filterButton,
+            { backgroundColor: colors.filterBackground },
+            pressed && styles.filterButtonPressed,
+          ]}
+        >
+          <MaterialIcons
+            name="filter-list"
+            size={16}
+            color={PRIMARY_COLOR}
+            style={styles.filterIcon}
+          />
+          <Text style={[styles.filterLabel, { color: PRIMARY_COLOR }]}>
+            Filter
+          </Text>
+        </Pressable>
       </View>
-    ),
-    [colors, onFilterPress, sectorName, sectorTitle],
+    </View>
   );
 
-  const renderItem = useCallback(
-    ({ item, index }: { item: RouteListItemData; index: number }) => (
-      <RouteListItem
-        item={item}
-        index={index}
-        colors={colors}
-        onPress={onRoutePress}
-      />
-    ),
-    [colors, onRoutePress],
+  const renderItem = ({
+    item,
+    index,
+  }: {
+    item: RouteListItemData;
+    index: number;
+  }) => (
+    <RouteListItem
+      item={item}
+      index={index}
+      colors={colors}
+      onPress={onRoutePress}
+    />
   );
 
   return (
@@ -205,106 +220,21 @@ const TopoBottomSheet = ({
       ]}
       style={styles.sheetContainer}
     >
-      <BottomSheetFlashList
+      {/* <BottomSheetFlashList
         data={data}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item: RouteListItemData) => item.id}
         estimatedItemSize={ESTIMATED_ITEM_SIZE}
         renderItem={renderItem}
         contentContainerStyle={styles.content}
         showsVerticalScrollIndicator={false}
+      /> */}
+      {/* <RoutesList routes={data} onRoutePress={onRoutePress} /> */}
+      <BottomSheetNavigator
+        data={data}
+        onRoutePress={onRoutePress}
+        ref={sheetNavigationRef}
       />
     </BottomSheet>
-  );
-};
-
-type RouteListItemProps = {
-  item: RouteListItemData;
-  index: number;
-  colors: ColorTokens;
-  onPress?: (route: RouteListItemData) => void;
-};
-
-const RouteListItem = ({
-  item,
-  index,
-  colors,
-  onPress,
-}: RouteListItemProps) => {
-  const rating = Math.max(0, Math.min(STAR_COUNT, item.rating ?? 0));
-  const isHighlighted = item.isHighlighted;
-  const isMuted = item.isMuted;
-
-  return (
-    <Pressable
-      onPress={() => onPress?.(item)}
-      style={({ pressed }) => [
-        styles.routeRow,
-        {
-          backgroundColor: isHighlighted
-            ? colors.rowBackground
-            : isMuted
-              ? colors.rowMuted
-              : colors.rowBase,
-          borderColor: isHighlighted ? colors.rowBorder : colors.rowMutedBorder,
-        },
-        pressed && { backgroundColor: colors.rowPressed },
-      ]}
-    >
-      <View
-        style={[
-          styles.routeBadge,
-          {
-            backgroundColor: isHighlighted
-              ? colors.badgeBackground
-              : colors.badgeMutedBackground,
-          },
-        ]}
-      >
-        <Text
-          style={[
-            styles.routeBadgeText,
-            { color: isHighlighted ? colors.badgeText : colors.badgeMutedText },
-          ]}
-        >
-          {index + 1}
-        </Text>
-      </View>
-      <View style={styles.routeDetails}>
-        <View style={styles.routeTitleRow}>
-          <Text style={[styles.routeName, { color: colors.textPrimary }]}>
-            {item.name}
-          </Text>
-          {item.grade ? (
-            <View
-              style={[
-                styles.routeGrade,
-                { backgroundColor: colors.gradeBackground },
-              ]}
-            >
-              <Text
-                style={[styles.routeGradeText, { color: colors.gradeText }]}
-              >
-                {item.grade}
-              </Text>
-            </View>
-          ) : null}
-        </View>
-        {item.rating !== undefined ? (
-          <View style={styles.routeRating}>
-            {Array.from({ length: STAR_COUNT }).map((_, starIndex) => (
-              <MaterialIcons
-                key={`${item.id}-star-${starIndex}`}
-                name="star"
-                size={14}
-                color={starIndex < rating ? PRIMARY_COLOR : colors.starEmpty}
-                style={styles.starIcon}
-              />
-            ))}
-          </View>
-        ) : null}
-      </View>
-      <MaterialIcons name="chevron-right" size={22} color={colors.chevron} />
-    </Pressable>
   );
 };
 
@@ -376,54 +306,5 @@ const styles = StyleSheet.create({
   filterLabel: {
     fontSize: 12,
     fontWeight: '600',
-  },
-  routeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderRadius: 16,
-    borderWidth: 1,
-    marginBottom: 12,
-  },
-  routeBadge: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  routeBadgeText: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  routeDetails: {
-    flex: 1,
-  },
-  routeTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  routeName: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginRight: 8,
-  },
-  routeGrade: {
-    borderRadius: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  routeGradeText: {
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  routeRating: {
-    flexDirection: 'row',
-    marginTop: 6,
-  },
-  starIcon: {
-    marginRight: 2,
   },
 });

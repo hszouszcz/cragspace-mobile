@@ -75,7 +75,6 @@ export default function TopoView() {
     containerSize,
     contentSize,
     minScaleResetThreshold: 1,
-    doubleTapScale: animatedIndexSharedValue.value === 1 ? 1.5 : 4,
     maxScale: animatedIndexSharedValue.value === 1 ? 2 : 5,
   });
 
