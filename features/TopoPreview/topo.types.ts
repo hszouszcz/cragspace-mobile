@@ -4,6 +4,13 @@ export type SvgPathConfig = {
   color: string;
 };
 
+export type SvgPathBounds = {
+  minX: number;
+  minY: number;
+  maxX: number;
+  maxY: number;
+};
+
 export type TopoSvgData = {
   paths: SvgPathConfig[];
   viewBox?: string;
@@ -19,4 +26,5 @@ export type RouteData = {
   description: string;
 };
 
-export type RouteConfig = SvgPathConfig & RouteData;
+export type RouteConfig = SvgPathConfig &
+  RouteData & { bounds?: SvgPathBounds };

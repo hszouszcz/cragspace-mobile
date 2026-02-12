@@ -1,6 +1,6 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import type { ViewStyle } from 'react-native';
-import { Gesture, type GestureType } from 'react-native-gesture-handler';
+import { Gesture } from 'react-native-gesture-handler';
 import {
   type DerivedValue,
   useAnimatedStyle,
@@ -23,8 +23,15 @@ type UseZoomableGestureOptions = {
 };
 
 type UseZoomableGestureResult = {
-  gesture: GestureType;
+  gesture: ReturnType<typeof Gesture.Race>;
   animatedStyle: ViewStyle;
+  setTransform: (params: {
+    scale: number;
+    translateX: number;
+    translateY: number;
+    animate?: boolean;
+  }) => void;
+  resetTransform: (animate?: boolean) => void;
 };
 
 export const useZoomableGestures = (
@@ -38,6 +45,7 @@ export const useZoomableGestures = (
     Math.max(minScale, options.doubleTapScale ?? 3),
   );
   const containerWidth = options.containerWidth;
+  const onSingleTap = options.onSingleTap;
   const containerHeight = options.containerHeight;
   const contentWidth = options.contentWidth;
   const contentHeight = options.contentHeight;
@@ -51,52 +59,118 @@ export const useZoomableGestures = (
   const savedTranslateX = useSharedValue(0);
   const savedTranslateY = useSharedValue(0);
 
-  const clamp = (value: number, min: number, max: number) => {
+  const clamp = useCallback((value: number, min: number, max: number) => {
     'worklet';
     return Math.min(Math.max(value, min), max);
-  };
+  }, []);
 
-  const resetTransform = (animate: boolean) => {
+  const getBoundsForScale = useCallback(
+    (targetScale: number) => {
+      'worklet';
+      const resolvedContainerWidth =
+        containerSize?.value?.width ?? containerWidth;
+      const resolvedContainerHeight =
+        containerSize?.value?.height ?? containerHeight;
+      const resolvedContentWidth = contentSize?.value?.width ?? contentWidth;
+      const resolvedContentHeight = contentSize?.value?.height ?? contentHeight;
+
+      if (
+        resolvedContainerWidth === undefined ||
+        resolvedContainerHeight === undefined ||
+        resolvedContentWidth === undefined ||
+        resolvedContentHeight === undefined
+      ) {
+        return null;
+      }
+
+      const scaledWidth = resolvedContentWidth * targetScale;
+      const scaledHeight = resolvedContentHeight * targetScale;
+      const maxX = Math.max(0, (scaledWidth - resolvedContainerWidth) / 2);
+      const maxY = Math.max(0, (scaledHeight - resolvedContainerHeight) / 2);
+
+      return { maxX, maxY };
+    },
+    [
+      containerHeight,
+      containerSize,
+      containerWidth,
+      contentHeight,
+      contentSize,
+      contentWidth,
+    ],
+  );
+
+  const getBounds = useCallback(() => {
     'worklet';
-    if (animate) {
-      scale.value = withTiming(minScale);
-      translateX.value = withTiming(0);
-      translateY.value = withTiming(0);
-    } else {
-      scale.value = minScale;
-      translateX.value = 0;
-      translateY.value = 0;
-    }
-    savedTranslateX.value = 0;
-    savedTranslateY.value = 0;
-    savedScale.value = minScale;
-  };
+    return getBoundsForScale(scale.value);
+  }, [getBoundsForScale, scale]);
 
-  const getBounds = () => {
-    'worklet';
-    const resolvedContainerWidth =
-      containerSize?.value?.width ?? containerWidth;
-    const resolvedContainerHeight =
-      containerSize?.value?.height ?? containerHeight;
-    const resolvedContentWidth = contentSize?.value?.width ?? contentWidth;
-    const resolvedContentHeight = contentSize?.value?.height ?? contentHeight;
+  const resetTransform = useCallback(
+    (animate: boolean = true) => {
+      'worklet';
+      if (animate) {
+        scale.value = withTiming(minScale);
+        translateX.value = withTiming(0);
+        translateY.value = withTiming(0);
+      } else {
+        scale.value = minScale;
+        translateX.value = 0;
+        translateY.value = 0;
+      }
+      savedTranslateX.value = 0;
+      savedTranslateY.value = 0;
+      savedScale.value = minScale;
+    },
+    [
+      minScale,
+      savedScale,
+      savedTranslateX,
+      savedTranslateY,
+      scale,
+      translateX,
+      translateY,
+    ],
+  );
 
-    if (
-      resolvedContainerWidth === undefined ||
-      resolvedContainerHeight === undefined ||
-      resolvedContentWidth === undefined ||
-      resolvedContentHeight === undefined
-    ) {
-      return null;
-    }
-
-    const scaledWidth = resolvedContentWidth * scale.value;
-    const scaledHeight = resolvedContentHeight * scale.value;
-    const maxX = Math.max(0, (scaledWidth - resolvedContainerWidth) / 2);
-    const maxY = Math.max(0, (scaledHeight - resolvedContainerHeight) / 2);
-
-    return { maxX, maxY };
-  };
+  const setTransform = useCallback(
+    ({
+      scale: nextScale,
+      translateX: nextX,
+      translateY: nextY,
+      animate,
+    }: {
+      scale: number;
+      translateX: number;
+      translateY: number;
+      animate?: boolean;
+    }) => {
+      const bounds = getBoundsForScale(nextScale);
+      const clampedX = bounds ? clamp(nextX, -bounds.maxX, bounds.maxX) : nextX;
+      const clampedY = bounds ? clamp(nextY, -bounds.maxY, bounds.maxY) : nextY;
+      if (animate) {
+        scale.value = withTiming(nextScale);
+        translateX.value = withTiming(clampedX);
+        translateY.value = withTiming(clampedY);
+      } else {
+        scale.value = nextScale;
+        translateX.value = clampedX;
+        translateY.value = clampedY;
+      }
+      savedScale.value = nextScale;
+      savedTranslateX.value = clampedX;
+      savedTranslateY.value = clampedY;
+    },
+    [
+      clamp,
+      getBoundsForScale,
+      savedScale,
+      savedTranslateX,
+      savedTranslateY,
+      scale,
+      translateX,
+      translateY,
+    ],
+  );
 
   const pinchGesture = useMemo(
     () =>
@@ -148,15 +222,12 @@ export const useZoomableGestures = (
           savedScale.value = scale.value;
         }),
     [
-      containerHeight,
-      containerWidth,
-      containerSize,
-      contentHeight,
-      contentWidth,
-      contentSize,
+      clamp,
       getBounds,
       maxScale,
       minScale,
+      minScaleResetThreshold,
+      resetTransform,
       savedScale,
       savedTranslateX,
       savedTranslateY,
@@ -191,12 +262,7 @@ export const useZoomableGestures = (
           }
         }),
     [
-      containerHeight,
-      containerWidth,
-      containerSize,
-      contentHeight,
-      contentWidth,
-      contentSize,
+      clamp,
       getBounds,
       minScale,
       savedScale,
@@ -219,16 +285,7 @@ export const useZoomableGestures = (
             savedScale.value = doubleTapScale;
           }
         }),
-    [
-      doubleTapScale,
-      minScale,
-      savedScale,
-      savedTranslateX,
-      savedTranslateY,
-      scale,
-      translateX,
-      translateY,
-    ],
+    [doubleTapScale, minScale, resetTransform, savedScale, scale],
   );
 
   const singleTapGesture = useMemo(
@@ -238,9 +295,9 @@ export const useZoomableGestures = (
         .maxDuration(250)
         .runOnJS(true)
         .onEnd(() => {
-          options.onSingleTap?.();
+          onSingleTap?.();
         }),
-    [options.onSingleTap],
+    [onSingleTap],
   );
 
   const composedGesture = useMemo(
@@ -260,5 +317,10 @@ export const useZoomableGestures = (
     ],
   }));
 
-  return { gesture: composedGesture, animatedStyle };
+  return {
+    gesture: composedGesture,
+    animatedStyle,
+    setTransform,
+    resetTransform,
+  };
 };
