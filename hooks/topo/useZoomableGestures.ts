@@ -1,4 +1,3 @@
-import { useCallback, useMemo } from 'react';
 import type { ViewStyle } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import {
@@ -59,254 +58,163 @@ export const useZoomableGestures = (
   const savedTranslateX = useSharedValue(0);
   const savedTranslateY = useSharedValue(0);
 
-  const clamp = useCallback((value: number, min: number, max: number) => {
+  const clamp = (value: number, min: number, max: number) => {
     'worklet';
     return Math.min(Math.max(value, min), max);
-  }, []);
+  };
 
-  const getBoundsForScale = useCallback(
-    (targetScale: number) => {
-      'worklet';
-      const resolvedContainerWidth =
-        containerSize?.value?.width ?? containerWidth;
-      const resolvedContainerHeight =
-        containerSize?.value?.height ?? containerHeight;
-      const resolvedContentWidth = contentSize?.value?.width ?? contentWidth;
-      const resolvedContentHeight = contentSize?.value?.height ?? contentHeight;
+  const getBoundsForScale = (targetScale: number) => {
+    'worklet';
+    const resolvedContainerWidth =
+      containerSize?.value?.width ?? containerWidth;
+    const resolvedContainerHeight =
+      containerSize?.value?.height ?? containerHeight;
+    const resolvedContentWidth = contentSize?.value?.width ?? contentWidth;
+    const resolvedContentHeight = contentSize?.value?.height ?? contentHeight;
 
-      if (
-        resolvedContainerWidth === undefined ||
-        resolvedContainerHeight === undefined ||
-        resolvedContentWidth === undefined ||
-        resolvedContentHeight === undefined
-      ) {
-        return null;
-      }
+    if (
+      resolvedContainerWidth === undefined ||
+      resolvedContainerHeight === undefined ||
+      resolvedContentWidth === undefined ||
+      resolvedContentHeight === undefined
+    ) {
+      return null;
+    }
 
-      const scaledWidth = resolvedContentWidth * targetScale;
-      const scaledHeight = resolvedContentHeight * targetScale;
-      const maxX = Math.max(0, (scaledWidth - resolvedContainerWidth) / 2);
-      const maxY = Math.max(0, (scaledHeight - resolvedContainerHeight) / 2);
+    const scaledWidth = resolvedContentWidth * targetScale;
+    const scaledHeight = resolvedContentHeight * targetScale;
+    const maxX = Math.max(0, (scaledWidth - resolvedContainerWidth) / 2);
+    const maxY = Math.max(0, (scaledHeight - resolvedContainerHeight) / 2);
 
-      return { maxX, maxY };
-    },
-    [
-      containerHeight,
-      containerSize,
-      containerWidth,
-      contentHeight,
-      contentSize,
-      contentWidth,
-    ],
-  );
+    return { maxX, maxY };
+  };
 
-  const getBounds = useCallback(() => {
+  const getBounds = () => {
     'worklet';
     return getBoundsForScale(scale.value);
-  }, [getBoundsForScale, scale]);
+  };
 
-  const resetTransform = useCallback(
-    (animate: boolean = true) => {
-      'worklet';
-      if (animate) {
-        scale.value = withTiming(minScale);
-        translateX.value = withTiming(0);
-        translateY.value = withTiming(0);
-      } else {
+  const resetTransform = (animate: boolean = true) => {
+    'worklet';
+    if (animate) {
+      scale.value = withTiming(minScale);
+      translateX.value = withTiming(0);
+      translateY.value = withTiming(0);
+    } else {
+      scale.value = minScale;
+      translateX.value = 0;
+      translateY.value = 0;
+    }
+    savedTranslateX.value = 0;
+    savedTranslateY.value = 0;
+    savedScale.value = minScale;
+  };
+
+  const setTransform = ({
+    scale: nextScale,
+    translateX: nextX,
+    translateY: nextY,
+    animate,
+  }: {
+    scale: number;
+    translateX: number;
+    translateY: number;
+    animate?: boolean;
+  }) => {
+    const bounds = getBoundsForScale(nextScale);
+    const clampedX = bounds ? clamp(nextX, -bounds.maxX, bounds.maxX) : nextX;
+    const clampedY = bounds ? clamp(nextY, -bounds.maxY, bounds.maxY) : nextY;
+    if (animate) {
+      scale.value = withTiming(nextScale);
+      translateX.value = withTiming(clampedX);
+      translateY.value = withTiming(clampedY);
+    } else {
+      scale.value = nextScale;
+      translateX.value = clampedX;
+      translateY.value = clampedY;
+    }
+    savedScale.value = nextScale;
+    savedTranslateX.value = clampedX;
+    savedTranslateY.value = clampedY;
+  };
+
+  const pinchGesture = Gesture.Pinch()
+    .onUpdate((e) => {
+      if (e.scale < minScale) {
         scale.value = minScale;
-        translateX.value = 0;
-        translateY.value = 0;
+        return;
       }
-      savedTranslateX.value = 0;
-      savedTranslateY.value = 0;
-      savedScale.value = minScale;
-    },
-    [
-      minScale,
-      savedScale,
-      savedTranslateX,
-      savedTranslateY,
-      scale,
-      translateX,
-      translateY,
-    ],
-  );
+      scale.value = savedScale.value * e.scale;
 
-  const setTransform = useCallback(
-    ({
-      scale: nextScale,
-      translateX: nextX,
-      translateY: nextY,
-      animate,
-    }: {
-      scale: number;
-      translateX: number;
-      translateY: number;
-      animate?: boolean;
-    }) => {
-      const bounds = getBoundsForScale(nextScale);
-      const clampedX = bounds ? clamp(nextX, -bounds.maxX, bounds.maxX) : nextX;
-      const clampedY = bounds ? clamp(nextY, -bounds.maxY, bounds.maxY) : nextY;
-      if (animate) {
-        scale.value = withTiming(nextScale);
-        translateX.value = withTiming(clampedX);
-        translateY.value = withTiming(clampedY);
+      const bounds = getBounds();
+      if (bounds) {
+        translateX.value = clamp(translateX.value, -bounds.maxX, bounds.maxX);
+        translateY.value = clamp(translateY.value, -bounds.maxY, bounds.maxY);
+      }
+    })
+    .onEnd(() => {
+      if (scale.value <= minScale + minScaleResetThreshold) {
+        resetTransform(true);
+        return;
+      } else if (scale.value > maxScale) {
+        scale.value = withTiming(maxScale);
+      }
+
+      const bounds = getBounds();
+      if (bounds) {
+        translateX.value = clamp(translateX.value, -bounds.maxX, bounds.maxX);
+        translateY.value = clamp(translateY.value, -bounds.maxY, bounds.maxY);
+        savedTranslateX.value = translateX.value;
+        savedTranslateY.value = translateY.value;
+      }
+      savedScale.value = scale.value;
+    });
+
+  const panGesture = Gesture.Pan()
+    .onUpdate((e) => {
+      if (savedScale.value > minScale) {
+        const nextX = savedTranslateX.value + e.translationX;
+        const nextY = savedTranslateY.value + e.translationY;
+        const bounds = getBounds();
+
+        if (bounds) {
+          translateX.value = clamp(nextX, -bounds.maxX, bounds.maxX);
+          translateY.value = clamp(nextY, -bounds.maxY, bounds.maxY);
+        } else {
+          translateX.value = nextX;
+          translateY.value = nextY;
+        }
+      }
+    })
+    .onEnd(() => {
+      if (savedScale.value > minScale) {
+        savedTranslateX.value = translateX.value;
+        savedTranslateY.value = translateY.value;
+      }
+    });
+
+  const doubleTapGesture = Gesture.Tap()
+    .numberOfTaps(2)
+    .onEnd(() => {
+      if (scale.value > minScale) {
+        resetTransform(true);
       } else {
-        scale.value = nextScale;
-        translateX.value = clampedX;
-        translateY.value = clampedY;
+        scale.value = withTiming(doubleTapScale);
+        savedScale.value = doubleTapScale;
       }
-      savedScale.value = nextScale;
-      savedTranslateX.value = clampedX;
-      savedTranslateY.value = clampedY;
-    },
-    [
-      clamp,
-      getBoundsForScale,
-      savedScale,
-      savedTranslateX,
-      savedTranslateY,
-      scale,
-      translateX,
-      translateY,
-    ],
-  );
+    });
 
-  const pinchGesture = useMemo(
-    () =>
-      Gesture.Pinch()
-        .onUpdate((e) => {
-          if (e.scale < minScale) {
-            scale.value = minScale;
-            return;
-          }
-          scale.value = savedScale.value * e.scale;
+  const singleTapGesture = Gesture.Tap()
+    .numberOfTaps(1)
+    .maxDuration(250)
+    .runOnJS(true)
+    .onEnd(() => {
+      onSingleTap?.();
+    });
 
-          const bounds = getBounds();
-          if (bounds) {
-            translateX.value = clamp(
-              translateX.value,
-              -bounds.maxX,
-              bounds.maxX,
-            );
-            translateY.value = clamp(
-              translateY.value,
-              -bounds.maxY,
-              bounds.maxY,
-            );
-          }
-        })
-        .onEnd(() => {
-          if (scale.value <= minScale + minScaleResetThreshold) {
-            resetTransform(true);
-            return;
-          } else if (scale.value > maxScale) {
-            scale.value = withTiming(maxScale);
-          }
-
-          const bounds = getBounds();
-          if (bounds) {
-            translateX.value = clamp(
-              translateX.value,
-              -bounds.maxX,
-              bounds.maxX,
-            );
-            translateY.value = clamp(
-              translateY.value,
-              -bounds.maxY,
-              bounds.maxY,
-            );
-            savedTranslateX.value = translateX.value;
-            savedTranslateY.value = translateY.value;
-          }
-          savedScale.value = scale.value;
-        }),
-    [
-      clamp,
-      getBounds,
-      maxScale,
-      minScale,
-      minScaleResetThreshold,
-      resetTransform,
-      savedScale,
-      savedTranslateX,
-      savedTranslateY,
-      scale,
-      translateX,
-      translateY,
-    ],
-  );
-
-  const panGesture = useMemo(
-    () =>
-      Gesture.Pan()
-        .onUpdate((e) => {
-          if (savedScale.value > minScale) {
-            const nextX = savedTranslateX.value + e.translationX;
-            const nextY = savedTranslateY.value + e.translationY;
-            const bounds = getBounds();
-
-            if (bounds) {
-              translateX.value = clamp(nextX, -bounds.maxX, bounds.maxX);
-              translateY.value = clamp(nextY, -bounds.maxY, bounds.maxY);
-            } else {
-              translateX.value = nextX;
-              translateY.value = nextY;
-            }
-          }
-        })
-        .onEnd(() => {
-          if (savedScale.value > minScale) {
-            savedTranslateX.value = translateX.value;
-            savedTranslateY.value = translateY.value;
-          }
-        }),
-    [
-      clamp,
-      getBounds,
-      minScale,
-      savedScale,
-      savedTranslateX,
-      savedTranslateY,
-      translateX,
-      translateY,
-    ],
-  );
-
-  const doubleTapGesture = useMemo(
-    () =>
-      Gesture.Tap()
-        .numberOfTaps(2)
-        .onEnd(() => {
-          if (scale.value > minScale) {
-            resetTransform(true);
-          } else {
-            scale.value = withTiming(doubleTapScale);
-            savedScale.value = doubleTapScale;
-          }
-        }),
-    [doubleTapScale, minScale, resetTransform, savedScale, scale],
-  );
-
-  const singleTapGesture = useMemo(
-    () =>
-      Gesture.Tap()
-        .numberOfTaps(1)
-        .maxDuration(250)
-        .runOnJS(true)
-        .onEnd(() => {
-          onSingleTap?.();
-        }),
-    [onSingleTap],
-  );
-
-  const composedGesture = useMemo(
-    () =>
-      Gesture.Race(
-        Gesture.Exclusive(doubleTapGesture, singleTapGesture),
-        Gesture.Simultaneous(pinchGesture, panGesture),
-      ),
-    [doubleTapGesture, panGesture, pinchGesture, singleTapGesture],
+  const composedGesture = Gesture.Race(
+    Gesture.Exclusive(doubleTapGesture, singleTapGesture),
+    Gesture.Simultaneous(pinchGesture, panGesture),
   );
 
   const animatedStyle = useAnimatedStyle<ViewStyle>(() => ({

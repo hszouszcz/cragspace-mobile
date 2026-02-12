@@ -6,8 +6,10 @@ import TopoBottomSheet, { SNAP_POINTS } from '@/components/TopoBottomSheet';
 import { RouteConfig } from '@/features/TopoPreview/topo.types';
 import { useLoadRouteSvgPaths } from '@/features/TopoPreview/useLoadRouteSvgPaths';
 import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimations';
+import { useFocusOnRoute } from '@/hooks/topo/useFocusOnRoute';
+import { useViewBoxValues } from '@/hooks/topo/useViewBoxValues';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import {
   GestureDetector,
@@ -73,77 +75,18 @@ export default function TopoView() {
     containerSize,
     contentSize,
     minScaleResetThreshold: 1,
-    maxScale: 5,
+    doubleTapScale: animatedIndexSharedValue.value === 1 ? 1.5 : 4,
+    maxScale: animatedIndexSharedValue.value === 1 ? 2 : 5,
   });
 
-  const viewBoxValues = useMemo(() => {
-    if (!viewBox) {
-      return null;
-    }
-    const values = viewBox.split(' ').map((value) => Number.parseFloat(value));
-    if (
-      values.length !== 4 ||
-      values.some((value) => !Number.isFinite(value))
-    ) {
-      return null;
-    }
-    const [minX, minY, width, height] = values;
-    return { minX, minY, width, height };
-  }, [viewBox]);
-
-  const focusOnRoute = useCallback(
-    (route: RouteConfig) => {
-      if (!route.bounds || !viewBoxValues) {
-        return;
-      }
-      if (animatedIndexSharedValue.value !== 1) {
-        return;
-      }
-      const container = containerSize.value;
-      const content = contentSize.value;
-      if (!container || !content) {
-        return;
-      }
-      const { minX, minY, width, height } = viewBoxValues;
-      const baseScale = Math.max(
-        content.width / width,
-        content.height / height,
-      );
-      const offsetX = (content.width - width * baseScale) / 2;
-      const offsetY = (content.height - height * baseScale) / 2;
-
-      const boundsWidth = (route.bounds.maxX - route.bounds.minX) * baseScale;
-      const boundsHeight = (route.bounds.maxY - route.bounds.minY) * baseScale;
-      const margin = 0.14;
-      const availableWidth = container.width * (1 - margin * 2);
-      const availableHeight = container.height * (1 - margin * 2);
-      const scaleForWidth = availableWidth / boundsWidth;
-      const scaleForHeight = availableHeight / boundsHeight;
-      const targetScale = Math.min(scaleForWidth, scaleForHeight, 3);
-      const clampedScale = Math.max(1, targetScale);
-
-      const centerX = (route.bounds.minX + route.bounds.maxX) / 2;
-      const centerY = (route.bounds.minY + route.bounds.maxY) / 2;
-      const contentCenterX = (centerX - minX) * baseScale + offsetX;
-      const contentCenterY = (centerY - minY) * baseScale + offsetY;
-      const translateX = -(contentCenterX - content.width / 2) * clampedScale;
-      const translateY = -(contentCenterY - content.height / 2) * clampedScale;
-
-      setTransform({
-        scale: clampedScale,
-        translateX,
-        translateY,
-        animate: true,
-      });
-    },
-    [
-      animatedIndexSharedValue,
-      containerSize,
-      contentSize,
-      setTransform,
-      viewBoxValues,
-    ],
-  );
+  const viewBoxValues = useViewBoxValues(viewBox);
+  const focusOnRoute = useFocusOnRoute({
+    viewBoxValues,
+    containerSize,
+    contentSize,
+    animatedIndexSharedValue,
+    setTransform,
+  });
 
   const handlePathPressIn = (pathId: string) => {
     setPressedPaths((prev) => ({ ...prev, [pathId]: true }));
@@ -164,17 +107,14 @@ export default function TopoView() {
     }
   };
 
-  const handleRoutePress = useCallback(
-    ({ id }: { id: string }) => {
-      const route = paths.find((item) => item.id === id);
-      if (!route) {
-        return;
-      }
-      setFocusedRouteId(route.id);
-      focusOnRoute(route);
-    },
-    [focusOnRoute, paths],
-  );
+  const handleRoutePress = ({ id }: { id: string }) => {
+    const route = paths.find((item) => item.id === id);
+    if (!route) {
+      return;
+    }
+    setFocusedRouteId(route.id);
+    focusOnRoute(route);
+  };
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
