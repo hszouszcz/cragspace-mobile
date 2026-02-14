@@ -1,16 +1,17 @@
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import TopoBottomSheet from '@/components/TopoBottomSheet';
 import RouteDetailModal from '@/components/topo/RouteDetailModal';
 import TopoFullscreenViewer from '@/components/topo/TopoFullScreenViewer';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
 import { useEffect, useRef, useState } from 'react';
-import { Dimensions, Pressable, ScrollView, StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import {
   GestureDetector,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
+import { RouteListItemData } from '@/features/TopoBottomSheet/types';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
 import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
 
@@ -32,7 +33,6 @@ export default function TopoView() {
   const [pathsConfig, setPathsConfig] = useState<RouteConfig[]>([]);
   const [selectedRoute, setSelectedRoute] = useState<RouteConfig | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [pressedListItem, setPressedListItem] = useState<string | null>(null);
   const [isFullscreenVisible, setIsFullscreenVisible] = useState(false);
   const lastPathPressTs = useRef(0);
   const [imageRatio, setImageRatio] = useState<number | null>(null);
@@ -121,20 +121,9 @@ export default function TopoView() {
     setIsFullscreenVisible(false);
   };
 
-  const handleListItemPressIn = (routeId) => {
-    setPressedListItem(routeId);
-  };
-
-  const handleListItemPressOut = () => {
-    setPressedListItem(null);
-  };
-
-  const handleListItemPress = (routeId) => {
-    const route = pathsConfig.find((p) => p.id === routeId);
-    if (route) {
-      setSelectedRoute(route);
-      setIsModalVisible(true);
-    }
+  const handleRoutePress = (route: RouteListItemData) => {
+    setSelectedRoute(route as RouteConfig);
+    setIsModalVisible(true);
   };
 
   return (
@@ -189,37 +178,8 @@ export default function TopoView() {
         </GestureHandlerRootView>
       </ThemedView>
 
-      {/* Routes list section - 40% height */}
-      <ThemedView style={styles.listSection}>
-        <ThemedView style={styles.listHeader}>
-          <ThemedText type="subtitle">Drogi wspinaczkowe</ThemedText>
-        </ThemedView>
-        <ScrollView style={styles.scrollView}>
-          {pathsConfig.map((route) => (
-            <Pressable
-              key={route.id}
-              onPressIn={() => handleListItemPressIn(route.id)}
-              onPressOut={handleListItemPressOut}
-              onPress={() => handleListItemPress(route.id)}
-              style={[
-                styles.listItem,
-                pressedListItem === route.id && styles.listItemPressed,
-              ]}
-            >
-              <ThemedView
-                style={[
-                  styles.colorIndicator,
-                  { backgroundColor: route.color },
-                ]}
-              />
-              <ThemedView style={styles.listItemContent}>
-                <ThemedText style={styles.routeName}>{route.name}</ThemedText>
-                <ThemedText style={styles.routeGrade}>{route.grade}</ThemedText>
-              </ThemedView>
-            </Pressable>
-          ))}
-        </ScrollView>
-      </ThemedView>
+      {/* Bottom Sheet with routes list */}
+      <TopoBottomSheet data={pathsConfig} onRoutePress={handleRoutePress} />
 
       {svgViewBox && (
         <RouteDetailModal
@@ -273,49 +233,5 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0,
     left: 0,
-  },
-  listSection: {
-    height: SCREEN_HEIGHT * 0.4,
-    borderTopWidth: 2,
-    borderTopColor: '#ccc',
-  },
-  listHeader: {
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  listItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
-  },
-  listItemPressed: {
-    backgroundColor: '#f0f0f0',
-  },
-  colorIndicator: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 12,
-  },
-  listItemContent: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  routeName: {
-    fontSize: 16,
-    fontWeight: '500',
-  },
-  routeGrade: {
-    fontSize: 16,
-    fontWeight: '700',
-    color: '#007AFF',
   },
 });
