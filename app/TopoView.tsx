@@ -94,15 +94,15 @@ export default function TopoView() {
     contentHeight: imageRatio ? SCREEN_WIDTH / imageRatio : undefined,
   });
 
-  const handlePathPressIn = (pathId) => {
+  const handlePathPressIn = (pathId: string) => {
     setPressedPaths((prev) => ({ ...prev, [pathId]: true }));
   };
 
-  const handlePathPressOut = (pathId) => {
+  const handlePathPressOut = (pathId: string) => {
     setPressedPaths((prev) => ({ ...prev, [pathId]: false }));
   };
 
-  const handlePathPress = (pathId) => {
+  const handlePathPress = (pathId: string) => {
     const route = pathsConfig.find((p) => p.id === pathId);
     if (route) {
       lastPathPressTs.current = Date.now();
