@@ -6,16 +6,16 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { forwardRef, useImperativeHandle } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
+import { RouteData } from '../TopoPreview/topo.types';
 import { RoutesList } from './RoutesList';
-import { RouteListItemData } from './types';
 
 const Stack = createStackNavigator();
 
 export const navigationRef = createNavigationContainerRef();
 
 interface BottomSheetNavigatorProps {
-  data: RouteListItemData[];
-  onRoutePress?: (route: RouteListItemData) => void;
+  data: RouteData[];
+  onRoutePress?: (route: RouteData) => void;
   animatedIndex: SharedValue<number>;
 }
 

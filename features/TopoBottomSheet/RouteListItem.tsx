@@ -1,12 +1,11 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { useColorScheme } from '@/hooks/use-color-scheme.web';
 import { Pressable, StyleSheet } from 'react-native';
-import { RouteListItemData } from './types';
+import { RouteData } from '../TopoPreview/topo.types';
 
 interface RouteListItemProps {
-  item: RouteListItemData;
-  onPress: (item: RouteListItemData) => void;
+  item: RouteData;
+  onPress: (item: RouteData) => void;
   pressedListItem: string | null;
   onPressIn: (id: string) => void;
   onPressOut: () => void;
@@ -19,8 +18,6 @@ export const RouteListItem = ({
   onPressIn,
   onPressOut,
 }: RouteListItemProps) => {
-  const colorScheme = useColorScheme();
-  
   return (
     <Pressable
       onPressIn={() => onPressIn(item.id)}

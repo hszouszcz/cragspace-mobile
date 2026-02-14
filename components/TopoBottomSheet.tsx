@@ -1,5 +1,6 @@
 import BottomSheet, {
   BottomSheetBackdrop,
+  BottomSheetBackdropProps,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {
@@ -14,11 +15,11 @@ import {
   BottomSheetNavigatorRef,
   navigationRef,
 } from '../features/TopoBottomSheet/BottomSheetNavigator';
-import { RouteListItemData } from '../features/TopoBottomSheet/types';
+import { RouteData } from '../features/TopoPreview/topo.types';
 
 interface TopoBottomSheetProps {
-  data: RouteListItemData[];
-  onRoutePress?: (route: RouteListItemData) => void;
+  data: RouteData[];
+  onRoutePress?: (route: RouteData) => void;
   onSheetChange?: (index: number) => void;
 }
 
@@ -61,7 +62,7 @@ const TopoBottomSheet = forwardRef<TopoBottomSheetRef, TopoBottomSheetProps>(
 
     // Render backdrop
     const renderBackdrop = useCallback(
-      (props: any) => (
+      (props: BottomSheetBackdropProps) => (
         <BottomSheetBackdrop
           {...props}
           disappearsOnIndex={-1}

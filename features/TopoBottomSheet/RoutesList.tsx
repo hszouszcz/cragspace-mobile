@@ -1,18 +1,17 @@
 import { useColorScheme } from '@/hooks/use-color-scheme.web';
 import { BottomSheetFlashList } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
 import { RouteData } from '../TopoPreview/topo.types';
 import { RouteListItem } from './RouteListItem';
-import { type RouteListItemData } from './types';
-import { useState } from 'react';
 
 const ESTIMATED_ITEM_SIZE = 76;
 
 interface RoutesListProps {
-  routes: RouteListItemData[];
-  onRoutePress?: (route: RouteListItemData) => void;
+  routes: RouteData[];
+  onRoutePress?: (route: RouteData) => void;
   animatedIndex: SharedValue<number>;
 }
 
@@ -35,7 +34,7 @@ export const RoutesList = ({
     setPressedListItem(null);
   };
 
-  const handleListItemPress = (route: RouteListItemData) => {
+  const handleListItemPress = (route: RouteData) => {
     if (onRoutePress) {
       onRoutePress(route);
     } else {
@@ -43,7 +42,7 @@ export const RoutesList = ({
     }
   };
 
-  const renderItem = ({ item }: { item: RouteListItemData }) => (
+  const renderItem = ({ item }: { item: RouteData }) => (
     <RouteListItem
       item={item}
       onPress={handleListItemPress}
@@ -57,7 +56,7 @@ export const RoutesList = ({
     <BottomSheetFlashList
       data={routes}
       extraData={animatedIndex.value}
-      keyExtractor={(item: RouteData) => item.name + item.length + item.grade}
+      keyExtractor={(item: RouteData) => item.id}
       estimatedItemSize={ESTIMATED_ITEM_SIZE}
       renderItem={renderItem}
       contentContainerStyle={[
@@ -71,7 +70,5 @@ export const RoutesList = ({
 };
 
 const styles = StyleSheet.create({
-  contentContainer: {
-    backgroundColor: '#fff',
-  },
+  contentContainer: {},
 });

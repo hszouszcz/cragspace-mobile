@@ -1,3 +1,4 @@
+import { RouteData } from '@/features/TopoPreview/topo.types';
 import { ThemedView } from '@/components/themed-view';
 import TopoBottomSheet from '@/components/TopoBottomSheet';
 import RouteDetailModal from '@/components/topo/RouteDetailModal';
@@ -11,7 +12,6 @@ import {
 } from 'react-native-gesture-handler';
 import Animated from 'react-native-reanimated';
 
-import { RouteListItemData } from '@/features/TopoBottomSheet/types';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
 import { loadTopoSvgPaths, SvgPathConfig } from '@/services/topo/loadSvgPaths';
 
@@ -121,7 +121,7 @@ export default function TopoView() {
     setIsFullscreenVisible(false);
   };
 
-  const handleRoutePress = (route: RouteListItemData) => {
+  const handleRoutePress = (route: RouteData) => {
     setSelectedRoute(route as RouteConfig);
     setIsModalVisible(true);
   };
