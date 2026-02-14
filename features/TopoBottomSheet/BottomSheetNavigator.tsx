@@ -1,6 +1,7 @@
-import { createNavigationContainerRef } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { forwardRef, useImperativeHandle } from 'react';
+import { StyleSheet, View } from 'react-native';
 import { SharedValue } from 'react-native-reanimated';
 import { RoutesList } from './RoutesList';
 import { RouteListItemData } from './types';
@@ -36,22 +37,31 @@ export const BottomSheetNavigator = forwardRef<
   }));
 
   return (
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="RoutesList">
-        {() => (
-          <RoutesList
-            routes={data}
-            onRoutePress={onRoutePress}
-            animatedIndex={animatedIndex}
-          />
-        )}
-      </Stack.Screen>
-    </Stack.Navigator>
+    <View style={styles.container}>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          cardStyle: { flex: 1 },
+        }}
+      >
+        <Stack.Screen name="RoutesList">
+          {() => (
+            <RoutesList
+              routes={data}
+              onRoutePress={onRoutePress}
+              animatedIndex={animatedIndex}
+            />
+          )}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </View>
   );
 });
 
 BottomSheetNavigator.displayName = 'BottomSheetNavigator';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});

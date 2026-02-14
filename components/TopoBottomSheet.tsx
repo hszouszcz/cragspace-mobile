@@ -1,4 +1,7 @@
-import BottomSheet, { BottomSheetBackdrop } from '@gorhom/bottom-sheet';
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { forwardRef, useCallback, useMemo, useRef } from 'react';
 import { StyleSheet } from 'react-native';
@@ -76,17 +79,16 @@ const TopoBottomSheet = forwardRef<TopoBottomSheetRef, TopoBottomSheetProps>(
         animatedIndex={animatedIndex}
         style={styles.bottomSheet}
       >
-        <NavigationContainer
-          ref={navigationRef}
-          independent={true}
-        >
-          <BottomSheetNavigator
-            data={data}
-            onRoutePress={onRoutePress}
-            ref={sheetNavigationRef}
-            animatedIndex={animatedIndex}
-          />
-        </NavigationContainer>
+        <BottomSheetView style={styles.navigationContainer}>
+          <NavigationContainer ref={navigationRef} independent={true}>
+            <BottomSheetNavigator
+              data={data}
+              onRoutePress={onRoutePress}
+              ref={sheetNavigationRef}
+              animatedIndex={animatedIndex}
+            />
+          </NavigationContainer>
+        </BottomSheetView>
       </BottomSheet>
     );
   },
@@ -106,5 +108,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  navigationContainer: {
+    flex: 1,
   },
 });
