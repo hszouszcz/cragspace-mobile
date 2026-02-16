@@ -11,8 +11,8 @@ import { useNavigationContainerRef } from '@react-navigation/native';
 import { SharedValue } from 'react-native-reanimated';
 
 export const SNAP_POINTS = ['20%', '52%', '100%'];
-export const SNAP_POINTS_IN_NUMBERS = SNAP_POINTS.map(
-  (point) => Number(point.replace('%', '')) / 100,
+export const SNAP_POINTS_IN_NUMBERS = SNAP_POINTS.map((point) =>
+  Number(point.replace('%', '')),
 );
 
 type TopoBottomSheetProps = {
@@ -38,6 +38,7 @@ const TopoBottomSheet = ({
   const colors = getTopoColorTokens(colorScheme === 'dark' ? 'dark' : 'light');
 
   const [canGoBack, setCanGoBack] = useState(false);
+  const [currentSnapPoint, setCurrentSnapPoint] = useState(1);
 
   useEffect(() => {
     const updateCanGoBack = () => {
@@ -63,7 +64,11 @@ const TopoBottomSheet = ({
       snapPoints={SNAP_POINTS}
       index={1}
       enablePanDownToClose={false}
+      enableDynamicSizing
       animatedIndex={animatedIndex}
+      onAnimate={(toIndex) => {
+        setCurrentSnapPoint(toIndex);
+      }}
       enableContentPanningGesture={false}
       enableHandlePanningGesture
       handleComponent={() => (
@@ -90,6 +95,7 @@ const TopoBottomSheet = ({
         data={data}
         onRoutePress={onRoutePress}
         ref={sheetNavigationRef}
+        currentSnapPoint={currentSnapPoint}
       />
     </BottomSheet>
   );

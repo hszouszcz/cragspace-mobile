@@ -18,21 +18,26 @@ const BottomSheetNavigator = ({
   data,
   onRoutePress,
   ref,
+  currentSnapPoint,
 }: {
   data: RouteListItemData[];
   onRoutePress?: (route: RouteListItemData) => void;
+  currentSnapPoint: number;
   ref?: React.Ref<any>;
 }) => {
   return (
     <NavigationIndependentTree>
       <NavigationContainer ref={ref}>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }}
+        >
           <Stack.Screen name="List">
             {(props) => (
               <RoutesList
                 {...props}
                 routes={data}
                 onRoutePress={onRoutePress}
+                currentSnapPoint={currentSnapPoint}
               />
             )}
           </Stack.Screen>
