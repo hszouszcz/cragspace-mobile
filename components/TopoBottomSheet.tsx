@@ -66,7 +66,7 @@ const TopoBottomSheet = ({
       enablePanDownToClose={false}
       enableDynamicSizing
       animatedIndex={animatedIndex}
-      onAnimate={(toIndex) => {
+      onAnimate={(_, toIndex) => {
         setCurrentSnapPoint(toIndex);
       }}
       enableContentPanningGesture={false}
