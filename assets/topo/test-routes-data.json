@@ -1,0 +1,175 @@
+{
+  "routes": [
+    {
+      "id": 1,
+      "name": "Droga 1",
+      "length": 32,
+      "bolts": 8,
+      "grade": "5c",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Wymaga dobrej techniki.",
+      "difficulty": "intermediate",
+      "path": "M 100 200 L 150 150 L 180 100 Q 200 50 220 20"
+    },
+    {
+      "id": 2,
+      "name": "Droga 2",
+      "length": 28,
+      "bolts": 6,
+      "grade": "5a",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Idealna dla początkujących.",
+      "difficulty": "easy",
+      "path": "M 120 180 L 140 160 L 160 140 L 175 110"
+    },
+    {
+      "id": 3,
+      "name": "Droga 3",
+      "length": 45,
+      "bolts": 12,
+      "grade": "6b",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Trudne ruchy w górnej części.",
+      "difficulty": "advanced",
+      "path": "M 110 220 L 130 190 L 150 160 L 170 120 L 185 80"
+    },
+    {
+      "id": 4,
+      "name": "Droga 4",
+      "length": 38,
+      "bolts": 10,
+      "grade": "5b",
+      "type": "Trad",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Wymaga dobrej techniki.",
+      "difficulty": "intermediate",
+      "path": "M 105 210 L 125 175 L 145 145 L 165 105"
+    },
+    {
+      "id": 5,
+      "name": "Droga 5",
+      "length": 22,
+      "bolts": 5,
+      "grade": "5a",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Idealna dla początkujących.",
+      "difficulty": "easy",
+      "path": "M 115 190 L 135 165 L 155 135"
+    },
+    {
+      "id": 6,
+      "name": "Droga 6",
+      "length": 50,
+      "bolts": 15,
+      "grade": "6b+",
+      "type": "Multi-pitch",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Trudne ruchy w górnej części.",
+      "difficulty": "very-advanced",
+      "path": "M 100 230 L 120 200 L 140 170 L 160 140 L 180 100 L 200 50"
+    },
+    {
+      "id": 7,
+      "name": "Droga 7",
+      "length": 35,
+      "bolts": 9,
+      "grade": "6a",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Wymaga dobrej techniki.",
+      "difficulty": "advanced",
+      "path": "M 125 205 L 145 175 L 165 145 L 185 110"
+    },
+    {
+      "id": 8,
+      "name": "Droga 8",
+      "length": 42,
+      "bolts": 11,
+      "grade": "6a+",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Idealna dla początkujących.",
+      "difficulty": "advanced",
+      "path": "M 110 215 L 130 185 L 150 155 L 170 125 L 190 85"
+    },
+    {
+      "id": 9,
+      "name": "Droga 9",
+      "length": 26,
+      "bolts": 7,
+      "grade": "5b",
+      "type": "Trad",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Trudne ruchy w górnej części.",
+      "difficulty": "intermediate",
+      "path": "M 120 195 L 140 160 L 160 125"
+    },
+    {
+      "id": 10,
+      "name": "Droga 10",
+      "length": 48,
+      "bolts": 13,
+      "grade": "6c",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Wymaga dobrej techniki.",
+      "difficulty": "very-advanced",
+      "path": "M 105 225 L 125 195 L 145 165 L 165 135 L 185 95 L 205 55"
+    },
+    {
+      "id": 11,
+      "name": "Droga 11",
+      "length": 30,
+      "bolts": 8,
+      "grade": "5c",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Idealna dla początkujących.",
+      "difficulty": "intermediate",
+      "path": "M 115 200 L 135 170 L 155 140 L 175 105"
+    },
+    {
+      "id": 12,
+      "name": "Droga 12",
+      "length": 44,
+      "bolts": 12,
+      "grade": "6b",
+      "type": "Multi-pitch",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Trudne ruchy w górnej części.",
+      "difficulty": "advanced",
+      "path": "M 108 220 L 128 190 L 148 160 L 168 130 L 188 90"
+    },
+    {
+      "id": 13,
+      "name": "Droga 13",
+      "length": 25,
+      "bolts": 6,
+      "grade": "5a",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Wymaga dobrej techniki.",
+      "difficulty": "easy",
+      "path": "M 122 185 L 142 155 L 162 120"
+    },
+    {
+      "id": 14,
+      "name": "Droga 14",
+      "length": 40,
+      "bolts": 11,
+      "grade": "6a+",
+      "type": "Trad",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Idealna dla początkujących.",
+      "difficulty": "advanced",
+      "path": "M 112 210 L 132 180 L 152 150 L 172 115 L 190 75"
+    },
+    {
+      "id": 15,
+      "name": "Droga 15",
+      "length": 37,
+      "bolts": 10,
+      "grade": "6a",
+      "type": "Sport",
+      "description": "Piękna droga wspinaczkowa na ścianie Słonia. Trudne ruchy w górnej partie.",
+      "difficulty": "advanced",
+      "path": "M 118 208 L 138 178 L 158 148 L 178 112 L 195 72"
+    }
+  ],
+  "metadata": {
+    "totalRoutes": 15,
+    "wall": "Ściana Słonia",
+    "region": "Polskie Tatry",
+    "generated": "2026-02-12"
+  }
+}

@@ -3,7 +3,7 @@
     "name": "rock-world",
     "slug": "rock-world",
     "version": "1.0.0",
-    "orientation": "portrait",
+    "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "rockworld",
     "userInterfaceStyle": "automatic",
