@@ -9,7 +9,7 @@ import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimati
 import { useFocusOnRoute } from '@/hooks/topo/useFocusOnRoute';
 import { useViewBoxValues } from '@/hooks/topo/useViewBoxValues';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
-import { useRef, useState, useCallback } from 'react';
+import { useRef, useState } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import {
   GestureDetector,
@@ -80,15 +80,12 @@ export default function TopoView() {
     maxScale: animatedIndexSharedValue.value === 1 ? 2 : 5,
   });
 
-  const handleSnapPointChange = useCallback(
-    (fromIndex: number, toIndex: number) => {
-      if (previousSnapIndex.current !== toIndex) {
-        previousSnapIndex.current = toIndex;
-        resetTransform(true);
-      }
-    },
-    [resetTransform],
-  );
+  const handleSnapPointChange = (fromIndex: number, toIndex: number) => {
+    if (previousSnapIndex.current !== toIndex) {
+      previousSnapIndex.current = toIndex;
+      resetTransform(true);
+    }
+  };
 
   const viewBoxValues = useViewBoxValues(viewBox);
   const focusOnRoute = useFocusOnRoute({

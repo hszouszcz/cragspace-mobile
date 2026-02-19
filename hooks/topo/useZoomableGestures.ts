@@ -172,25 +172,21 @@ export const useZoomableGestures = (
 
   const panGesture = Gesture.Pan()
     .onUpdate((e) => {
-      if (savedScale.value > minScale) {
-        const nextX = savedTranslateX.value + e.translationX;
-        const nextY = savedTranslateY.value + e.translationY;
-        const bounds = getBounds();
+      const nextX = savedTranslateX.value + e.translationX;
+      const nextY = savedTranslateY.value + e.translationY;
+      const bounds = getBounds();
 
-        if (bounds) {
-          translateX.value = clamp(nextX, -bounds.maxX, bounds.maxX);
-          translateY.value = clamp(nextY, -bounds.maxY, bounds.maxY);
-        } else {
-          translateX.value = nextX;
-          translateY.value = nextY;
-        }
+      if (bounds) {
+        translateX.value = clamp(nextX, -bounds.maxX, bounds.maxX);
+        translateY.value = clamp(nextY, -bounds.maxY, bounds.maxY);
+      } else {
+        translateX.value = nextX;
+        translateY.value = nextY;
       }
     })
     .onEnd(() => {
-      if (savedScale.value > minScale) {
-        savedTranslateX.value = translateX.value;
-        savedTranslateY.value = translateY.value;
-      }
+      savedTranslateX.value = translateX.value;
+      savedTranslateY.value = translateY.value;
     });
 
   const doubleTapGesture = Gesture.Tap()

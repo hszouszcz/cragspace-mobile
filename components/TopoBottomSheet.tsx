@@ -33,6 +33,7 @@ const TopoBottomSheet = ({
   onRoutePress,
   onFilterPress,
   animatedIndex,
+  onSnapPointChange,
 }: TopoBottomSheetProps) => {
   const sheetNavigationRef = useNavigationContainerRef();
   const colorScheme = useColorScheme();
@@ -67,8 +68,9 @@ const TopoBottomSheet = ({
       enablePanDownToClose={false}
       enableDynamicSizing={false}
       animatedIndex={animatedIndex}
-      onAnimate={(_, toIndex) => {
+      onAnimate={(fromIndex, toIndex) => {
         setCurrentSnapPoint(toIndex);
+        onSnapPointChange?.(fromIndex, toIndex);
       }}
       enableContentPanningGesture={false}
       enableHandlePanningGesture
