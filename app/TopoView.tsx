@@ -1,9 +1,6 @@
 import { ThemedView } from '@/components/themed-view';
-import RouteDetailModal from '@/components/topo/RouteDetailModal';
-import TopoFullscreenViewer from '@/components/topo/TopoFullScreenViewer';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
 import TopoBottomSheet, { SNAP_POINTS } from '@/components/TopoBottomSheet';
-import { RouteConfig } from '@/features/TopoPreview/topo.types';
 import { useLoadRouteSvgPaths } from '@/features/TopoPreview/useLoadRouteSvgPaths';
 import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimations';
 import { useFocusOnRoute } from '@/hooks/topo/useFocusOnRoute';
@@ -29,11 +26,9 @@ const TOPO_SVG_SOURCE = require('@/assets/topo/dSlonia_test.svg');
 
 export default function TopoView() {
   const [pressedPaths, setPressedPaths] = useState<Record<string, boolean>>({});
-  const [selectedRoute, setSelectedRoute] = useState<RouteConfig | null>(null);
-  const [focusedRouteId, setFocusedRouteId] = useState<string | null>(null);
-  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const [isFullscreenVisible, setIsFullscreenVisible] = useState(false);
+  const [focusedRouteId, setFocusedRouteId] = useState<string | null>(null);
+
   const lastPathPressTs = useRef(0);
   const previousSnapIndex = useRef(1);
   const [imageRatio, setImageRatio] = useState<number | null>(
@@ -60,20 +55,12 @@ export default function TopoView() {
     viewBox,
   });
 
-  const handleImagePress = () => {
-    if (Date.now() - lastPathPressTs.current < 250) {
-      return;
-    }
-    setIsFullscreenVisible(true);
-  };
-
   const {
     gesture: composedGesture,
     animatedStyle,
     setTransform,
     resetTransform,
   } = useZoomableGestures({
-    onSingleTap: handleImagePress,
     containerSize,
     contentSize,
     minScaleResetThreshold: 1,
@@ -82,7 +69,6 @@ export default function TopoView() {
 
   const onGoBack = () => {
     resetTransform(true);
-    setSelectedRoute(null);
     setFocusedRouteId(null);
   };
 
@@ -115,9 +101,6 @@ export default function TopoView() {
     if (route) {
       lastPathPressTs.current = Date.now();
       setFocusedRouteId(route.id);
-      setIsFullscreenVisible(false);
-      setSelectedRoute(route);
-      setIsModalVisible(true);
     }
   };
 
@@ -129,15 +112,6 @@ export default function TopoView() {
 
     setFocusedRouteId(route.id);
     focusOnRoute(route);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalVisible(false);
-    setSelectedRoute(null);
-  };
-
-  const handleCloseFullscreen = () => {
-    setIsFullscreenVisible(false);
   };
 
   return (
@@ -196,26 +170,6 @@ export default function TopoView() {
           </GestureDetector>
         </GestureHandlerRootView>
       </ThemedView>
-
-      {viewBox && (
-        <RouteDetailModal
-          visible={isModalVisible}
-          route={selectedRoute}
-          svgViewBox={viewBox}
-          imageSource={TOPO_IMAGE_SOURCE}
-          onClose={handleCloseModal}
-        />
-      )}
-      {viewBox && (
-        <TopoFullscreenViewer
-          visible={isFullscreenVisible}
-          svgViewBox={viewBox}
-          paths={paths}
-          imageSource={TOPO_IMAGE_SOURCE}
-          onClose={handleCloseFullscreen}
-          onPathPress={handlePathPress}
-        />
-      )}
       <TopoBottomSheet
         data={paths}
         animatedIndex={animatedIndexSharedValue}
