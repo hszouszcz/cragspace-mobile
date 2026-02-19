@@ -9,7 +9,7 @@ import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimati
 import { useFocusOnRoute } from '@/hooks/topo/useFocusOnRoute';
 import { useViewBoxValues } from '@/hooks/topo/useViewBoxValues';
 import { useZoomableGestures } from '@/hooks/topo/useZoomableGestures';
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { Image, StyleSheet } from 'react-native';
 import {
   GestureDetector,
@@ -35,6 +35,7 @@ export default function TopoView() {
 
   const [isFullscreenVisible, setIsFullscreenVisible] = useState(false);
   const lastPathPressTs = useRef(0);
+  const previousSnapIndex = useRef(1);
   const [imageRatio, setImageRatio] = useState<number | null>(
     INITIAL_IMAGE_RATIO,
   );
@@ -70,6 +71,7 @@ export default function TopoView() {
     gesture: composedGesture,
     animatedStyle,
     setTransform,
+    resetTransform,
   } = useZoomableGestures({
     onSingleTap: handleImagePress,
     containerSize,
@@ -77,6 +79,16 @@ export default function TopoView() {
     minScaleResetThreshold: 1,
     maxScale: animatedIndexSharedValue.value === 1 ? 2 : 5,
   });
+
+  const handleSnapPointChange = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      if (previousSnapIndex.current !== toIndex) {
+        previousSnapIndex.current = toIndex;
+        resetTransform(true);
+      }
+    },
+    [resetTransform],
+  );
 
   const viewBoxValues = useViewBoxValues(viewBox);
   const focusOnRoute = useFocusOnRoute({
@@ -205,6 +217,7 @@ export default function TopoView() {
         animatedIndex={animatedIndexSharedValue}
         snapPoints={SNAP_POINTS}
         onRoutePress={handleRoutePress}
+        onSnapPointChange={handleSnapPointChange}
       />
     </ThemedView>
   );

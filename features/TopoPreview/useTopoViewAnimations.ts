@@ -96,7 +96,7 @@ export const useTopoViewAnimations = ({
   });
 
   const imageContainerOffsetStyle = useAnimatedStyle<ViewStyle>(() => {
-    const sheetHeight = SCREEN_HEIGHT * SNAP_POINTS_IN_NUMBERS[0];
+    const sheetHeight = SCREEN_HEIGHT * (SNAP_POINTS_IN_NUMBERS[0] / 100);
     const centeredOffset = -sheetHeight / 2;
     const translateY = interpolate(
       animatedIndexSharedValue.value,

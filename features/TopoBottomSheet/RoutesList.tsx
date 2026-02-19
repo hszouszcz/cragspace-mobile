@@ -1,10 +1,10 @@
-import { SNAP_POINTS_IN_NUMBERS } from '@/components/TopoBottomSheet';
 import { getTopoColorTokens } from '@/constants/theme';
+import { useBottomSheetAvailableHeight } from '@/hooks/topo/useBottomSheetAvailableHeight';
 import { useColorScheme } from '@/hooks/use-color-scheme.web';
 import { useBottomSheetScrollableCreator } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { StyleSheet, useWindowDimensions, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { RouteListItem } from './RouteListItem';
 import { type RouteListItemData } from './types';
 
@@ -23,14 +23,10 @@ export const RoutesList = ({
 }: RoutesListProps) => {
   const colorScheme = useColorScheme();
   const Scrollable = useBottomSheetScrollableCreator();
-  const { height: screenHeight } = useWindowDimensions();
+
   const { navigate } = useNavigation<any>();
+  const { availableHeight } = useBottomSheetAvailableHeight(currentSnapPoint);
 
-  const snapHeights = SNAP_POINTS_IN_NUMBERS.map(
-    (p) => screenHeight * (parseFloat(p) / 100),
-  );
-
-  const availableHeight = snapHeights[currentSnapPoint] - 81;
   const onRoutePressWrapper = (route: RouteListItemData) => {
     navigate('Details', { routeId: route.id });
     if (onRoutePress) {
@@ -53,7 +49,6 @@ export const RoutesList = ({
       onPress={onRoutePressWrapper}
     />
   );
-  console.log('curentSnapPoint', currentSnapPoint);
 
   return (
     <View style={{ height: availableHeight }}>

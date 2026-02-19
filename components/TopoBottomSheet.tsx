@@ -10,7 +10,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useNavigationContainerRef } from '@react-navigation/native';
 import { SharedValue } from 'react-native-reanimated';
 
-export const SNAP_POINTS = ['20%', '52%', '100%'];
+export const SNAP_POINTS = ['12%', '52%', '100%'];
 export const SNAP_POINTS_IN_NUMBERS = SNAP_POINTS.map((point) =>
   Number(point.replace('%', '')),
 );
@@ -23,6 +23,7 @@ type TopoBottomSheetProps = {
   onFilterPress?: () => void;
   animatedIndex: SharedValue<number>;
   snapPoints?: string[];
+  onSnapPointChange?: (fromIndex: number, toIndex: number) => void;
 };
 
 const TopoBottomSheet = ({
@@ -64,7 +65,7 @@ const TopoBottomSheet = ({
       snapPoints={SNAP_POINTS}
       index={1}
       enablePanDownToClose={false}
-      enableDynamicSizing
+      enableDynamicSizing={false}
       animatedIndex={animatedIndex}
       onAnimate={(_, toIndex) => {
         setCurrentSnapPoint(toIndex);

@@ -42,7 +42,13 @@ const BottomSheetNavigator = ({
             )}
           </Stack.Screen>
           <Stack.Screen name="Details">
-            {(props) => <RouteDetails {...props} details={data[0]} />}
+            {(props) => (
+              <RouteDetails
+                {...props}
+                details={data[0]}
+                currentSnapPoint={currentSnapPoint}
+              />
+            )}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
