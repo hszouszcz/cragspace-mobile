@@ -80,6 +80,12 @@ export default function TopoView() {
     maxScale: animatedIndexSharedValue.value === 1 ? 2 : 5,
   });
 
+  const onGoBack = () => {
+    resetTransform(true);
+    setSelectedRoute(null);
+    setFocusedRouteId(null);
+  };
+
   const handleSnapPointChange = (fromIndex: number, toIndex: number) => {
     if (previousSnapIndex.current !== toIndex) {
       previousSnapIndex.current = toIndex;
@@ -120,6 +126,7 @@ export default function TopoView() {
     if (!route) {
       return;
     }
+
     setFocusedRouteId(route.id);
     focusOnRoute(route);
   };
@@ -215,6 +222,7 @@ export default function TopoView() {
         snapPoints={SNAP_POINTS}
         onRoutePress={handleRoutePress}
         onSnapPointChange={handleSnapPointChange}
+        onGoBack={onGoBack}
       />
     </ThemedView>
   );

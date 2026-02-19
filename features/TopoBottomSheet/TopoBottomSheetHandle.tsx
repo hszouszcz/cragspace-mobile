@@ -9,6 +9,7 @@ interface TopoBottomSheetHandleProps {
   sectorName: string;
   sectorTitle: string;
   onFilterPress: () => void;
+  onGoBackPressed?: () => void;
 }
 
 export const TopoBottomSheetHandle = ({
@@ -18,7 +19,15 @@ export const TopoBottomSheetHandle = ({
   sectorName,
   sectorTitle,
   onFilterPress,
+  onGoBackPressed,
 }: TopoBottomSheetHandleProps) => {
+  const handleGoBack = () => {
+    if (onGoBackPressed) {
+      onGoBackPressed();
+    }
+    sheetNavigationRef.goBack();
+  };
+
   return (
     <View
       style={[
@@ -30,9 +39,7 @@ export const TopoBottomSheetHandle = ({
         style={[styles.handleIndicator, { backgroundColor: colors.handle }]}
       />
       <View style={styles.headerRow}>
-        {canGoBack && (
-          <Button title=" < Back" onPress={() => sheetNavigationRef.goBack()} />
-        )}
+        {canGoBack && <Button title=" < Back" onPress={handleGoBack} />}
         <View style={styles.headerTitles}>
           <Text
             style={[styles.headerSubtitle, { color: colors.headerSubtitle }]}

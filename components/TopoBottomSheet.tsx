@@ -24,6 +24,7 @@ type TopoBottomSheetProps = {
   animatedIndex: SharedValue<number>;
   snapPoints?: string[];
   onSnapPointChange?: (fromIndex: number, toIndex: number) => void;
+  onGoBack?: () => void;
 };
 
 const TopoBottomSheet = ({
@@ -34,6 +35,7 @@ const TopoBottomSheet = ({
   onFilterPress,
   animatedIndex,
   onSnapPointChange,
+  onGoBack,
 }: TopoBottomSheetProps) => {
   const sheetNavigationRef = useNavigationContainerRef();
   const colorScheme = useColorScheme();
@@ -61,6 +63,12 @@ const TopoBottomSheet = ({
     return unsubscribe;
   }, [sheetNavigationRef]);
 
+  const handleOnGoBack = () => {
+    if (onGoBack) {
+      onGoBack();
+    }
+  };
+
   return (
     <BottomSheet
       snapPoints={SNAP_POINTS}
@@ -82,6 +90,7 @@ const TopoBottomSheet = ({
           onFilterPress={onFilterPress || (() => {})}
           canGoBack={canGoBack}
           sheetNavigationRef={sheetNavigationRef}
+          onGoBackPressed={handleOnGoBack}
         />
       )}
       animateOnMount={false}
