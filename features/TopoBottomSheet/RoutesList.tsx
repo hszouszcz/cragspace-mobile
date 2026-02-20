@@ -1,14 +1,11 @@
-import { getTopoColorTokens } from '@/constants/theme';
 import { useBottomSheetAvailableHeight } from '@/hooks/topo/useBottomSheetAvailableHeight';
-import { useColorScheme } from '@/hooks/use-color-scheme.web';
 import { useBottomSheetScrollableCreator } from '@gorhom/bottom-sheet';
 import { useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import { RouteListItem } from './RouteListItem';
+import { styles } from './routes-list.styles';
 import { type RouteListItemData } from './types';
-
-const ESTIMATED_ITEM_SIZE = 76;
 
 interface RoutesListProps {
   routes: RouteListItemData[];
@@ -16,39 +13,27 @@ interface RoutesListProps {
   currentSnapPoint?: number;
 }
 
-export const RoutesList = ({
+export function RoutesList({
   routes,
   onRoutePress,
   currentSnapPoint = 2,
-}: RoutesListProps) => {
-  const colorScheme = useColorScheme();
+}: RoutesListProps) {
   const Scrollable = useBottomSheetScrollableCreator();
-
   const { navigate } = useNavigation<any>();
   const { availableHeight } = useBottomSheetAvailableHeight(currentSnapPoint);
 
-  const onRoutePressWrapper = (route: RouteListItemData) => {
+  function handleRoutePress(route: RouteListItemData) {
     navigate('Details', { routeId: route.id });
-    if (onRoutePress) {
-      onRoutePress(route);
-    }
-  };
+    onRoutePress?.(route);
+  }
 
-  const colors = getTopoColorTokens(colorScheme === 'dark' ? 'dark' : 'light');
   const renderItem = ({
     item,
     index,
   }: {
     item: RouteListItemData;
     index: number;
-  }) => (
-    <RouteListItem
-      item={item}
-      index={index}
-      colors={colors}
-      onPress={onRoutePressWrapper}
-    />
-  );
+  }) => <RouteListItem item={item} index={index} onPress={handleRoutePress} />;
 
   return (
     <View style={{ height: availableHeight }}>
@@ -56,19 +41,11 @@ export const RoutesList = ({
         data={routes}
         extraData={currentSnapPoint}
         renderItem={renderItem}
-        contentContainerStyle={[styles.content]}
-        showsVerticalScrollIndicator={true}
+        contentContainerStyle={styles.content}
+        showsVerticalScrollIndicator
         renderScrollComponent={Scrollable}
         contentInsetAdjustmentBehavior="automatic"
       />
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  content: {
-    paddingHorizontal: 16,
-    paddingBottom: 24,
-    paddingTop: 8,
-  },
-});
+}
