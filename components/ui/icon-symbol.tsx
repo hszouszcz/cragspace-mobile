@@ -26,6 +26,7 @@ const MAPPING = {
   plus: 'add',
   'xmark.circle.fill': 'cancel',
   magnifyingglass: 'search',
+  book: 'book',
 } as IconMapping;
 
 interface IconSymbolProps {

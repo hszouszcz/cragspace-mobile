@@ -24,6 +24,7 @@ export { FilterPill } from './filter-pill/filter-pill';
 export { ListItem, ListSeparator } from './list-item/list-item';
 export { SegmentedControl } from './segmented-control/segmented-control';
 export { Separator } from './separator/separator';
+export { XStack, YStack } from './stack/stack';
 export { StatBlock } from './stat-block/stat-block';
 export { TextInput } from './text-input/text-input';
 export { Toast } from './toast/toast';
