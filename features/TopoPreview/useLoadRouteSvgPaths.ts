@@ -288,6 +288,7 @@ export const useLoadRouteSvgPaths = (imageSvgUrl: number) => {
               Math.floor(Math.random() * 3)
             ],
             description: `Piękna droga wspinaczkowa na ścianie Słonia. ${['Wymaga dobrej techniki.', 'Idealna dla początkujących.', 'Trudne ruchy w górnej części.'][Math.floor(Math.random() * 3)]}`,
+            rating: Math.floor(Math.random() * 5) + 1, // 1-5 gwiazdek
           };
 
           const bounds = getPathBounds(path.d) ?? undefined;

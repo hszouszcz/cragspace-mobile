@@ -1,149 +1,142 @@
-import { PRIMARY_COLOR, type TopoColorTokens } from '@/constants/theme';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Badge,
+  IconSymbol,
+  Typography,
+  useThemeColors,
+  XStack,
+} from '@/components/ui';
+import { sizes } from '@/src/theme';
+import { Pressable, View } from 'react-native';
+import { createRouteListItemStyles } from './RouteListItem.styles';
 import { type RouteListItemData } from './types';
 
 const STAR_COUNT = 5;
 
-type RouteListItemProps = {
+interface RouteListItemProps {
   item: RouteListItemData;
   index: number;
-  colors: TopoColorTokens;
   onPress?: (route: RouteListItemData) => void;
-};
+}
 
-export const RouteListItem = ({
-  item,
-  index,
-  colors,
-  onPress,
-}: RouteListItemProps) => {
+export function RouteListItem({ item, index, onPress }: RouteListItemProps) {
+  const colors = useThemeColors();
+  const styles = createRouteListItemStyles(colors);
+
   const rating = Math.max(0, Math.min(STAR_COUNT, item.rating ?? 0));
   const isHighlighted = item.isHighlighted;
   const isMuted = item.isMuted;
 
+  const rowBg = isHighlighted
+    ? colors.brandPrimaryMuted
+    : isMuted
+      ? colors.backgroundSecondary
+      : colors.surfaceCard;
+
+  const rowBorderColor = isHighlighted
+    ? colors.borderBrand
+    : colors.borderDefault;
+
+  const ratingLabel =
+    item.rating !== undefined ? `, ${rating} out of ${STAR_COUNT} stars` : '';
+
   return (
     <Pressable
       onPress={() => onPress?.(item)}
+      accessibilityRole="button"
+      accessibilityLabel={`Route ${index + 1}: ${item.name}${item.grade ? `, grade ${item.grade}` : ''}${ratingLabel}`}
       style={({ pressed }) => [
-        styles.routeRow,
+        styles.row,
         {
-          backgroundColor: isHighlighted
-            ? colors.rowBackground
-            : isMuted
-              ? colors.rowMuted
-              : colors.rowBase,
-          borderColor: isHighlighted ? colors.rowBorder : colors.rowMutedBorder,
+          backgroundColor: rowBg,
+          borderColor: rowBorderColor,
         },
-        pressed && { backgroundColor: colors.rowPressed },
+        pressed && styles.pressedOverlay,
       ]}
     >
       <View
         style={[
-          styles.routeBadge,
+          styles.numberBadge,
           {
             backgroundColor: isHighlighted
-              ? colors.badgeBackground
-              : colors.badgeMutedBackground,
+              ? colors.badgePrimaryBg
+              : colors.badgeSecondaryBg,
           },
         ]}
       >
-        <Text
-          style={[
-            styles.routeBadgeText,
-            { color: isHighlighted ? colors.badgeText : colors.badgeMutedText },
-          ]}
+        <Typography
+          variant="titleSm"
+          color={isHighlighted ? 'inverse' : 'secondary'}
         >
           {index + 1}
-        </Text>
+        </Typography>
       </View>
-      <View style={styles.routeDetails}>
-        <View style={styles.routeTitleRow}>
-          <Text style={[styles.routeName, { color: colors.textPrimary }]}>
+
+      <View style={styles.details}>
+        <View style={styles.titleRow}>
+          <Typography variant="titleLg" numberOfLines={1} style={styles.name}>
             {item.name}
-          </Text>
-          {item.grade ? (
-            <View
-              style={[
-                styles.routeGrade,
-                { backgroundColor: colors.gradeBackground },
-              ]}
-            >
-              <Text
-                style={[styles.routeGradeText, { color: colors.gradeText }]}
-              >
-                {item.grade}
-              </Text>
-            </View>
-          ) : null}
+          </Typography>
+          {item.grade ? <Badge variant="secondary" label={item.grade} /> : null}
         </View>
         {item.rating !== undefined ? (
-          <View style={styles.routeRating}>
-            {Array.from({ length: STAR_COUNT }).map((_, starIndex) => (
-              <MaterialIcons
-                key={`${item.id}-star-${starIndex}`}
-                name="star"
-                size={14}
-                color={starIndex < rating ? PRIMARY_COLOR : colors.starEmpty}
+          <View
+            style={styles.metadataRow}
+            accessibilityElementsHidden
+            importantForAccessibility="no"
+          >
+            <XStack gap={3} align="center">
+              <IconSymbol
+                name="star.fill"
+                size={sizes.iconSm}
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
                 style={styles.starIcon}
               />
-            ))}
+              <Typography variant="bodySm" color="secondary">
+                {item.rating}
+              </Typography>
+            </XStack>
+            <XStack gap={4} align="center">
+              <IconSymbol
+                name="star.fill"
+                size={sizes.iconSm}
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                style={styles.starIcon}
+              />
+              <Typography variant="bodySm" color="secondary">
+                {item.length}
+              </Typography>
+            </XStack>
+            <XStack gap={3} align="center">
+              <IconSymbol
+                name="star.fill"
+                size={sizes.iconSm}
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                style={styles.starIcon}
+              />
+              <Typography variant="bodySm" color="secondary">
+                {item.rating}
+              </Typography>
+            </XStack>
+            <XStack gap={3} align="center">
+              <IconSymbol
+                name="star.fill"
+                size={sizes.iconSm}
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                style={styles.starIcon}
+              />
+              <Typography variant="bodySm" color="secondary">
+                {item.type}
+              </Typography>
+            </XStack>
           </View>
         ) : null}
       </View>
-      <MaterialIcons name="chevron-right" size={22} color={colors.chevron} />
+
+      <IconSymbol
+        name="chevron.right"
+        size={sizes.iconMd}
+        color={colors.iconSecondary}
+      />
     </Pressable>
   );
-};
-
-const styles = StyleSheet.create({
-  routeRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 12,
-    paddingVertical: 12,
-    borderRadius: 16,
-    borderWidth: 1,
-    marginBottom: 12,
-  },
-  routeBadge: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: 12,
-  },
-  routeBadgeText: {
-    fontSize: 16,
-    fontWeight: '700',
-  },
-  routeDetails: {
-    flex: 1,
-  },
-  routeTitleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  routeName: {
-    fontSize: 16,
-    fontWeight: '700',
-    marginRight: 8,
-  },
-  routeGrade: {
-    borderRadius: 8,
-    paddingHorizontal: 6,
-    paddingVertical: 2,
-  },
-  routeGradeText: {
-    fontSize: 11,
-    fontWeight: '700',
-  },
-  routeRating: {
-    flexDirection: 'row',
-    marginTop: 6,
-  },
-  starIcon: {
-    marginRight: 2,
-  },
-});
+}

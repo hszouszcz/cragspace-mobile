@@ -29,7 +29,10 @@ const BottomSheetNavigator = ({
     <NavigationIndependentTree>
       <NavigationContainer ref={ref}>
         <Stack.Navigator
-          screenOptions={{ headerShown: false, contentStyle: { flex: 1 } }}
+          screenOptions={{
+            headerShown: false,
+            contentStyle: { flex: 1, backgroundColor: 'transparent' },
+          }}
         >
           <Stack.Screen name="List">
             {(props) => (
