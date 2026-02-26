@@ -2,11 +2,11 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { getTopoColorTokens } from '@/constants/theme';
+import { useCurrentScheme, useThemeColors } from '@/components/ui';
 import BottomSheetNavigator from '@/features/TopoBottomSheet/BottomSheetNavigator';
 import { TopoBottomSheetHandle } from '@/features/TopoBottomSheet/TopoBottomSheetHandle';
 import { type RouteListItemData } from '@/features/TopoBottomSheet/types';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { radii, shadows, spacing } from '@/src/theme';
 import { useNavigationContainerRef } from '@react-navigation/native';
 import { SharedValue } from 'react-native-reanimated';
 
@@ -38,8 +38,9 @@ const TopoBottomSheet = ({
   onGoBack,
 }: TopoBottomSheetProps) => {
   const sheetNavigationRef = useNavigationContainerRef();
-  const colorScheme = useColorScheme();
-  const colors = getTopoColorTokens(colorScheme === 'dark' ? 'dark' : 'light');
+  const colors = useThemeColors();
+  const scheme = useCurrentScheme();
+  const isDark = scheme === 'dark';
 
   const [canGoBack, setCanGoBack] = useState(false);
   const [currentSnapPoint, setCurrentSnapPoint] = useState(1);
@@ -84,7 +85,6 @@ const TopoBottomSheet = ({
       enableHandlePanningGesture
       handleComponent={() => (
         <TopoBottomSheetHandle
-          colors={colors}
           sectorName={sectorName}
           sectorTitle={sectorTitle}
           onFilterPress={onFilterPress || (() => {})}
@@ -97,11 +97,11 @@ const TopoBottomSheet = ({
       backgroundStyle={[
         styles.sheetBackground,
         {
-          backgroundColor: colors.sheetBackground,
-          borderTopColor: colors.sheetBorder,
+          backgroundColor: colors.surfaceSheet,
+          borderTopColor: colors.separator,
         },
       ]}
-      style={styles.sheetContainer}
+      style={isDark ? shadows.none : shadows.xl}
     >
       <BottomSheetNavigator
         data={data}
@@ -116,34 +116,14 @@ const TopoBottomSheet = ({
 export default TopoBottomSheet;
 
 const styles = StyleSheet.create({
-  sheetContainer: {
-    shadowColor: '#0f172a',
-    shadowOffset: { width: 0, height: -10 },
-    shadowOpacity: 0.08,
-    shadowRadius: 16,
-    elevation: 6,
-  },
   sheetBackground: {
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
+    borderTopLeftRadius: radii['2xl'],
+    borderTopRightRadius: radii['2xl'],
     borderTopWidth: 1,
   },
-  handleContainer: {
-    paddingTop: 6,
-    paddingBottom: 12,
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-  },
-  handleIndicator: {
-    alignSelf: 'center',
-    width: 40,
-    height: 4,
-    borderRadius: 999,
-    marginBottom: 10,
-  },
   content: {
-    paddingHorizontal: 16,
-    paddingBottom: 24,
-    paddingTop: 8,
+    paddingHorizontal: spacing.lg,
+    paddingBottom: spacing['2xl'],
+    paddingTop: spacing.sm,
   },
 });

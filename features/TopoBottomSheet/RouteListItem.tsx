@@ -1,7 +1,13 @@
-import { Badge, IconSymbol, Typography, useThemeColors } from '@/components/ui';
+import {
+  Badge,
+  IconSymbol,
+  Typography,
+  useThemeColors,
+  XStack,
+} from '@/components/ui';
 import { sizes } from '@/src/theme';
 import { Pressable, View } from 'react-native';
-import { createRouteListItemStyles } from './route-list-item.styles';
+import { createRouteListItemStyles } from './RouteListItem.styles';
 import { type RouteListItemData } from './types';
 
 const STAR_COUNT = 5;
@@ -74,21 +80,54 @@ export function RouteListItem({ item, index, onPress }: RouteListItemProps) {
         </View>
         {item.rating !== undefined ? (
           <View
-            style={styles.ratingRow}
+            style={styles.metadataRow}
             accessibilityElementsHidden
             importantForAccessibility="no"
           >
-            {Array.from({ length: STAR_COUNT }).map((_, starIndex) => (
+            <XStack gap={3} align="center">
               <IconSymbol
-                key={`${item.id}-star-${starIndex}`}
                 name="star.fill"
                 size={sizes.iconSm}
-                color={
-                  starIndex < rating ? colors.brandPrimary : colors.iconTertiary
-                }
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
                 style={styles.starIcon}
               />
-            ))}
+              <Typography variant="bodySm" color="secondary">
+                {item.rating}
+              </Typography>
+            </XStack>
+            <XStack gap={4} align="center">
+              <IconSymbol
+                name="star.fill"
+                size={sizes.iconSm}
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                style={styles.starIcon}
+              />
+              <Typography variant="bodySm" color="secondary">
+                {item.length}
+              </Typography>
+            </XStack>
+            <XStack gap={3} align="center">
+              <IconSymbol
+                name="star.fill"
+                size={sizes.iconSm}
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                style={styles.starIcon}
+              />
+              <Typography variant="bodySm" color="secondary">
+                {item.rating}
+              </Typography>
+            </XStack>
+            <XStack gap={3} align="center">
+              <IconSymbol
+                name="star.fill"
+                size={sizes.iconSm}
+                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                style={styles.starIcon}
+              />
+              <Typography variant="bodySm" color="secondary">
+                {item.type}
+              </Typography>
+            </XStack>
           </View>
         ) : null}
       </View>

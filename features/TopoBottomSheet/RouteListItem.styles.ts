@@ -34,9 +34,11 @@ export function createRouteListItemStyles(colors: SemanticColors) {
     name: {
       flexShrink: 1,
     },
-    ratingRow: {
+    metadataRow: {
       flexDirection: 'row',
       marginTop: spacing.sm_,
+      justifyContent: 'flex-start',
+      gap: spacing.md,
     },
     starIcon: {
       marginRight: spacing.xxs,

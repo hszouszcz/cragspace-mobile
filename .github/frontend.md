@@ -19,6 +19,7 @@ Code Style and Structure
 Naming Conventions
 
 - Use lowercase with dashes for directories (e.g., components/auth-wizard).
+- use camelcase for naming files. (e.g., EmailInput.ts, EmptyState.styles.ts)
 - Favor named exports for components.
 
 TypeScript Usage
