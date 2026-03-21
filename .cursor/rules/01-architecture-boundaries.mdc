@@ -1,0 +1,15 @@
+---
+description: Keep app, feature, hook, service, and component boundaries clean
+globs: "{app,features,hooks,services,components}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Architecture Boundaries
+
+- `app/` files are route/screens and composition only; keep domain logic minimal there.
+- Put data parsing/loading in `services/`, not in UI components.
+- Put interaction/state orchestration in `hooks/` or feature hooks.
+- Keep reusable UI primitives in `components/ui/`; feature-specific UI stays in `features/`.
+- Do not introduce new barrel-export hubs; prefer direct imports at call sites.
+- Avoid new cross-layer shortcuts (for example, screen directly parsing XML/SVG).
+- If a change crosses layers, keep interfaces typed and explicit.

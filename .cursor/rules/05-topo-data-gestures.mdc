@@ -1,0 +1,14 @@
+---
+description: Rules for topo parsing, route data, and gesture/animation behavior
+globs: "{features,hooks,services,app}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Topo Data, Gestures, And Animations
+
+- Keep SVG/data parsing deterministic in `services/topo`; avoid random IDs or random route attributes in production logic.
+- Derive UI-ready route data from real source data or explicit mocks gated to test/dev code paths.
+- Keep gesture and zoom behavior predictable; avoid automatic resets after manual interaction.
+- Use `react-native-reanimated` and gesture-handler patterns already used in the project.
+- Clamp transforms and bounds defensively to prevent erratic pan/zoom behavior.
+- When changing interaction semantics, update related decision docs and tests.

@@ -1,0 +1,22 @@
+---
+description: Repo map index so agents choose correct files before editing
+alwaysApply: true
+---
+
+# Repository Map Index
+
+- `app/`: Expo Router entrypoints and screen composition.
+- `features/`: Domain feature UI and feature-scoped logic.
+- `components/`: Shared UI building blocks; `components/ui/` for design-system primitives.
+- `hooks/`: Reusable interaction/state hooks (including topo gestures and viewport logic).
+- `services/`: Data loading/parsing and integration utilities (for example SVG path loading).
+- `src/theme/`: Theme tokens and style system source.
+- `docs/` and `topo-preview-ui-decision.md`: behavioral and product decision docs.
+
+## File Placement Heuristics
+
+- New screen route -> `app/...`
+- Reusable UI primitive -> `components/ui/...`
+- Feature-specific view/state -> `features/<FeatureName>/...`
+- Data transform/loader/parser -> `services/...`
+- Cross-screen reusable logic -> `hooks/...`

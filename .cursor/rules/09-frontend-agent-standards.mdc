@@ -1,0 +1,14 @@
+---
+description: Frontend implementation standards for TypeScript, React Native, and Expo
+globs: "**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Frontend Agent Standards
+
+- React compiler is in use: avoid adding new `useMemo` and `useCallback` unless profiling proves need.
+- Prefer `FlashList` over `FlatList` for large or virtualized lists.
+- Avoid barrel exports (`index.ts` re-export hubs); import modules directly.
+- Prefer functional and declarative patterns with concise, strict TypeScript-friendly APIs.
+- Use `react-native-reanimated` for animations; do not use deprecated `runOnJS`.
+- Before advanced reanimated changes, validate API behavior against official documentation.
