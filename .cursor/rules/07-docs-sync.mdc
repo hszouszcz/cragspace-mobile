@@ -1,0 +1,13 @@
+---
+description: Keep product behavior docs synchronized with feature behavior changes
+globs: "**/*.md"
+alwaysApply: false
+---
+
+# Documentation Sync
+
+- Treat `topo-preview-ui-decision.md` as product-behavior source of truth for topo flow.
+- If code changes snap points, fullscreen behavior, loading UX, or sheet flow, update decision docs in the same task.
+- Prefer concrete behavioral language over vague summaries.
+- Call out intentional deviations from previous decisions.
+- Keep docs implementation-aware but free of temporary/debug details.

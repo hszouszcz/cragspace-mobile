@@ -1,0 +1,14 @@
+---
+description: Component structure, naming quality, and accessibility defaults
+globs: "{components,features}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Components And Accessibility
+
+- Use functional components with typed props interfaces.
+- Keep component names and helper names clear and typo-free.
+- Co-locate component styles (`Component.styles.ts`) when style logic grows.
+- For pressable controls, include accessibility role/label/state where relevant.
+- Prefer composition and small helpers over monolithic components.
+- Remove dead code, temporary UI controls, and unused styles in the same change.

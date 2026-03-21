@@ -1,0 +1,13 @@
+---
+description: Lint, test, and commit hygiene expected for every substantial change
+alwaysApply: true
+---
+
+# Quality Gates
+
+- Keep TypeScript strictness intact; do not introduce `any` without strong justification.
+- Ensure lint remains clean for touched files before finishing.
+- Add or update tests for non-trivial logic changes in `services/topo` and `hooks/topo`.
+- Keep error handling explicit with actionable messages.
+- Respect existing commit conventions and hooks (husky + commitlint).
+- Prefer incremental, reviewable changes over large mixed-purpose edits.

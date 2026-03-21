@@ -1,0 +1,14 @@
+---
+description: Navigation rules for Expo Router and nested sheet navigation
+globs: "{app,features,components}/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Routing And Navigation
+
+- Use Expo Router file-based routes for app-level navigation in `app/`.
+- Keep `app/_layout.tsx` as global provider/root-stack wiring only.
+- Nested React Navigation is allowed only for isolated feature flows (for example bottom-sheet internal stack).
+- Do not mix router and nested navigator responsibilities in one component.
+- Keep route params typed and stable; avoid ad-hoc string keys.
+- Update navigation behavior docs when snap points or sheet flow semantics change.
