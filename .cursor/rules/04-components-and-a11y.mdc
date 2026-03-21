@@ -7,8 +7,12 @@ alwaysApply: false
 # Components And Accessibility
 
 - Use functional components with typed props interfaces.
+- Prefer interfaces over type aliases for component/public contracts.
 - Keep component names and helper names clear and typo-free.
+- Favor named exports for components.
 - Co-locate component styles (`Component.styles.ts`) when style logic grows.
+- Keep styles in `StyleSheet` files; avoid inline styles except tiny one-off wrappers.
 - For pressable controls, include accessibility role/label/state where relevant.
+- Use `SafeAreaProvider` globally and safe-area-aware containers for screens.
 - Prefer composition and small helpers over monolithic components.
 - Remove dead code, temporary UI controls, and unused styles in the same change.
