@@ -25,7 +25,7 @@ export default function RootLayout() {
           <Stack.Screen
             name="search/index"
             options={{
-              title: 'Search',
+              title: 'Guidebook Explorer',
               header: (props) => <AppHeader {...props} />,
             }}
           />

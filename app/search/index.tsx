@@ -1,198 +1,148 @@
+import { useThemeColors } from '@/components/ui';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import {
-  Button,
-  EmptyState,
-  Typography,
-  useThemeColors,
-} from '@/components/ui';
-import {
-  SearchHeader,
+  FilterChipsRow,
+  SearchInputBar,
   createSearchStateOptions,
-  type SearchContextConfig,
-  type SearchFilterMeta,
   useSearchFiltersState,
 } from '@/features/SearchBar';
-import { radii, spacing } from '@/src/theme';
-import { useLocalSearchParams } from 'expo-router';
-import { useMemo } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { sizes } from '@/src/theme';
+import { FlashList } from '@shopify/flash-list';
+import { Stack } from 'expo-router';
+import { Pressable, View } from 'react-native';
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { GuidebookHeroCard } from './components/GuidebookHeroCard';
+import { GuidebookListCard } from './components/GuidebookListCard';
+import { InfoCard } from './components/InfoCard';
+import { SectionHeader } from './components/SectionHeader';
+import {
+  GUIDEBOOK_CONTEXT_CONFIG,
+  GUIDEBOOK_FILTERS,
+  SCREEN_ITEMS,
+} from './data';
+import { SEARCH_INPUT_HEIGHT, styles } from './index.styles';
+import type { ScreenItem } from './types';
 
-type SearchScreenParams = {
-  contextId?: string | string[];
-  placeholder?: string | string[];
-  filters?: string | string[];
-  initialQuery?: string | string[];
-  initialSelectedValues?: string | string[];
-};
+const AnimatedFlashList = Animated.createAnimatedComponent(
+  FlashList<ScreenItem>,
+);
 
-function getSingleParam(value: string | string[] | undefined) {
-  return Array.isArray(value) ? value[0] : value;
-}
-
-function parseFiltersMeta(rawValue?: string): SearchFilterMeta[] {
-  if (!rawValue) {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(rawValue);
-    if (!Array.isArray(parsed)) {
-      return [];
-    }
-
-    return parsed.filter(
-      (filter): filter is SearchFilterMeta =>
-        filter &&
-        typeof filter.id === 'string' &&
-        typeof filter.label === 'string' &&
-        typeof filter.value === 'string',
-    );
-  } catch {
-    return [];
-  }
-}
-
-function parseSelectedValues(rawValue?: string): string[] {
-  if (!rawValue) {
-    return [];
-  }
-
-  try {
-    const parsed = JSON.parse(rawValue);
-    if (!Array.isArray(parsed)) {
-      return [];
-    }
-
-    return parsed.filter((value): value is string => typeof value === 'string');
-  } catch {
-    return [];
+function renderItem({ item }: { item: ScreenItem }) {
+  switch (item.type) {
+    case 'section-header':
+      return <SectionHeader title={item.title} />;
+    case 'hero-card':
+      return <GuidebookHeroCard item={item.guidebook} />;
+    case 'info-cards-row':
+      return (
+        <View style={styles.infoCardsRow}>
+          <InfoCard icon="map" title="Offline Maps" subtitle="5,000+ areas" />
+          <InfoCard
+            icon="checkmark.seal.fill"
+            title="Verified Data"
+            subtitle="Crowdsourced"
+          />
+        </View>
+      );
+    case 'list-card':
+      return <GuidebookListCard item={item.guidebook} />;
+    case 'spacer':
+      return <View style={styles.bottomSpacer} />;
   }
 }
 
 export default function SearchScreen() {
   const colors = useThemeColors();
-  const params = useLocalSearchParams<SearchScreenParams>();
-  const filtersMeta = useMemo(
-    () => parseFiltersMeta(getSingleParam(params.filters)),
-    [params.filters],
-  );
 
-  const contextConfig = useMemo<SearchContextConfig>(
-    () => ({
-      contextId: getSingleParam(params.contextId) ?? 'dynamic-search',
-      placeholder: getSingleParam(params.placeholder) ?? 'Search',
-      filters: filtersMeta,
-      initialQuery: getSingleParam(params.initialQuery),
-      initialSelectedValues: parseSelectedValues(
-        getSingleParam(params.initialSelectedValues),
-      ),
-    }),
-    [
-      filtersMeta,
-      params.contextId,
-      params.initialQuery,
-      params.initialSelectedValues,
-      params.placeholder,
-    ],
-  );
+  const scrollOffset = useSharedValue(0);
 
-  const {
-    query,
-    setQuery,
-    selectedValues,
-    toggleFilter,
-    resetAll,
-    appliedPayload,
-  } = useSearchFiltersState(createSearchStateOptions(contextConfig));
+  const onScroll = useAnimatedScrollHandler((event) => {
+    scrollOffset.value = event.contentOffset.y;
+  });
 
-  const selectedCount = selectedValues.length;
+  const { query, setQuery, selectedValues, toggleFilter } =
+    useSearchFiltersState(createSearchStateOptions(GUIDEBOOK_CONTEXT_CONFIG));
 
-  const hasConfig = contextConfig.filters.length > 0;
+  const searchInputAnimatedStyle = useAnimatedStyle(() => ({
+    height: interpolate(
+      scrollOffset.value,
+      [0, SEARCH_INPUT_HEIGHT],
+      [SEARCH_INPUT_HEIGHT, 0],
+      Extrapolation.CLAMP,
+    ),
+    opacity: interpolate(
+      scrollOffset.value,
+      [0, SEARCH_INPUT_HEIGHT * 0.6],
+      [1, 0],
+      Extrapolation.CLAMP,
+    ),
+    overflow: 'hidden',
+  }));
 
   return (
-    <SafeAreaView
-      edges={['top', 'left', 'right']}
-      style={[styles.screen, { backgroundColor: colors.backgroundPrimary }]}
-    >
-      {!hasConfig ? (
-        <EmptyState
-          title="No filters metadata provided"
-          description="Pass filters via route params to render the dynamic search experience."
-          action={
-            <Typography variant="bodySm">
-              Param: filters (JSON array)
-            </Typography>
-          }
-          style={styles.emptyState}
-        />
-      ) : (
-        <View style={styles.content}>
-          <SearchHeader
-            query={query}
-            placeholder={contextConfig.placeholder}
-            filters={contextConfig.filters}
+    <>
+      <Stack.Screen
+        options={{
+          headerRight: () => (
+            <Pressable accessibilityRole="button" accessibilityLabel="Profile">
+              <IconSymbol
+                name="person.crop.circle"
+                size={sizes.iconXl}
+                color={colors.iconPrimary}
+              />
+            </Pressable>
+          ),
+        }}
+      />
+      <SafeAreaView
+        edges={['left', 'right']}
+        style={[styles.screen, { backgroundColor: colors.backgroundPrimary }]}
+      >
+        {/* Sticky header — lives outside the list */}
+        <View
+          style={[
+            styles.stickyHeader,
+            {
+              backgroundColor: colors.backgroundPrimary,
+              borderBottomColor: colors.separator,
+            },
+          ]}
+        >
+          {/* Search input — collapses on scroll */}
+          <Animated.View
+            style={[styles.searchInputWrapper, searchInputAnimatedStyle]}
+          >
+            <SearchInputBar
+              query={query}
+              placeholder={GUIDEBOOK_CONTEXT_CONFIG.placeholder}
+              onQueryChange={setQuery}
+            />
+          </Animated.View>
+
+          {/* Filter chips — always visible */}
+          <FilterChipsRow
+            filters={GUIDEBOOK_FILTERS}
             selectedValues={selectedValues}
-            onQueryChange={setQuery}
             onToggleFilter={toggleFilter}
           />
-
-          <View style={styles.actionsRow}>
-            <Typography variant="bodySm" color="secondary">
-              Context: {contextConfig.contextId}
-            </Typography>
-            <Button variant="text" label="Clear all" onPress={resetAll} />
-          </View>
-
-          <ScrollView
-            style={[styles.previewCard, { borderColor: colors.borderDefault }]}
-            contentContainerStyle={styles.previewContent}
-          >
-            <Typography variant="labelSm" color="secondary">
-              APPLIED PAYLOAD
-            </Typography>
-            <Typography variant="bodySm">
-              Query: {appliedPayload.query || '-'}
-            </Typography>
-            <Typography variant="bodySm">
-              Selected filters: {selectedCount}
-            </Typography>
-            <Typography variant="bodySm">
-              Values: {appliedPayload.selectedValues.join(', ') || '-'}
-            </Typography>
-          </ScrollView>
         </View>
-      )}
-    </SafeAreaView>
+
+        <AnimatedFlashList
+          data={SCREEN_ITEMS}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+          onScroll={onScroll}
+          scrollEventThrottle={16}
+          showsVerticalScrollIndicator={false}
+        />
+      </SafeAreaView>
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    paddingTop: spacing.md,
-  },
-  actionsRow: {
-    marginTop: spacing.md,
-    paddingHorizontal: spacing.lg,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  previewCard: {
-    marginTop: spacing.lg,
-    marginHorizontal: spacing.lg,
-    borderRadius: radii.lg,
-    borderWidth: 1,
-  },
-  previewContent: {
-    padding: spacing.md,
-    gap: spacing.xs,
-  },
-  emptyState: {
-    flex: 1,
-    paddingHorizontal: spacing.lg,
-  },
-});
