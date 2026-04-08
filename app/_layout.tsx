@@ -6,6 +6,7 @@ import {
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
+import AppHeader from '@/components/header/AppHeader';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
@@ -22,8 +23,19 @@ export default function RootLayout() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
+            name="search/index"
+            options={{
+              title: 'Guidebook Explorer',
+              header: (props) => <AppHeader {...props} />,
+            }}
+          />
+          <Stack.Screen
             name="modal"
-            options={{ presentation: 'modal', title: 'Modal' }}
+            options={{
+              presentation: 'modal',
+              title: 'Modal',
+              header: (props) => <AppHeader {...props} />,
+            }}
           />
         </Stack>
         <StatusBar style="auto" />

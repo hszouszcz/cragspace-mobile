@@ -16,14 +16,14 @@ export function createFilterPillStyles(colors: SemanticColors) {
       borderColor: colors.borderDefault,
     },
     active: {
-      backgroundColor: colors.brandPrimaryMuted,
-      borderColor: colors.borderBrand,
+      backgroundColor: colors.brandPrimary,
+      borderColor: colors.brandPrimary,
     },
     textInactive: {
       color: colors.textSecondary,
     },
     textActive: {
-      color: colors.brandPrimary,
+      color: colors.textInverse,
     },
   });
 }

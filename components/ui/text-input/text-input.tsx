@@ -65,6 +65,7 @@ export function TextInput({
   const focusedContainer = isSearch
     ? styles.searchContainerFocused
     : styles.containerFocused;
+  const { onFocus, onBlur, ...restInputProps } = rest;
 
   function handleClear() {
     onChangeText?.('');
@@ -87,11 +88,17 @@ export function TextInput({
         onChangeText={onChangeText}
         placeholder={placeholder}
         placeholderTextColor={colors.textTertiary}
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        onFocus={(event) => {
+          setIsFocused(true);
+          onFocus?.(event);
+        }}
+        onBlur={(event) => {
+          setIsFocused(false);
+          onBlur?.(event);
+        }}
         style={[typeScale.bodyLg, styles.input, inputStyle]}
         selectionColor={colors.brandPrimary}
-        {...rest}
+        {...restInputProps}
       />
 
       {showClearButton && hasValue ? (
