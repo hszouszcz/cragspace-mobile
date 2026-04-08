@@ -1,11 +1,12 @@
 import { Image } from 'expo-image';
+import { Link } from 'expo-router';
 import { Platform, StyleSheet } from 'react-native';
 
-import { Collapsible } from '@/components/ui/collapsible';
 import { ExternalLink } from '@/components/external-link';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Collapsible } from '@/components/ui/collapsible';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Fonts } from '@/constants/theme';
 
@@ -35,6 +36,32 @@ export default function TabTwoScreen() {
       <ThemedText>
         This app includes example code to help you get started.
       </ThemedText>
+      <Collapsible title="Topos Search Preview">
+        <ThemedText>
+          Open the search screen with dynamic filter metadata passed as params.
+        </ThemedText>
+        <Link
+          href={{
+            pathname: '/search',
+            params: {
+              contextId: 'topos-navigation',
+              placeholder: 'Find your next challenge...',
+              filters: JSON.stringify([
+                { id: 'all', label: 'All Disciplines', value: 'all' },
+                { id: 'bouldering', label: 'Bouldering', value: 'bouldering' },
+                {
+                  id: 'sport-climbing',
+                  label: 'Sport Climbing',
+                  value: 'sport-climbing',
+                },
+              ]),
+              initialSelectedValues: JSON.stringify(['all']),
+            },
+          }}
+        >
+          <ThemedText type="link">Open Topos Search Demo</ThemedText>
+        </Link>
+      </Collapsible>
       <Collapsible title="File-based routing">
         <ThemedText>
           This app has two screens:{' '}

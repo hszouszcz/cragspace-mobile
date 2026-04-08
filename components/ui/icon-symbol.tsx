@@ -22,11 +22,15 @@ const MAPPING = {
   'chevron.left.forwardslash.chevron.right': 'code',
   'chevron.right': 'chevron-right',
   'person.fill': 'person',
+  'person.crop.circle': 'account-circle',
   'star.fill': 'star',
   plus: 'add',
   'xmark.circle.fill': 'cancel',
   magnifyingglass: 'search',
   book: 'book',
+  'slider.horizontal.3': 'tune',
+  map: 'map',
+  'checkmark.seal.fill': 'verified',
 } as IconMapping;
 
 interface IconSymbolProps {

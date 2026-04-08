@@ -1,0 +1,938 @@
+[
+  {
+    "id": "1155",
+    "title": "Himalayan Rocks",
+    "publisher": null,
+    "price_pln": "180.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_himalayan-rocks-2025.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1154",
+    "title": "Malta i Gozo. Przewodnik wspinaczkowy",
+    "publisher": null,
+    "price_pln": "169.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/mini/250px_malta-gozo-2026.jpg",
+    "product_url": null
+  },
+  {
+    "id": "634",
+    "title": "Jura Północna, Środkowa i Południowa (pakiet przewodników wspinaczkowych)",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "362.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_kompletna jura 2026.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1148",
+    "title": "Trenčín. Słowackie skały VIII. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "114.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_trencin.jpg",
+    "product_url": null
+  },
+  {
+    "id": "470",
+    "title": "Góry Sokole. Przewodnik wspinaczkowy (Michał Kajca)",
+    "publisher": "GÓRY BOOKS",
+    "price_pln": "130.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_gory-sokole-2025.jpg",
+    "product_url": null
+  },
+  {
+    "id": "949",
+    "title": "Tatry Polskie Drogi Zimowo- Klasyczne. Przewodnik wspinaczkowy",
+    "publisher": "Biblioteka Taternika",
+    "price_pln": "159.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/tatryzima2025/mini/250px_tatry-polskie-zima.jpg",
+    "product_url": null
+  },
+  {
+    "id": "989",
+    "title": "Demianowska Dolina (Demänovská dolina). Słowackie skały V. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "119.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_Dolina-Demianowska-2025.jpg",
+    "product_url": null
+  },
+  {
+    "id": "422",
+    "title": "Jura Środkowa. Przewodnik wspinaczkowy (Grzegorz Rettinger)",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "129.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/js2025/mini/250px_jura-srodkowa-2025-okladka.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1134",
+    "title": "Crag climbing in Romsdal (Norwegia)",
+    "publisher": null,
+    "price_pln": "199.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Romsdal/mini/250px_Crag-Climbing-Romsdal.png",
+    "product_url": null
+  },
+  {
+    "id": "832",
+    "title": "Wielka Korona Tatr. Przewodnik wspinaczkowy po 14 ośmiotysięcznikach tatrzańskich",
+    "publisher": "Bezdroża",
+    "price_pln": "79.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_wielka-korona-tatr-2021.png",
+    "product_url": null
+  },
+  {
+    "id": "1125",
+    "title": "Serbia. Przewodnik wspinaczkowy",
+    "publisher": "Balkan Colours",
+    "price_pln": "189.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Serbia2025/mini/250px_serbia_2025.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1124",
+    "title": "Góry regionu Trentino",
+    "publisher": "Biblioteka Taternika",
+    "price_pln": "109.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Gory-Regionu-Trentino-okladka.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1122",
+    "title": "Bańska Bystrzyca II. Słowackie skały VII. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "115.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_banska-bystrzyca-2-2025-okladka.jpg",
+    "product_url": null
+  },
+  {
+    "id": "471",
+    "title": "Jura Południowa. Przewodnik wspinaczkowy (6. wydanie)",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "139.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/jpd2025/mini/250px_Jura Poludniowa okladka.jpg",
+    "product_url": null
+  },
+  {
+    "id": "990",
+    "title": "Małe Karpaty. Słowackie skały II. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "119.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_male_karpaty_2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "566",
+    "title": "Jura Północna. Przewodnik wspinaczkowy",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "139.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/jpn2024/mini/250px_jura_polnocna_okladka.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1101",
+    "title": "Ziemia kłodzka. Przewodnik wspinaczkowy",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "119.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/ziemia_klodzka/mini/250px_Ziemia-klodzka-2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1100",
+    "title": "Tatry Słowackie – 100 najlepszych dróg zimowych (tom 1.)",
+    "publisher": "Biblioteka Taternika",
+    "price_pln": "159.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_TOP100-Tatry-Slowackie.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1097",
+    "title": "Vltavská žula / Wełtawskie granity. Przewodnik wspinaczkowy",
+    "publisher": null,
+    "price_pln": "124.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Vltavská-zula-2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "393",
+    "title": "Chorwacja. Przewodnik wspinaczkowy (Boris Cujić)",
+    "publisher": "Astroida",
+    "price_pln": "169.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Chorwacja-2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "577",
+    "title": "Master Topo - Kopa Spadowa i Żabi Mnich",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mt_kopa_2024/mini/250px_Plak Kopa i Zabi Mnich oba - FIN 18dpi Opis.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1089",
+    "title": "50 tatrzańskich klasyków",
+    "publisher": "Biblioteka Taternika",
+    "price_pln": "159.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/50tatrzanskich/mini/250px_50-tatrzanskich-klasykow-dla-poczatkujacych-okladka-mala.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1088",
+    "title": "Sudety Zachodnie. Przewodnik wspinaczkowy (Michał Kajca)",
+    "publisher": "GÓRY BOOKS",
+    "price_pln": "144.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/sudety_zachodnie/mini/250px_Sudety-Zachodnie-Kajca-2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1087",
+    "title": "Bańska Bystrzyca I. Słowackie skały VI. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "129.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_banska_bystrzyca_2024_skaly_na_slovensku.jpg",
+    "product_url": null
+  },
+  {
+    "id": "392",
+    "title": "Paklenica. Przewodnik wspinaczkowy (Boris Cujić)",
+    "publisher": "Astroida",
+    "price_pln": "129.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Paklenica-2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1039",
+    "title": "Chorwacja i Paklenica. Zestaw przewodników wspinaczkowych",
+    "publisher": null,
+    "price_pln": "284.98",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_chorwacja-paklenica-2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1068",
+    "title": "Master Topo pakiet - Kościelce",
+    "publisher": "Master Topo",
+    "price_pln": "47.48",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_koscielce-pakiet-2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "84",
+    "title": "Master Topo - Kościelce - ściany zachodnie (wydanie 4)",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Koscielec-i-Zadni-Koscielec-2024_wydanie4.jpg",
+    "product_url": null
+  },
+  {
+    "id": "211",
+    "title": "Dolomity. Przewodnik wspinaczkowy. Cortina d’Ampezzo",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "119.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/mini/250px_dolomity_cortina_2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1064",
+    "title": "Master Topo - Kościelce z Kotła",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_2024-Koscielce-E-z-Kotla.jpg",
+    "product_url": null
+  },
+  {
+    "id": "467",
+    "title": "Słowenia - przewodnik wspinaczkowy",
+    "publisher": null,
+    "price_pln": "159.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/mini/250px_slovenia_topo_2023.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1060",
+    "title": "Zahorie. Słowackie skały I. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "120.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_zahorie_2024.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1053",
+    "title": "Dolomity. Korona trzytysięczników",
+    "publisher": "Bezdroża",
+    "price_pln": "109.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_dolomity-korona-trzytysiecznikow-roberto-ciri-alberto-bernardi.jpg",
+    "product_url": null
+  },
+  {
+    "id": "440",
+    "title": "Climbing without frontiers Adriatic coast - Istria",
+    "publisher": null,
+    "price_pln": "139.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Istria/mini/250px_istria_2021_okladka.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1018",
+    "title": "Góry Stołowe. Rejon Szczytnej (Michał Kajca)",
+    "publisher": "GÓRY BOOKS",
+    "price_pln": "89.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_gory-stolowe-rejon-szczytnej.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1001",
+    "title": "Master Topo - Kozi Wierch i Kozie Czuby z Dolinki Pustej",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_Kozie-Wierchy-i-Kozie-Czuby.jpg",
+    "product_url": null
+  },
+  {
+    "id": "999",
+    "title": "Master Topo - Zmarzła Przełęcz i Zmarzłe Czuby",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_2022-zmarzle_czuby_zmarzla_przelecz.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1002",
+    "title": "Master Topo - Mnich, ściana wschodnia dokładniej",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_Mnich-wschodnia-dokladniej.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1003",
+    "title": "Master Topo: pakiet Dolinka Pusta",
+    "publisher": "Master Topo",
+    "price_pln": "71.97",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_zestaw-Dolinka-Pusta.jpg",
+    "product_url": null
+  },
+  {
+    "id": "1004",
+    "title": "Master Topo: pakiet Mnich E, Kozi Wierch i Kozie Czuby, Zmarzła Przełęcz i Zmarzłe Czuby",
+    "publisher": "Master Topo",
+    "price_pln": "71.97",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_pakietnowosci-jesien-2022.jpg",
+    "product_url": null
+  },
+  {
+    "id": "356",
+    "title": "Rudawy Janowickie. Przewodnik wspinaczkowy (Michał Kajca)",
+    "publisher": "GÓRY BOOKS",
+    "price_pln": "114.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/rudawy2022/mini/250px_rudawy_janowickie_kajca_2022.jpg",
+    "product_url": null
+  },
+  {
+    "id": "974",
+    "title": "Alpy Wschodnie. 101 skalno-lodowych dróg wspinaczkowych od masywu Bernina po Wysokie Taury",
+    "publisher": "Bezdroża",
+    "price_pln": "119.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_alpy-wschodnie-przewodnik-wspinaczkowy.jpg",
+    "product_url": null
+  },
+  {
+    "id": "963",
+    "title": "Alpy Zachodnie. 102 skalno-lodowe drogi wspinaczkowe od Monviso po Mont Blanc",
+    "publisher": "Bezdroża",
+    "price_pln": "59.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_alpy-zachodnie-przewodnik-wspinaczkowy.jpg",
+    "product_url": null
+  },
+  {
+    "id": "960",
+    "title": "Wariant R na Mnichu – 30 lat odhaczenia 1991 – 2021",
+    "publisher": "Master Topo",
+    "price_pln": "26.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_Wariant_R_Mnich_calosc.jpg",
+    "product_url": null
+  },
+  {
+    "id": "950",
+    "title": "Beskid Niski i Pogórze Karpackie. Przewodnik wspinaczkowy",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "79.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_wschod-okladka-2021-wspinacz.jpg",
+    "product_url": null
+  },
+  {
+    "id": "952",
+    "title": "Pakiet beskidzko-podkarpacki",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "125.80",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Wschod2021/mini/250px_pakiet-beskidy-podkarpacie.jpg",
+    "product_url": null
+  },
+  {
+    "id": "58",
+    "title": "Master Topo - Mnich i Zamarła Turnia",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_2021_mnich_2021_mnich_1 - zamarla i mnich topo4 i 3 wyd4 24dpi.jpg",
+    "product_url": null
+  },
+  {
+    "id": "921",
+    "title": "Master Topo - Cubryna NW i Żelazko",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_Cubryna_NW_calosc.jpg",
+    "product_url": null
+  },
+  {
+    "id": "917",
+    "title": "Master Topo - Wołowa Turnia i Żabia Turnia Mięguszowiecka od północy",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_master_topo_wolowa_turnia_ZTM.jpg",
+    "product_url": null
+  },
+  {
+    "id": "916",
+    "title": "Master Topo - Wołowa Turnia S i SW",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_master_topo_wolowa_turnia.jpg",
+    "product_url": null
+  },
+  {
+    "id": "918",
+    "title": "Master Topo: pakiet Wołowa Turnia i ŻTM",
+    "publisher": null,
+    "price_pln": "47.48",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_wolowa-zestaw2.jpg",
+    "product_url": null
+  },
+  {
+    "id": "907",
+    "title": "Dreveník. Słowackie skały III. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "109.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_drevenik_2019.jpg",
+    "product_url": null
+  },
+  {
+    "id": "908",
+    "title": "Kalamarka. Słowackie skały IV. Przewodnik wspinaczkowy",
+    "publisher": "Skaly na Slovensku",
+    "price_pln": "114.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_kalamarka_2020.jpg",
+    "product_url": null
+  },
+  {
+    "id": "901",
+    "title": "Vyber Tatranskych Stien - Wysokie Tatry - zima, tom 3 (Marián Bobovčák, Marián Jacina)",
+    "publisher": "Litvor",
+    "price_pln": "79.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_vyber-3-2021.jpg",
+    "product_url": null
+  },
+  {
+    "id": "867",
+    "title": "Master Topo: pakiet Kazalnica latem i zimą",
+    "publisher": null,
+    "price_pln": "57.94",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_pakiet-kazalnica-lato-zima.jpg",
+    "product_url": null
+  },
+  {
+    "id": "803",
+    "title": "Master Topo super pakiet - Mięguszowiecki Szczyt Wielki",
+    "publisher": "Master Topo",
+    "price_pln": "71.22",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_pakiet-mieguszowiecki-szczyt-wielki.jpg",
+    "product_url": null
+  },
+  {
+    "id": "524",
+    "title": "Master Topo - Mięguszowieckie i Cubryna wprost od Morskiego Oka",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_master-topo-miegusze_2021.jpg",
+    "product_url": null
+  },
+  {
+    "id": "348",
+    "title": "Vyber Tatranskych Stien - wschodnia część, tom 2 (Marián Bobovčák, Marián Jacina)",
+    "publisher": "Litvor",
+    "price_pln": "79.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_vyber-2-2018.jpg",
+    "product_url": null
+  },
+  {
+    "id": "834",
+    "title": "Master Topo - Kazalnica Mięguszowiecka całość latem",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mtkazalnica/mini/250px_06 - KazalB2 v24-3 FIN - FinFin 30dpiGB shrp.jpg",
+    "product_url": null
+  },
+  {
+    "id": "835",
+    "title": "Master Topo - Niżnie Rysy ściana zachodnia",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mtniznerysy/mini/250px_Nizne-Rysy-plakat.jpg",
+    "product_url": null
+  },
+  {
+    "id": "829",
+    "title": "POLSKA 1. Część zachodnia: Sudety, Przedgórze Sudeckie",
+    "publisher": "GÓRY BOOKS",
+    "price_pln": "125.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/mini/250px_polska-przewodnik-wspinaczkowy-wydawnictwo-gory-books.jpg",
+    "product_url": null
+  },
+  {
+    "id": "802",
+    "title": "Master Topo - Mięguszowieckie Szczyty z Bańdziocha",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mtmieguszowieckie/mini/250px_master-topo-mieguszowieckie-z-bandziocha.jpg",
+    "product_url": null
+  },
+  {
+    "id": "768",
+    "title": "Master Topo - pakiet Mnich i Zadni Mnich",
+    "publisher": "Master Topo",
+    "price_pln": "71.22",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_pakiet-mnich-super-2019.jpg",
+    "product_url": null
+  },
+  {
+    "id": "765",
+    "title": "Master Topo - Zadni Mnich N-S, Zadni Mnich E",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_1-ZadniMnich_lacznie_17i18.jpg",
+    "product_url": null
+  },
+  {
+    "id": "763",
+    "title": "Master Topo - pakiet Mnich",
+    "publisher": "Master Topo",
+    "price_pln": "47.48",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_pakiet-mnich-2019.jpg",
+    "product_url": null
+  },
+  {
+    "id": "761",
+    "title": "Master Topo - Mnich od północy i pn.-zachodu",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_Mnich-od-polnocy-i-pn-zach.jpg",
+    "product_url": null
+  },
+  {
+    "id": "751",
+    "title": "Beskidy Zachodnie i Pogórze. Przewodnik wspinaczkowy",
+    "publisher": "Wspinanie.pl",
+    "price_pln": "69.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Beskidy2019/mini/250px_beskidy-okladka-wspinacz.jpg",
+    "product_url": null
+  },
+  {
+    "id": "743",
+    "title": "Master Topo - Rysy zestaw topograficzny",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/rysy2019/mini/250px_1 - Rysy_Okladka 150dpi.jpg",
+    "product_url": null
+  },
+  {
+    "id": "712",
+    "title": "Tatry Wysokie. Przewodnik taternicki t.24. Czerwona Turnia – Przełęcz pod Kopą (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_24.jpg",
+    "product_url": null
+  },
+  {
+    "id": "711",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 23. Przełęcz Stolarczyka – Modra Ławka (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_23.jpg",
+    "product_url": null
+  },
+  {
+    "id": "670",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 21. Klimkowa Przełęcz - Łomnicka Grań (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_21.jpg",
+    "product_url": null
+  },
+  {
+    "id": "669",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 20.  Baranie Rogi - Durny szczyt (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_20.jpg",
+    "product_url": null
+  },
+  {
+    "id": "660",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 19. Kapałkowa Grań – Śnieżna Przełęcz (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_19.jpg",
+    "product_url": null
+  },
+  {
+    "id": "659",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 18. Lodowa Przełęcz – Lodowy Zwornik (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_18.jpg",
+    "product_url": null
+  },
+  {
+    "id": "653",
+    "title": "Topografia i terenoznawstwo",
+    "publisher": "PZA",
+    "price_pln": "21.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_topografia_i_terenoznastwo.jpg",
+    "product_url": null
+  },
+  {
+    "id": "643",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 17. Spąga – Rywociny (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_17.jpg",
+    "product_url": null
+  },
+  {
+    "id": "642",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 16. Rozdziele – Czerwona Ławka (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_16.jpg",
+    "product_url": null
+  },
+  {
+    "id": "641",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 15. Mały Jaworowy Szczyt – Szeroka Jaworzyńska (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_15.jpg",
+    "product_url": null
+  },
+  {
+    "id": "620",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 14. Warzęchowe Turnie – Zawracik Rówienkowy (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_14.jpg",
+    "product_url": null
+  },
+  {
+    "id": "596",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 12. Wschodnia Batyżowiecka Przełęcz – Litworowa Przełęcz (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_whp-12-paryski-tatry.jpg",
+    "product_url": null
+  },
+  {
+    "id": "584",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 11. Wschodni Szczyt Żelaznych Wrót – Batyżowieckie Czuby (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_11.jpg",
+    "product_url": null
+  },
+  {
+    "id": "583",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 10. Rumanowa Przełęcz – Wschodnie Żelazne Wrota (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_10.jpg",
+    "product_url": null
+  },
+  {
+    "id": "580",
+    "title": "Master Topo super pakiet - Kieżmarski Szczyt oraz Kopa Spadowa i Żabi Mnich",
+    "publisher": "Master Topo",
+    "price_pln": "47.48",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Kiezmar/mini/250px_Master-Topo.jpg",
+    "product_url": null
+  },
+  {
+    "id": "579",
+    "title": "Master Topo - Kieżmarski Szczyt - Kežmarský štít",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Kiezmar/mini/250px_1-1 - KiezmarS caly wieksze h650.jpg",
+    "product_url": null
+  },
+  {
+    "id": "571",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 9. Waga – Szarpane Turnie (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_09.jpg",
+    "product_url": null
+  },
+  {
+    "id": "570",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 8. Młynicka Przełęcz – Krywań (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_08.jpg",
+    "product_url": null
+  },
+  {
+    "id": "563",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 25. Skorowidz nazwisk (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "19.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_25.jpg",
+    "product_url": null
+  },
+  {
+    "id": "562",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 7. Żabia Przełęcz Wyżnia – Żabia Czuba (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_07.jpg",
+    "product_url": null
+  },
+  {
+    "id": "550",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 6. Cubryna – Żabia Turnia Mięguszowiecka (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_06.jpg",
+    "product_url": null
+  },
+  {
+    "id": "549",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 5. Cubrynka – Skrajna Baszta (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_05.jpg",
+    "product_url": null
+  },
+  {
+    "id": "539",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 4. Walentkowa Przełęcz – Przełączka pod Zadnim Mnichem (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_04.jpg",
+    "product_url": null
+  },
+  {
+    "id": "538",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 3. Granacka Przełęcz – Wołoszyn (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_03.jpg",
+    "product_url": null
+  },
+  {
+    "id": "532",
+    "title": "Tatry Wysokie. Przewodnik taternicki t. 1. Liliowe – Mały Kościelec (Witold H. Paryski)",
+    "publisher": "Sklep Podróżnika",
+    "price_pln": "29.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/Paryski/mini/250px_Tatry_Wysokie_Witold_H._Paryski_01.jpg",
+    "product_url": null
+  },
+  {
+    "id": "521",
+    "title": "Tatry. Przewodnik szczegółowy, tom 19. Główna Grań Tatr (Władysław Cywiński)",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "42.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Tatry. Przewodnik szczegółowy, tom 19. Główna Grań Tatr (Władysław Cywiński).jpg",
+    "product_url": null
+  },
+  {
+    "id": "500",
+    "title": "Master Topo - Czołówka Mięgusza",
+    "publisher": "Master Topo",
+    "price_pln": "24.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Master_Topo_-_Czolowka_Miegusza_2014.jpg",
+    "product_url": null
+  },
+  {
+    "id": "474",
+    "title": "Kozie Wierchy. Tatry Wysokie cz. 3",
+    "publisher": "Filar",
+    "price_pln": "45.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_30kielkowski-kozie-wierchy.jpg",
+    "product_url": null
+  },
+  {
+    "id": "452",
+    "title": "Tatry. Przewodnik szczegółowy, tom 18. Granaty (Władysław Cywiński)",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "44.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Granaty-Wladyslaw-Cywinski-Tatry-przewodnik-szczegolowy.jpg",
+    "product_url": null
+  },
+  {
+    "id": "436",
+    "title": "Tatry. Przewodnik szczegółowy, tom 2. Czerwone Wierchy (Władysław Cywiński)",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Czerwone_Wierchy_Wladyslaw_Cywinski_tom_2.jpg",
+    "product_url": null
+  },
+  {
+    "id": "404",
+    "title": "Tatry. Przewodnik szczegółowy, tom 17. Rumanowy Żłobisty",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Rumanowy-Zlobisty-Cywinski.jpg",
+    "product_url": null
+  },
+  {
+    "id": "396",
+    "title": "Tatry. Przewodnik szczegółowy, tom 1. Giewont (Władysław Cywiński)",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Giewont-Wladyslaw-Cywinski.jpg",
+    "product_url": null
+  },
+  {
+    "id": "380",
+    "title": "Tatry. Przewodnik szczegółowy, tom 5. Tatry Bielskie, część wschodnia (Władysław Cywiński)",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_tatry-bielskie-czesc-wschodnia-5-cywinski.jpg",
+    "product_url": null
+  },
+  {
+    "id": "366",
+    "title": "Tatry. Przewodnik szczegółowy, tom 6. Młynarz (Władysław Cywiński)",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "44.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Mlynarz-Tatry-Przewodnik-Wladyslaw-Cywinski.jpg",
+    "product_url": null
+  },
+  {
+    "id": "338",
+    "title": "Tatry. Przewodnik szczegółowy, tom 4. Tatry Bielskie, część zachodnia",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_cywinski-04-tatry-bielskie.jpg",
+    "product_url": null
+  },
+  {
+    "id": "309",
+    "title": "Tatry. Przewodnik szczegółowy, tom 16. Ganek",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "43.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/mini/250px_16-ganek.jpg",
+    "product_url": null
+  },
+  {
+    "id": "289",
+    "title": "Tatry. Przewodnik szczegółowy, tom 3. Czerwone Wierchy",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_03-czerwone-wierchy.jpg",
+    "product_url": null
+  },
+  {
+    "id": "269",
+    "title": "Tatry. Przewodnik szczegółowy, tom 10. Mięguszowieckie Szczyty",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "44.90",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_10-mieguszowieckie-szczyty-cywinski.jpg",
+    "product_url": null
+  },
+  {
+    "id": "253",
+    "title": "Tatry. Przewodnik szczegółowy, tom 15. Grań Baszt",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "44.90",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_15-gran-baszt.jpg",
+    "product_url": null
+  },
+  {
+    "id": "223",
+    "title": "Tatry. Przewodnik szczegółowy, tom 14. Grań Hrubego",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_14-gran-hrubego.jpg",
+    "product_url": null
+  },
+  {
+    "id": "217",
+    "title": "Tatry. Przewodnik szczegółowy, tom 11. Szpiglasowy Wierch",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_11-szpiglasowy.jpg",
+    "product_url": null
+  },
+  {
+    "id": "221",
+    "title": "Tatry. Przewodnik szczegółowy, tom 12. Wołowy Grzbiet",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_12-wolowy-grzbiet-cywinski.jpg",
+    "product_url": null
+  },
+  {
+    "id": "222",
+    "title": "Tatry. Przewodnik szczegółowy, tom 13. Kasprowy Wierch",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_13-Kasprowy-Wierch.jpg",
+    "product_url": null
+  },
+  {
+    "id": "218",
+    "title": "Tatry. Przewodnik szczegółowy, tom 7. Grań Żabiego",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_07-gran-zabiego.jpg",
+    "product_url": null
+  },
+  {
+    "id": "220",
+    "title": "Tatry. Przewodnik szczegółowy, tom 8. Cubryna",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_08-cubryna.jpg",
+    "product_url": null
+  },
+  {
+    "id": "219",
+    "title": "Tatry. Przewodnik szczegółowy, tom 9. Rysy",
+    "publisher": "Wydawnictwo Górskie",
+    "price_pln": "39.99",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/cywinski/mini/250px_09-rysy.jpg",
+    "product_url": null
+  },
+  {
+    "id": "880",
+    "title": "Master Topo - Kazalnica zimą",
+    "publisher": "Master Topo",
+    "price_pln": "36.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/master_topo/mini/250px_kazalnica-zima-master-topo.jpg",
+    "product_url": null
+  },
+  {
+    "id": "69",
+    "title": "Kościelce. Tatry Wysokie cz. 2",
+    "publisher": "Explo",
+    "price_pln": "45.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/explo/mini/250px_koscielce-1997.jpg",
+    "product_url": null
+  },
+  {
+    "id": "70",
+    "title": "Masyw Świnicy. Tatry Wysokie cz. 1",
+    "publisher": "Explo",
+    "price_pln": "45.00",
+    "cover_image_url": "https://ksiegarnia.wspinanie.pl/images/images/explo/mini/250px_masyw-swinicy-1997.jpg",
+    "product_url": null
+  }
+]
