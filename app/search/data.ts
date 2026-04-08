@@ -2,6 +2,7 @@ import type {
   SearchContextConfig,
   SearchFilterMeta,
 } from '@/features/SearchBar';
+import type { Guidebook } from '@/services/guidebooks/types';
 import type { HeroGuidebook, ScreenItem } from './types';
 
 export const GUIDEBOOK_FILTERS: SearchFilterMeta[] = [
@@ -336,6 +337,375 @@ export const GUIDEBOOKS: HeroGuidebook[] = [
     publisher: 'Skaly na Slovensku',
     image:
       'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_trencin.jpg',
+  },
+];
+
+const CARD_PALETTE = [
+  '#5C4A3A',
+  '#2A6B7C',
+  '#3A6E5A',
+  '#8B3A2A',
+  '#6A5490',
+  '#4A7A4A',
+  '#7A6090',
+  '#8A6580',
+  '#5A7A6A',
+  '#3A6A8A',
+] as const;
+
+export function cardColorFromId(id: string): string {
+  const hash = id.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  return CARD_PALETTE[hash % CARD_PALETTE.length];
+}
+
+export const SEARCH_CORPUS: Guidebook[] = [
+  {
+    id: '1155',
+    title: 'Himalayan Rocks',
+    country: 'Nepal',
+    region: 'Himalayas',
+    publisher: null,
+    pricePln: '180.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_himalayan-rocks-2025.jpg',
+    productUrl: null,
+    climbingStyles: ['alpine'],
+  },
+  {
+    id: '1154',
+    title: 'Malta i Gozo',
+    country: 'Malta',
+    region: 'Gozo',
+    publisher: null,
+    pricePln: '169.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/mini/250px_malta-gozo-2026.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '566',
+    title: 'Jura Północna',
+    country: 'Poland',
+    region: 'Jura',
+    publisher: 'Wspinanie.pl',
+    pricePln: '109.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/jpn2024/mini/250px_jura_polnocna_okladka.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '422',
+    title: 'Jura Środkowa',
+    country: 'Poland',
+    region: 'Jura',
+    publisher: 'Wspinanie.pl',
+    pricePln: '109.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/js2025/mini/250px_jura-srodkowa-2025-okladka.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '471',
+    title: 'Jura Południowa',
+    country: 'Poland',
+    region: 'Jura',
+    publisher: 'Wspinanie.pl',
+    pricePln: '99.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/jpd2025/mini/250px_Jura Poludniowa okladka.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '1101',
+    title: 'Ziemia Kłodzka',
+    country: 'Poland',
+    region: 'Sudety',
+    publisher: 'Wspinanie.pl',
+    pricePln: '99.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/ziemia_klodzka/mini/250px_Ziemia-klodzka-2024.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '949',
+    title: 'Tatry Polskie – Drogi Zimowe',
+    country: 'Poland',
+    region: 'Tatry',
+    publisher: 'Biblioteka Taternika',
+    pricePln: '159.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/tatryzima2025/mini/250px_tatry-polskie-zima.jpg',
+    productUrl: null,
+    climbingStyles: ['alpine', 'ice'],
+  },
+  {
+    id: '1089',
+    title: '50 Tatrzańskich Klasyków',
+    country: 'Poland',
+    region: 'Tatry',
+    publisher: 'Biblioteka Taternika',
+    pricePln: '89.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/50tatrzanskich/mini/250px_50-tatrzanskich-klasykow-dla-poczatkujacych-okladka-mala.jpg',
+    productUrl: null,
+    climbingStyles: ['alpine', 'trad'],
+  },
+  {
+    id: '1088',
+    title: 'Sudety Zachodnie',
+    country: 'Poland',
+    region: 'Sudety',
+    publisher: 'GÓRY BOOKS',
+    pricePln: '110.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/sudety_zachodnie/mini/250px_Sudety-Zachodnie-Kajca-2024.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '470',
+    title: 'Góry Sokole',
+    country: 'Poland',
+    region: 'Sudety',
+    publisher: 'GÓRY BOOKS',
+    pricePln: '130.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_gory-sokole-2025.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '356',
+    title: 'Rudawy Janowickie',
+    country: 'Poland',
+    region: 'Sudety',
+    publisher: 'GÓRY BOOKS',
+    pricePln: '99.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/rudawy2022/mini/250px_rudawy_janowickie_kajca_2022.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '751',
+    title: 'Beskidy Zachodnie i Pogórze',
+    country: 'Poland',
+    region: 'Beskidy',
+    publisher: 'Wspinanie.pl',
+    pricePln: '89.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/Beskidy2019/mini/250px_beskidy-okladka-wspinacz.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad', 'bouldering'],
+  },
+  {
+    id: '829',
+    title: 'POLSKA 1 – Sudety & Przedgórze',
+    country: 'Poland',
+    region: 'Sudety',
+    publisher: 'GÓRY BOOKS',
+    pricePln: '120.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/mini/250px_polska-przewodnik-wspinaczkowy-wydawnictwo-gory-books.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '393',
+    title: 'Chorwacja',
+    country: 'Croatia',
+    region: 'Dalmatia',
+    publisher: 'Astroida',
+    pricePln: '149.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Chorwacja-2024.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '392',
+    title: 'Paklenica',
+    country: 'Croatia',
+    region: 'Paklenica',
+    publisher: 'Astroida',
+    pricePln: '99.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Paklenica-2024.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '440',
+    title: 'Climbing Without Frontiers – Istria',
+    country: 'Croatia',
+    region: 'Istria',
+    publisher: null,
+    pricePln: '89.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/Istria/mini/250px_istria_2021_okladka.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '467',
+    title: 'Słowenia',
+    country: 'Slovenia',
+    region: 'Julian Alps',
+    publisher: null,
+    pricePln: '119.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/mini/250px_slovenia_topo_2023.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '1125',
+    title: 'Serbia',
+    country: 'Serbia',
+    region: 'Central Serbia',
+    publisher: 'Balkan Colours',
+    pricePln: '129.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/Serbia2025/mini/250px_serbia_2025.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'trad'],
+  },
+  {
+    id: '1134',
+    title: 'Crag Climbing in Romsdal',
+    country: 'Norway',
+    region: 'Romsdal',
+    publisher: null,
+    pricePln: '149.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/Romsdal/mini/250px_Crag-Climbing-Romsdal.png',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '211',
+    title: "Dolomity – Cortina d'Ampezzo",
+    country: 'Italy',
+    region: 'Dolomites',
+    publisher: 'Sklep Podróżnika',
+    pricePln: '129.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/mini/250px_dolomity_cortina_2024.jpg',
+    productUrl: null,
+    climbingStyles: ['sport', 'alpine'],
+  },
+  {
+    id: '1053',
+    title: 'Dolomity – Korona Trzytysięczników',
+    country: 'Italy',
+    region: 'Dolomites',
+    publisher: 'Bezdroża',
+    pricePln: '89.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_dolomity-korona-trzytysiecznikow-roberto-ciri-alberto-bernardi.jpg',
+    productUrl: null,
+    climbingStyles: ['alpine'],
+  },
+  {
+    id: '1124',
+    title: 'Góry Regionu Trentino',
+    country: 'Italy',
+    region: 'Trentino',
+    publisher: 'Biblioteka Taternika',
+    pricePln: '99.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_Gory-Regionu-Trentino-okladka.jpg',
+    productUrl: null,
+    climbingStyles: ['alpine', 'sport'],
+  },
+  {
+    id: '974',
+    title: 'Alpy Wschodnie',
+    country: 'Austria',
+    region: 'Alps',
+    publisher: 'Bezdroża',
+    pricePln: '79.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_alpy-wschodnie-przewodnik-wspinaczkowy.jpg',
+    productUrl: null,
+    climbingStyles: ['alpine'],
+  },
+  {
+    id: '963',
+    title: 'Alpy Zachodnie',
+    country: 'France',
+    region: 'Alps',
+    publisher: 'Bezdroża',
+    pricePln: '79.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_alpy-zachodnie-przewodnik-wspinaczkowy.jpg',
+    productUrl: null,
+    climbingStyles: ['alpine'],
+  },
+  {
+    id: '1060',
+    title: 'Zahorie – Słowackie Skały I',
+    country: 'Slovakia',
+    region: 'Záhorie',
+    publisher: 'Skaly na Slovensku',
+    pricePln: '89.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_zahorie_2024.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '990',
+    title: 'Małe Karpaty – Słowackie Skały II',
+    country: 'Slovakia',
+    region: 'Malé Karpaty',
+    publisher: 'Skaly na Slovensku',
+    pricePln: '99.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_male_karpaty_2024.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '907',
+    title: 'Dreveník – Słowackie Skały III',
+    country: 'Slovakia',
+    region: 'Dreveník',
+    publisher: 'Skaly na Slovensku',
+    pricePln: '79.00',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_drevenik_2019.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '989',
+    title: 'Demianowska Dolina – Słowackie Skały V',
+    country: 'Slovakia',
+    region: 'Demänovská dolina',
+    publisher: 'Skaly na Slovensku',
+    pricePln: '119.99',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/slowacja/mini/250px_Dolina-Demianowska-2025.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
+  },
+  {
+    id: '1148',
+    title: 'Trenčín – Słowackie Skały VIII',
+    country: 'Slovakia',
+    region: 'Trenčín',
+    publisher: 'Skaly na Slovensku',
+    pricePln: '114.99',
+    coverImageUrl:
+      'https://ksiegarnia.wspinanie.pl/images/images/mini/250px_trencin.jpg',
+    productUrl: null,
+    climbingStyles: ['sport'],
   },
 ];
 

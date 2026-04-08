@@ -1,4 +1,4 @@
-import { useThemeColors } from '@/components/ui';
+import { EmptyState, useThemeColors } from '@/components/ui';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import {
   FilterChipsRow,
@@ -6,9 +6,12 @@ import {
   createSearchStateOptions,
   useSearchFiltersState,
 } from '@/features/SearchBar';
+import { useGuidebookSearch } from '@/features/GuidebookSearch/useGuidebookSearch';
+import type { Guidebook } from '@/services/guidebooks/types';
 import { sizes } from '@/src/theme';
 import { FlashList } from '@shopify/flash-list';
 import { Stack } from 'expo-router';
+import { useCallback, useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, {
   Extrapolation,
@@ -26,13 +29,39 @@ import {
   GUIDEBOOK_CONTEXT_CONFIG,
   GUIDEBOOK_FILTERS,
   SCREEN_ITEMS,
+  SEARCH_CORPUS,
+  cardColorFromId,
 } from './data';
 import { SEARCH_INPUT_HEIGHT, styles } from './index.styles';
 import type { ScreenItem } from './types';
 
+const ALL_FILTER_VALUE = 'all';
+
 const AnimatedFlashList = Animated.createAnimatedComponent(
   FlashList<ScreenItem>,
 );
+
+function buildSearchItems(results: Guidebook[], query: string): ScreenItem[] {
+  const trimmedQuery = query.trim();
+  const label = trimmedQuery
+    ? `${results.length} results for "${trimmedQuery}"`
+    : `${results.length} results`;
+
+  return [
+    { type: 'section-header', id: 'search-header', title: label },
+    ...results.map((g) => ({
+      type: 'list-card' as const,
+      id: `search-${g.id}`,
+      guidebook: {
+        id: g.id,
+        title: g.title,
+        subtitle: `${g.region} · ${g.country}`,
+        color: cardColorFromId(g.id),
+      },
+    })),
+    { type: 'spacer', id: 'bottom-spacer' },
+  ];
+}
 
 function renderItem({ item }: { item: ScreenItem }) {
   switch (item.type) {
@@ -69,6 +98,44 @@ export default function SearchScreen() {
 
   const { query, setQuery, selectedValues, toggleFilter } =
     useSearchFiltersState(createSearchStateOptions(GUIDEBOOK_CONTEXT_CONFIG));
+
+  // Mutual exclusion for 'all' chip:
+  // Tapping a specific style deselects 'all'; tapping 'all' clears all styles.
+  const handleToggleFilter = useCallback(
+    (value: string) => {
+      if (value === ALL_FILTER_VALUE) {
+        // Reset to 'all' only
+        selectedValues
+          .filter((v) => v !== ALL_FILTER_VALUE)
+          .forEach((v) => toggleFilter(v));
+        if (!selectedValues.includes(ALL_FILTER_VALUE)) {
+          toggleFilter(ALL_FILTER_VALUE);
+        }
+      } else {
+        // Deselect 'all' if currently selected, then toggle the style
+        if (selectedValues.includes(ALL_FILTER_VALUE)) {
+          toggleFilter(ALL_FILTER_VALUE);
+        }
+        toggleFilter(value);
+      }
+    },
+    [selectedValues, toggleFilter],
+  );
+
+  const { results, isSearchActive } = useGuidebookSearch(
+    SEARCH_CORPUS,
+    query,
+    selectedValues,
+  );
+
+  // Reset scroll position when entering or leaving search mode
+  useEffect(() => {
+    scrollOffset.value = 0;
+  }, [isSearchActive, scrollOffset]);
+
+  const listData = isSearchActive
+    ? buildSearchItems(results, query)
+    : SCREEN_ITEMS;
 
   const searchInputAnimatedStyle = useAnimatedStyle(() => ({
     height: interpolate(
@@ -130,18 +197,25 @@ export default function SearchScreen() {
           <FilterChipsRow
             filters={GUIDEBOOK_FILTERS}
             selectedValues={selectedValues}
-            onToggleFilter={toggleFilter}
+            onToggleFilter={handleToggleFilter}
           />
         </View>
 
-        <AnimatedFlashList
-          data={SCREEN_ITEMS}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
-          onScroll={onScroll}
-          scrollEventThrottle={16}
-          showsVerticalScrollIndicator={false}
-        />
+        {isSearchActive && results.length === 0 ? (
+          <EmptyState
+            title="No guidebooks found"
+            description="Try a different search or clear filters"
+          />
+        ) : (
+          <AnimatedFlashList
+            data={listData}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            onScroll={onScroll}
+            scrollEventThrottle={16}
+            showsVerticalScrollIndicator={false}
+          />
+        )}
       </SafeAreaView>
     </>
   );
