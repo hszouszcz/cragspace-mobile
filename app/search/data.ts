@@ -5,6 +5,8 @@ import type {
 import type { Guidebook } from '@/services/guidebooks/types';
 import type { HeroGuidebook, ScreenItem } from './types';
 
+export const GUIDEBOOK_SCREEN_TITLE = 'Guidebook Explorer';
+
 export const GUIDEBOOK_FILTERS: SearchFilterMeta[] = [
   { id: 'all', label: 'All Climbing', value: 'all' },
   { id: 'sport', label: 'Sport', value: 'sport' },

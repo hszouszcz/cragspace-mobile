@@ -19,6 +19,7 @@ type TopoBottomSheetProps = {
   data?: RouteListItemData[];
   sectorName?: string;
   sectorTitle?: string;
+  isFilterActive?: boolean;
   onRoutePress?: (route: RouteListItemData) => void;
   onFilterPress?: () => void;
   animatedIndex: SharedValue<number>;
@@ -31,6 +32,7 @@ const TopoBottomSheet = ({
   data = [],
   sectorName = 'Longs Peak',
   sectorTitle = 'The Diamond',
+  isFilterActive = false,
   onRoutePress,
   onFilterPress,
   animatedIndex,
@@ -87,6 +89,7 @@ const TopoBottomSheet = ({
         <TopoBottomSheetHandle
           sectorName={sectorName}
           sectorTitle={sectorTitle}
+          isFilterActive={isFilterActive}
           onFilterPress={onFilterPress || (() => {})}
           canGoBack={canGoBack}
           sheetNavigationRef={sheetNavigationRef}
