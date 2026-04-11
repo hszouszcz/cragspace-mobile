@@ -1,7 +1,9 @@
 import { Badge, Button, Typography } from '@/components/ui';
 import { radii, spacing } from '@/src/theme';
 import { Image } from 'expo-image';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { useRouter } from 'expo-router';
+import { useCallback } from 'react';
+import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import type { HeroGuidebook } from '../types';
 
 const CARD_WIDTH = Dimensions.get('window').width - spacing.lg * 2;
@@ -11,11 +13,18 @@ interface GuidebookHeroCardProps {
 }
 
 export function GuidebookHeroCard({ item }: GuidebookHeroCardProps) {
+  const router = useRouter();
+
+  const handleExplore = useCallback(() => {
+    router.push({ pathname: '/guidebook/[id]', params: { id: item.id } });
+  }, [router, item.id]);
+
   return (
-    <View
+    <Pressable
       style={styles.card}
+      onPress={handleExplore}
       accessibilityRole="button"
-      accessibilityLabel={item.title}
+      accessibilityLabel={`Otwórz przewodnik ${item.title}`}
     >
       {item.image != null ? (
         <Image
@@ -68,10 +77,15 @@ export function GuidebookHeroCard({ item }: GuidebookHeroCardProps) {
             </Typography>
           )}
 
-          <Button variant="primary" label="Explore" style={styles.button} />
+          <Button
+            variant="primary"
+            label="Explore"
+            style={styles.button}
+            onPress={handleExplore}
+          />
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 }
 

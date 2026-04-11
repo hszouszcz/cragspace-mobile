@@ -7,10 +7,10 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
 
+import { GUIDEBOOK_SCREEN_TITLE } from '@/app/search/data';
 import AppHeader from '@/components/header/AppHeader';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { GUIDEBOOK_SCREEN_TITLE } from '@/app/search/data';
 
 export const unstable_settings = {
   anchor: '(tabs)',
@@ -28,6 +28,13 @@ export default function RootLayout() {
             name="search/index"
             options={{
               title: GUIDEBOOK_SCREEN_TITLE,
+              header: AppHeader,
+            }}
+          />
+          <Stack.Screen
+            name="guidebook/[id]"
+            options={{
+              title: '',
               header: AppHeader,
             }}
           />

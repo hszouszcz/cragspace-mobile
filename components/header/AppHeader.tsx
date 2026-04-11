@@ -28,6 +28,8 @@ export default function AppHeader({ back, options, route }: AppHeaderProps) {
           paddingTop: insets.top,
           backgroundColor: colors.backgroundPrimary,
           borderBottomColor: colors.separator,
+          zIndex: 10,
+          elevation: 10,
         },
       ]}
     >
