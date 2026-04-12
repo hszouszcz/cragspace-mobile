@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   regionMeta: {
     ...typeScale.labelSm,
     textTransform: 'uppercase',
-    letterSpacing: 0.3,
+    letterSpacing: typeScale.tabLabel.letterSpacing,
     marginTop: spacing.xxs,
   },
 

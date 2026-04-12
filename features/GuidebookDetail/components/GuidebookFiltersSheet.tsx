@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     ...typeScale.captionSm,
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.xs,
-    letterSpacing: 0.8,
+    letterSpacing: typeScale.statLabel.letterSpacing,
   },
   gradeLabel: {
     marginTop: spacing.lg,
