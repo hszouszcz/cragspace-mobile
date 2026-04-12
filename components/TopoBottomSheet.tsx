@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
   sheetBackground: {
     borderTopLeftRadius: radii['2xl'],
     borderTopRightRadius: radii['2xl'],
-    borderTopWidth: 1,
+    borderTopWidth: StyleSheet.hairlineWidth,
   },
   content: {
     paddingHorizontal: spacing.lg,

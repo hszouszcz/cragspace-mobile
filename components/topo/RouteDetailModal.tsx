@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: spacing.lg,
     paddingTop: 60,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   closeButton: {
     padding: spacing.sm,
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: spacing.sm,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   label: {
     ...typeScale.labelLg,

@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   meta: {
     ...typeScale.labelSm,
     textTransform: 'uppercase',
-    letterSpacing: 0.3,
+    letterSpacing: typeScale.tabLabel.letterSpacing,
     marginTop: spacing.xxs,
   },
 });
