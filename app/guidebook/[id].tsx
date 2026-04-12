@@ -2,7 +2,6 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColors } from '@/components/ui/use-theme-colors';
 import { GuidebookDetailList } from '@/features/GuidebookDetail/GuidebookDetailList';
 import { GuidebookFiltersSheet } from '@/features/GuidebookDetail/components/GuidebookFiltersSheet';
-import { GuidebookInfoSheet } from '@/features/GuidebookDetail/components/GuidebookInfoSheet';
 import { HeaderActions } from '@/features/GuidebookDetail/components/HeaderActions';
 import { useExpandedRegions } from '@/features/GuidebookDetail/useExpandedRegions';
 import { useGroupedFiltersState } from '@/features/GuidebookDetail/useGroupedFiltersState';
@@ -23,7 +22,6 @@ export default function GuidebookDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const colors = useThemeColors();
   const router = useRouter();
-  const infoSheetRef = useRef<BottomSheet>(null);
   const filtersSheetRef = useRef<BottomSheet>(null);
 
   const detail = GUIDEBOOK_DETAILS[id ?? ''];
@@ -64,8 +62,8 @@ export default function GuidebookDetailScreen() {
     });
 
   const handleInfoPress = useCallback(() => {
-    infoSheetRef.current?.expand();
-  }, []);
+    router.push({ pathname: '/guidebook/info/[id]', params: { id: id ?? '' } });
+  }, [router, id]);
 
   const handleFilterPress = useCallback(() => {
     filtersSheetRef.current?.expand();
@@ -84,10 +82,6 @@ export default function GuidebookDetailScreen() {
     },
     [],
   );
-
-  const handleInfoSheetClose = useCallback(() => {
-    infoSheetRef.current?.close();
-  }, []);
 
   const handleFiltersSheetClose = useCallback(() => {
     filtersSheetRef.current?.close();
@@ -160,12 +154,6 @@ export default function GuidebookDetailScreen() {
           onSearchResultPress={handleSearchResultPress}
         />
       </SafeAreaView>
-
-      <GuidebookInfoSheet
-        ref={infoSheetRef}
-        metadata={detail.metadata}
-        onClose={handleInfoSheetClose}
-      />
 
       <GuidebookFiltersSheet
         ref={filtersSheetRef}

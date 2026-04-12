@@ -39,6 +39,13 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="guidebook/info/[id]"
+            options={{
+              presentation: 'modal',
+              header: AppHeader,
+            }}
+          />
+          <Stack.Screen
             name="TopoView"
             options={{
               title: 'Topo View',
