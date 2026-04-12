@@ -59,6 +59,7 @@ function makeSector(
   parking: Parking[],
   approachMinutes: number | null,
   inputs: RouteInput[],
+  sunExposure: string | null = null,
 ): Sector {
   const routes = makeRoutes(inputs);
   const styleSet = new Set(routes.map((r) => r.style));
@@ -71,6 +72,7 @@ function makeSector(
     coords,
     parking,
     approachMinutes,
+    sunExposure,
   };
 }
 
@@ -312,6 +314,7 @@ const skala_olszowiecka = makeSector(
     ['Płyta', 'V-', 'sport', 16, 7],
     ['Ekspres', 'VI.1+', 'sport', 20, 9],
   ],
+  'Sun from 12:00',
 );
 
 const turnia_w_kurhanie = makeSector(
@@ -329,6 +332,7 @@ const turnia_w_kurhanie = makeSector(
     ['Nowa na Kurhanie', 'VI.2+', 'sport', 17, 8],
     ['Stara Droga', 'III', 'trad', 20, null],
   ],
+  'Mostly Shady',
 );
 
 const igla_bedkowska = makeSector(
@@ -345,6 +349,7 @@ const igla_bedkowska = makeSector(
     ['Kominek Igły', 'IV', 'trad', 10, null],
     ['Kant Igły', 'VI.3', 'sport', 13, 7],
   ],
+  'Full sun',
 );
 
 const murowana_scianka = makeSector(
@@ -362,6 +367,7 @@ const murowana_scianka = makeSector(
     ['Najłatwiejsza', 'IV', 'trad', 14, null],
     ['Bulwar', 'VI.3+', 'sport', 10, 6],
   ],
+  'Morning sun',
 );
 
 const dolna_scianka_bedkowska = makeSector(
@@ -376,6 +382,7 @@ const dolna_scianka_bedkowska = makeSector(
     ['Bulwarowa', 'VI-', 'sport', 10, 5],
     ['Zacięcie', 'IV+', 'trad', 9, null],
   ],
+  'Afternoon sun',
 );
 
 const skala_jerzmanowskiego = makeSector(

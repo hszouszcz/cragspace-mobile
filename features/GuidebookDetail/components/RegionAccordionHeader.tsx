@@ -1,6 +1,6 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColors } from '@/components/ui/use-theme-colors';
-import { radii, sizes, spacing, typeScale } from '@/src/theme';
+import { radii, shadows, sizes, spacing, typeScale } from '@/src/theme';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, {
   useAnimatedStyle,
@@ -29,6 +29,8 @@ export function RegionAccordionHeader({
     ],
   }));
 
+  const totalRoutes = region.sectors.reduce((acc, s) => acc + s.routeCount, 0);
+
   return (
     <Pressable
       onPress={() => onToggle(region.id)}
@@ -40,7 +42,8 @@ export function RegionAccordionHeader({
         {
           backgroundColor: pressed
             ? colors.backgroundTertiary
-            : colors.backgroundSecondary,
+            : colors.surfaceCard,
+          shadowColor: colors.shadowColor,
         },
       ]}
     >
@@ -52,7 +55,9 @@ export function RegionAccordionHeader({
           {region.name}
         </Text>
         <Text style={[styles.meta, { color: colors.textSecondary }]}>
-          {region.sectorCount} {region.sectorCount === 1 ? 'sector' : 'sectors'}
+          {region.sectorCount} {region.sectorCount === 1 ? 'SECTOR' : 'SECTORS'}
+          {'  ·  '}
+          {totalRoutes} ROUTES
         </Text>
       </View>
 
@@ -74,9 +79,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingVertical: spacing.md,
     minHeight: sizes.minTapTarget,
-    borderRadius: radii.sm,
+    borderRadius: radii.lg,
     marginHorizontal: spacing.lg,
-    marginBottom: spacing.xs,
+    marginBottom: spacing.sm,
+    ...shadows.sm,
   },
   left: {
     flex: 1,
@@ -84,9 +90,12 @@ const styles = StyleSheet.create({
   },
   name: {
     ...typeScale.titleLg,
+    fontWeight: '700',
   },
   meta: {
-    ...typeScale.captionLg,
+    ...typeScale.labelSm,
+    textTransform: 'uppercase',
+    letterSpacing: 0.3,
     marginTop: spacing.xxs,
   },
 });

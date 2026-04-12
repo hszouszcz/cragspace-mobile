@@ -5,9 +5,8 @@ import { spacing } from '@/src/theme';
 import { FlashList } from '@shopify/flash-list';
 import { StyleSheet, View } from 'react-native';
 import { GuidebookStatsBar } from './components/GuidebookStatsBar';
-import { RegionAccordionHeader } from './components/RegionAccordionHeader';
+import { RegionCard } from './components/RegionCard';
 import { SearchResultRow } from './components/SearchResultRow';
-import { SectorRow } from './components/SectorRow';
 import type { GuidebookListItem } from './types';
 
 // ── Browse mode ───────────────────────────────────────────────────────────────
@@ -20,7 +19,7 @@ interface BrowseListProps {
   onSectorPress: (sector: Sector, regionId: string) => void;
 }
 
-function getItemType(item: GuidebookListItem, _index: number): string {
+function getItemType(item: GuidebookListItem): string {
   return item.type;
 }
 
@@ -38,24 +37,16 @@ function BrowseList({
           <GuidebookStatsBar
             totalRoutes={stats.routes}
             totalSectors={stats.sectors}
-            totalRegions={stats.regions}
             gradeRange={gradeRange}
           />
         );
-      case 'region-header':
+      case 'region':
         return (
-          <RegionAccordionHeader
+          <RegionCard
             region={item.region}
             isExpanded={item.isExpanded}
             onToggle={onToggleRegion}
-          />
-        );
-      case 'sector-row':
-        return (
-          <SectorRow
-            sector={item.sector}
-            regionId={item.regionId}
-            onPress={onSectorPress}
+            onSectorPress={onSectorPress}
           />
         );
       case 'spacer':
@@ -153,7 +144,7 @@ export function GuidebookDetailList({
 
 const styles = StyleSheet.create({
   listContent: {
-    paddingTop: spacing.sm,
+    paddingTop: spacing.lg,
   },
   spacer: {
     height: spacing['4xl'],

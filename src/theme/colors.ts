@@ -71,19 +71,29 @@
 // ───────────────────────────────────────────────────────────────────────────────
 
 export const palette = {
-  // Brand
+  // Brand — warm outdoor/climbing orange
   orange50: '#FFF4EC',
   orange100: '#FFE0C7',
   orange200: '#FFC299',
   orange300: '#FF9E61',
   orange400: '#FF7A2E',
-  orange500: '#FC4C02', // Strava primary orange
+  orange500: '#FC4C02', // Strava primary orange (kept for reference)
   orange600: '#E04300',
   orange700: '#B83800',
   orange800: '#8C2B00',
   orange900: '#5C1D00',
 
-  // Neutral — cool gray bias matching Strava's clean aesthetic
+  // Warm outdoor palette (climbing/earthy theme — matches Stitch design system)
+  warmOrange500: '#f27f0d', // Primary brand orange — warm amber
+  warmOrange100: '#fde9c4', // Orange tint surface
+  warmOrange50: '#fef6ea', // Orange muted background
+  warmBrown950: '#241912', // Deepest text — warm near-black
+  warmBrown700: '#564335', // Secondary text — muted warm brown
+  warmBrown400: '#86522a', // Tertiary / accent brown
+  warmCream50: '#f8f7f5', // Page canvas — warm off-white
+  warmCream100: '#f0ede8', // Inset / pressed — slightly darker warm gray
+
+  // Neutral — cool gray bias
   white: '#FFFFFF',
   gray50: '#F7F7FA',
   gray100: '#F0F0F5',
@@ -140,55 +150,55 @@ export const palette = {
 // ───────────────────────────────────────────────────────────────────────────────
 
 export const lightColors = {
-  // Backgrounds
-  backgroundPrimary: palette.white, // Main screen canvas
-  backgroundSecondary: palette.gray50, // Page background behind cards
-  backgroundTertiary: palette.gray100, // Inset areas, grouped table bg
-  backgroundElevated: palette.white, // Cards, sheets, modals
+  // Backgrounds — warm earthy hierarchy (canvas → card → inset)
+  backgroundPrimary: palette.warmCream50, // Warm off-white screen canvas
+  backgroundSecondary: palette.white, // White elevated cards / list items
+  backgroundTertiary: palette.warmCream100, // Warm inset areas, pressed states
+  backgroundElevated: palette.white, // Sheets, modals
 
-  // Text
-  textPrimary: '#1D1D1F', // Headlines, body, athlete names
-  textSecondary: palette.gray500, // Timestamps, labels, secondary info
-  textTertiary: palette.gray300, // Placeholders, disabled text
+  // Text — warm brown hierarchy
+  textPrimary: palette.warmBrown950, // Dark warm brown for headlines / body
+  textSecondary: palette.warmBrown700, // Muted warm brown for secondary info
+  textTertiary: palette.warmBrown400, // Subtle brown for placeholders / disabled
   textInverse: palette.white, // Text on brand-colored surfaces
   textLink: palette.blue500, // Tappable links
 
-  // Brand
-  brandPrimary: palette.orange500, // CTAs, active states, brand accents
-  brandPrimaryPressed: palette.orange600, // Pressed state for brand buttons
-  brandPrimaryMuted: palette.orange50, // Light orange tint for backgrounds
-  brandPrimaryMutedPressed: palette.orange100,
+  // Brand — warm amber orange
+  brandPrimary: palette.warmOrange500, // Primary CTAs, active states
+  brandPrimaryPressed: '#d96c00', // Pressed state
+  brandPrimaryMuted: palette.warmOrange50, // Light orange tint backgrounds
+  brandPrimaryMutedPressed: palette.warmOrange100,
 
   // Borders & Separators
-  borderDefault: palette.blackAlpha6, // Standard card/cell borders
-  borderStrong: palette.blackAlpha12, // Emphasized borders (inputs)
-  borderBrand: palette.orange500, // Active/selected borders
-  separator: palette.blackAlpha6, // List separators
-  separatorOpaque: palette.gray150, // Opaque separators (non-transparent)
+  borderDefault: palette.blackAlpha6,
+  borderStrong: palette.blackAlpha12,
+  borderBrand: palette.warmOrange500,
+  separator: palette.blackAlpha6,
+  separatorOpaque: palette.gray150,
 
   // Surfaces (for elevated components)
   surfaceCard: palette.white,
   surfaceSheet: palette.white,
-  surfaceOverlay: palette.blackAlpha40, // Overlay behind modals
-  surfaceInput: palette.gray50, // Text input backgrounds
+  surfaceOverlay: palette.blackAlpha40,
+  surfaceInput: palette.warmCream100,
   surfaceInputFocused: palette.white,
 
   // Icons
-  iconPrimary: '#1D1D1F',
+  iconPrimary: palette.warmBrown950,
   iconSecondary: palette.gray400,
   iconTertiary: palette.gray300,
-  iconBrand: palette.orange500,
+  iconBrand: palette.warmOrange500,
   iconInverse: palette.white,
 
   // Tab bar
   tabBarBackground: palette.white,
   tabBarBorder: palette.blackAlpha8,
-  tabBarActive: palette.orange500,
+  tabBarActive: palette.warmOrange500,
   tabBarInactive: palette.gray400,
 
   // Interactive states
-  pressedOverlay: palette.blackAlpha4, // Pressed feedback on rows/cards
-  hoverOverlay: palette.blackAlpha4, // Web hover state
+  pressedOverlay: palette.blackAlpha4,
+  hoverOverlay: palette.blackAlpha4,
   disabledOpacity: 0.38,
 
   // Semantic feedback
@@ -201,23 +211,23 @@ export const lightColors = {
   info: palette.blue500,
   infoMuted: '#E3F2FD',
 
-  // Shadows (React Native shadow props + elevation)
+  // Shadows
   shadowColor: palette.black,
 
   // Activity-specific
-  kudos: palette.orange500,
-  segmentKom: palette.orange500,
+  kudos: palette.warmOrange500,
+  segmentKom: palette.warmOrange500,
   segmentPr: palette.green500,
 
   // Badge
-  badgePrimaryBg: palette.orange500,
+  badgePrimaryBg: palette.warmOrange500,
   badgePrimaryText: palette.white,
-  badgeSecondaryBg: palette.gray100,
-  badgeSecondaryText: palette.gray600,
+  badgeSecondaryBg: palette.warmCream100,
+  badgeSecondaryText: palette.warmBrown700,
 
   // Skeleton / loading
-  skeletonBase: palette.gray100,
-  skeletonHighlight: palette.gray50,
+  skeletonBase: palette.warmCream100,
+  skeletonHighlight: palette.warmCream50,
 } as const;
 
 // ───────────────────────────────────────────────────────────────────────────────
@@ -238,8 +248,8 @@ export const darkColors = {
   textInverse: palette.white,
   textLink: palette.blue400,
 
-  // Brand
-  brandPrimary: palette.orange500,
+  // Brand — warm amber orange (consistent with light mode)
+  brandPrimary: palette.warmOrange500,
   brandPrimaryPressed: palette.orange400,
   brandPrimaryMuted: palette.orange900,
   brandPrimaryMutedPressed: palette.orange800,
@@ -262,13 +272,13 @@ export const darkColors = {
   iconPrimary: '#F5F5F7',
   iconSecondary: palette.gray400,
   iconTertiary: palette.gray600,
-  iconBrand: palette.orange500,
+  iconBrand: palette.warmOrange500,
   iconInverse: palette.white,
 
   // Tab bar
   tabBarBackground: palette.gray950,
   tabBarBorder: palette.whiteAlpha8,
-  tabBarActive: palette.orange500,
+  tabBarActive: palette.warmOrange500,
   tabBarInactive: palette.gray400,
 
   // Interactive states
@@ -290,12 +300,12 @@ export const darkColors = {
   shadowColor: palette.black,
 
   // Activity-specific
-  kudos: palette.orange500,
-  segmentKom: palette.orange500,
+  kudos: palette.warmOrange500,
+  segmentKom: palette.warmOrange500,
   segmentPr: palette.green400,
 
   // Badge
-  badgePrimaryBg: palette.orange500,
+  badgePrimaryBg: palette.warmOrange500,
   badgePrimaryText: palette.white,
   badgeSecondaryBg: palette.gray800,
   badgeSecondaryText: palette.gray300,

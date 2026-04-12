@@ -18,7 +18,7 @@ export function BackButton({ onPress }: BackButtonProps) {
       style={styles.button}
     >
       <IconSymbol
-        name="chevron.left"
+        name="arrow.left"
         size={sizes.iconLg}
         color={colors.iconPrimary}
       />

@@ -1,6 +1,7 @@
 import { TextInput } from '@/components/ui';
 import { spacing } from '@/src/theme';
-import { StyleSheet, View } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, type ViewStyle } from 'react-native';
 
 interface SearchInputBarProps {
   query: string;
@@ -8,6 +9,8 @@ interface SearchInputBarProps {
   onQueryChange: (value: string) => void;
   onFocusChange?: (isFocused: boolean) => void;
   onSubmit?: (value: string) => void;
+  inputContainerStyle?: ViewStyle;
+  trailingAction?: React.ReactNode;
 }
 
 export function SearchInputBar({
@@ -16,6 +19,8 @@ export function SearchInputBar({
   onQueryChange,
   onFocusChange,
   onSubmit,
+  inputContainerStyle,
+  trailingAction,
 }: SearchInputBarProps) {
   return (
     <View style={styles.container}>
@@ -32,6 +37,8 @@ export function SearchInputBar({
         autoCorrect={false}
         accessibilityLabel="Search input"
         accessibilityHint="Type to search by keyword"
+        containerStyle={inputContainerStyle}
+        trailingAction={trailingAction}
       />
     </View>
   );

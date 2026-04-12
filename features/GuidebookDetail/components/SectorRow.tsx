@@ -1,18 +1,9 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColors } from '@/components/ui/use-theme-colors';
+import { KURTYKI_GRADES } from '@/services/guidebooks/types';
 import { radii, sizes, spacing, typeScale } from '@/src/theme';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import type { Sector } from '@/services/guidebooks/types';
-
-const STYLE_LABEL: Record<string, string> = {
-  sport: 'Sport',
-  trad: 'Trad',
-  bouldering: 'Boulder',
-  alpine: 'Alpin',
-  ice: 'Lód',
-  mixed: 'Mixed',
-  'via-ferrata': 'Ferrata',
-};
 
 interface SectorRowProps {
   sector: Sector;
@@ -20,25 +11,38 @@ interface SectorRowProps {
   onPress: (sector: Sector, regionId: string) => void;
 }
 
+function getGradeRange(sector: Sector): string | null {
+  if (sector.routes.length === 0) return null;
+  const indices = sector.routes
+    .map((r) => KURTYKI_GRADES.indexOf(r.grade))
+    .filter((i) => i >= 0);
+  if (indices.length === 0) return null;
+  const min = KURTYKI_GRADES[Math.min(...indices)];
+  const max = KURTYKI_GRADES[Math.max(...indices)];
+  return min === max ? min : `${min} · ${max}`;
+}
+
 export function SectorRow({ sector, regionId, onPress }: SectorRowProps) {
   const colors = useThemeColors();
+  const gradeRange = getGradeRange(sector);
 
   return (
     <Pressable
       onPress={() => onPress(sector, regionId)}
       accessibilityRole="button"
-      accessibilityLabel={`${sector.name}, ${sector.routeCount} dróg`}
+      accessibilityLabel={`${sector.name}, ${sector.routeCount} routes`}
       style={({ pressed }) => [
         styles.container,
         {
           backgroundColor: pressed
             ? colors.backgroundTertiary
-            : colors.backgroundPrimary,
+            : colors.surfaceCard,
           borderBottomColor: colors.separator,
         },
       ]}
     >
       <View style={styles.content}>
+        {/* Left: name + meta info */}
         <View style={styles.left}>
           <Text
             style={[styles.name, { color: colors.textPrimary }]}
@@ -46,45 +50,62 @@ export function SectorRow({ sector, regionId, onPress }: SectorRowProps) {
           >
             {sector.name}
           </Text>
-          <View style={styles.badges}>
-            {sector.styles.map((style) => (
-              <View
-                key={style}
-                style={[
-                  styles.badge,
-                  { backgroundColor: colors.backgroundTertiary },
-                ]}
-              >
-                <Text
-                  style={[styles.badgeText, { color: colors.textSecondary }]}
-                >
-                  {STYLE_LABEL[style] ?? style}
+
+          <View style={styles.metaRow}>
+            <Text style={[styles.routeCount, { color: colors.textSecondary }]}>
+              {sector.routeCount} routes
+            </Text>
+
+            {sector.approachMinutes != null && (
+              <View style={styles.metaItem}>
+                <IconSymbol
+                  name="clock"
+                  size={sizes.iconSm}
+                  color={colors.iconTertiary}
+                />
+                <Text style={[styles.metaText, { color: colors.textTertiary }]}>
+                  {sector.approachMinutes} min
                 </Text>
               </View>
-            ))}
-            {sector.approachMinutes != null && (
-              <Text style={[styles.approach, { color: colors.textTertiary }]}>
-                {sector.approachMinutes} min
-              </Text>
             )}
           </View>
+
+          {sector.sunExposure != null && (
+            <View style={[styles.metaRow, styles.sunRow]}>
+              <IconSymbol
+                name="sun.max"
+                size={sizes.iconSm}
+                color={colors.iconTertiary}
+              />
+              <Text style={[styles.metaText, { color: colors.textTertiary }]}>
+                {sector.sunExposure}
+              </Text>
+            </View>
+          )}
         </View>
 
+        {/* Right: grade badge + chevron */}
         <View style={styles.right}>
-          <Text style={[styles.routeCount, { color: colors.textSecondary }]}>
-            {sector.routeCount}
-          </Text>
-          <Text style={[styles.routeLabel, { color: colors.textTertiary }]}>
-            dróg
-          </Text>
+          {gradeRange != null && (
+            <View
+              style={[
+                styles.gradeBadge,
+                { backgroundColor: colors.brandPrimaryMuted },
+              ]}
+            >
+              <Text
+                style={[styles.gradeBadgeText, { color: colors.brandPrimary }]}
+              >
+                {gradeRange}
+              </Text>
+            </View>
+          )}
+          <IconSymbol
+            name="chevron.right"
+            size={sizes.iconMd}
+            color={colors.iconTertiary}
+          />
         </View>
-
-        <IconSymbol
-          name="chevron.right"
-          size={sizes.iconMd}
-          color={colors.iconTertiary}
-          style={styles.chevron}
-        />
       </View>
     </Pressable>
   );
@@ -95,7 +116,6 @@ const styles = StyleSheet.create({
     marginLeft: spacing.lg * 2,
     marginRight: spacing.lg,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderRadius: radii.xs,
   },
   content: {
     flexDirection: 'row',
@@ -106,39 +126,45 @@ const styles = StyleSheet.create({
   },
   left: {
     flex: 1,
+    marginRight: spacing.sm,
   },
   name: {
     ...typeScale.titleSm,
+    fontWeight: '600',
   },
-  badges: {
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+    marginTop: spacing.xxs,
+  },
+  sunRow: {
+    marginTop: 2,
+  },
+  metaItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.xxs,
+  },
+  routeCount: {
+    ...typeScale.captionLg,
+  },
+  metaText: {
+    ...typeScale.captionLg,
+  },
+  right: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: spacing.xs,
-    marginTop: spacing.xxs,
-    flexWrap: 'wrap',
+    flexShrink: 0,
   },
-  badge: {
-    borderRadius: radii.xs,
-    paddingHorizontal: spacing.xs,
-    paddingVertical: 2,
+  gradeBadge: {
+    borderRadius: radii.full,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 3,
   },
-  badgeText: {
+  gradeBadgeText: {
     ...typeScale.captionSm,
-  },
-  approach: {
-    ...typeScale.captionSm,
-  },
-  right: {
-    alignItems: 'flex-end',
-    marginRight: spacing.xs,
-  },
-  routeCount: {
-    ...typeScale.titleSm,
-  },
-  routeLabel: {
-    ...typeScale.captionSm,
-  },
-  chevron: {
-    marginLeft: spacing.xxs,
+    fontWeight: '600',
   },
 });
