@@ -1,4 +1,4 @@
-import { type SemanticColors } from '@/src/theme';
+import { spacing, type SemanticColors } from '@/src/theme';
 import { StyleSheet } from 'react-native';
 
 export function createCollapsibleStyles(colors: SemanticColors) {
@@ -6,11 +6,11 @@ export function createCollapsibleStyles(colors: SemanticColors) {
     heading: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 6,
+      gap: spacing.sm_,
     },
     content: {
-      marginTop: 6,
-      marginLeft: 24,
+      marginTop: spacing.sm_,
+      marginLeft: spacing['2xl'],
     },
     chevronOpen: {
       transform: [{ rotate: '90deg' }],
