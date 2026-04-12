@@ -1,5 +1,5 @@
 import { Badge, Button, Typography } from '@/components/ui';
-import { radii, spacing } from '@/src/theme';
+import { palette, radii, spacing } from '@/src/theme';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import { useCallback } from 'react';
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: spacing.lg,
     paddingBottom: spacing.lg,
     paddingTop: spacing['3xl'],
-    backgroundColor: 'rgba(0,0,0,0.55)',
+    backgroundColor: palette.blackAlpha55,
   },
   title: {
     marginBottom: spacing.xs,

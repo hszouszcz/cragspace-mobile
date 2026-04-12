@@ -136,6 +136,7 @@ export const palette = {
   blackAlpha12: 'rgba(0, 0, 0, 0.12)',
   blackAlpha20: 'rgba(0, 0, 0, 0.20)',
   blackAlpha40: 'rgba(0, 0, 0, 0.40)',
+  blackAlpha55: 'rgba(0, 0, 0, 0.55)',
   blackAlpha60: 'rgba(0, 0, 0, 0.60)',
   whiteAlpha4: 'rgba(255, 255, 255, 0.04)',
   whiteAlpha8: 'rgba(255, 255, 255, 0.08)',

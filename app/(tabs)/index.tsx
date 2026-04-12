@@ -5,12 +5,19 @@ import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useThemeColors } from '@/components/ui/use-theme-colors';
+import { lightColors, darkColors } from '@/src/theme';
 import { Link } from 'expo-router';
 
 export default function HomeScreen() {
+  const colors = useThemeColors();
+
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
+      headerBackgroundColor={{
+        light: lightColors.backgroundPrimary,
+        dark: darkColors.backgroundPrimary,
+      }}
       headerImage={
         <Image
           source={require('@/assets/images/partial-react-logo.png')}
@@ -24,7 +31,10 @@ export default function HomeScreen() {
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
         <Link href="/TopoView" asChild>
-          <ThemedText type="subtitle" style={styles.linkText}>
+          <ThemedText
+            type="subtitle"
+            style={[styles.linkText, { color: colors.textLink }]}
+          >
             📍 Zobacz Topo - dSlonia
           </ThemedText>
         </Link>
@@ -109,7 +119,6 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   linkText: {
-    color: '#007AFF',
     textDecorationLine: 'underline',
   },
   reactLogo: {
