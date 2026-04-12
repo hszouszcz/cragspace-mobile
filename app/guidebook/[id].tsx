@@ -191,8 +191,7 @@ const styles = StyleSheet.create({
   searchRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: spacing.lg,
-    gap: spacing.sm,
+    paddingRight: spacing.lg,
   },
   searchInputWrapper: {
     flex: 1,
