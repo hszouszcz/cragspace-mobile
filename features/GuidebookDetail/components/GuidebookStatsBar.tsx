@@ -1,5 +1,5 @@
 import { useThemeColors } from '@/components/ui/use-theme-colors';
-import { spacing, typeScale } from '@/src/theme';
+import { radii, shadows, spacing, typeScale } from '@/src/theme';
 import { StyleSheet, Text, View } from 'react-native';
 
 interface GuidebookStatsBarProps {
@@ -20,43 +20,43 @@ export function GuidebookStatsBar({
       style={[
         styles.container,
         {
-          backgroundColor: colors.backgroundSecondary,
-          borderBottomColor: colors.separator,
+          backgroundColor: colors.surfaceCard,
+          shadowColor: colors.shadowColor,
         },
       ]}
     >
       <View style={styles.stat}>
-        <Text style={[styles.value, { color: colors.textPrimary }]}>
-          {totalRoutes}
-        </Text>
         <Text style={[styles.label, { color: colors.textSecondary }]}>
           ROUTES
         </Text>
+        <Text style={[styles.value, { color: colors.brandPrimary }]}>
+          {totalRoutes}
+        </Text>
       </View>
 
       <View style={[styles.divider, { backgroundColor: colors.separator }]} />
 
       <View style={styles.stat}>
-        <Text style={[styles.value, { color: colors.textPrimary }]}>
-          {totalSectors}
-        </Text>
         <Text style={[styles.label, { color: colors.textSecondary }]}>
           SECTORS
         </Text>
+        <Text style={[styles.value, { color: colors.brandPrimary }]}>
+          {totalSectors}
+        </Text>
       </View>
 
       <View style={[styles.divider, { backgroundColor: colors.separator }]} />
 
       <View style={styles.stat}>
+        <Text style={[styles.label, { color: colors.textSecondary }]}>
+          GRADE
+        </Text>
         <Text
-          style={[styles.value, { color: colors.textPrimary }]}
+          style={[styles.value, { color: colors.brandPrimary }]}
           numberOfLines={1}
           adjustsFontSizeToFit
         >
           {gradeRange}
-        </Text>
-        <Text style={[styles.label, { color: colors.textSecondary }]}>
-          GRADE RANGE
         </Text>
       </View>
     </View>
@@ -69,21 +69,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: spacing.lg,
     paddingHorizontal: spacing.lg,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    marginHorizontal: spacing.lg,
     marginBottom: spacing.lg,
+    borderRadius: radii.lg,
+    ...shadows.sm,
   },
   stat: {
     flex: 1,
     alignItems: 'center',
-  },
-  value: {
-    ...typeScale.headlineLg,
-    marginBottom: spacing.xxs,
+    gap: spacing.xxs,
   },
   label: {
     ...typeScale.labelSm,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
+  },
+  value: {
+    ...typeScale.headlineLg,
   },
   divider: {
     width: StyleSheet.hairlineWidth,

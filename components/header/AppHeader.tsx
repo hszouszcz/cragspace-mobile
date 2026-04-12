@@ -1,6 +1,6 @@
 import { BackButton } from '@/components/ui/back-button/BackButton';
 import { useThemeColors } from '@/components/ui/use-theme-colors';
-import { sizes, spacing, typeScale } from '@/src/theme';
+import { shadows, sizes, spacing, typeScale } from '@/src/theme';
 import { Route } from '@react-navigation/native';
 import { NativeStackNavigationOptions } from '@react-navigation/native-stack';
 import { useRouter } from 'expo-router';
@@ -26,15 +26,13 @@ export default function AppHeader({ back, options, route }: AppHeaderProps) {
         styles.container,
         {
           paddingTop: insets.top,
-          backgroundColor: colors.backgroundPrimary,
-          borderBottomColor: colors.separator,
-          zIndex: 10,
-          elevation: 10,
+          backgroundColor: colors.surfaceCard,
+          shadowColor: colors.shadowColor,
         },
       ]}
     >
       <View style={styles.row}>
-        <View style={styles.side}>
+        <View style={styles.leftSection}>
           {back ? <BackButton onPress={() => router.back()} /> : null}
         </View>
 
@@ -46,7 +44,7 @@ export default function AppHeader({ back, options, route }: AppHeaderProps) {
           {title}
         </Text>
 
-        <View style={[styles.side, styles.sideRight]}>
+        <View style={styles.rightSection}>
           {options.headerRight?.({ canGoBack: !!back })}
         </View>
       </View>
@@ -56,23 +54,31 @@ export default function AppHeader({ back, options, route }: AppHeaderProps) {
 
 const styles = StyleSheet.create({
   container: {
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    zIndex: 10,
+    ...shadows.sm,
+    elevation: 10,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     height: sizes.minTapTarget,
     paddingHorizontal: spacing.lg,
+    gap: spacing.xs,
   },
-  side: {
-    flex: 1,
-  },
-  sideRight: {
-    alignItems: 'flex-end',
+  leftSection: {
+    width: sizes.minTapTarget,
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginLeft: -spacing.sm,
   },
   title: {
-    flex: 2,
-    textAlign: 'center',
+    flex: 1,
     ...typeScale.headlineSm,
+  },
+  rightSection: {
+    width: sizes.minTapTarget,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    marginRight: -spacing.sm,
   },
 });

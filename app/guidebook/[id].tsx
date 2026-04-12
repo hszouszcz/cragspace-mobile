@@ -11,7 +11,7 @@ import { useSearchFiltersState } from '@/features/SearchBar/useSearchFiltersStat
 import { GUIDEBOOK_DETAILS } from '@/services/guidebooks/guidebook-detail-data';
 import type { GuidebookSearchResult } from '@/services/guidebooks/guidebook-detail-search';
 import type { Sector } from '@/services/guidebooks/types';
-import { sizes, spacing } from '@/src/theme';
+import { shadows, sizes, spacing } from '@/src/theme';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useCallback, useRef } from 'react';
@@ -106,41 +106,34 @@ export default function GuidebookDetailScreen() {
         style={[styles.screen, { backgroundColor: colors.backgroundPrimary }]}
       >
         {/* Sticky search + filter row */}
-        <View
-          style={[
-            styles.stickyHeader,
-            {
-              backgroundColor: colors.backgroundPrimary,
-              borderBottomColor: colors.separator,
-            },
-          ]}
-        >
-          <View style={styles.searchRow}>
-            <View style={styles.searchInputWrapper}>
-              <SearchInputBar
-                query={query}
-                placeholder="Search routes, sectors, regions…"
-                onQueryChange={setQuery}
-              />
-            </View>
-            <Pressable
-              onPress={handleFilterPress}
-              accessibilityRole="button"
-              accessibilityLabel={
-                hasActiveFilters ? 'Filters (active)' : 'Filters'
-              }
-              style={styles.filterButton}
-              hitSlop={4}
-            >
-              <IconSymbol
-                name="slider.horizontal.3"
-                size={sizes.iconLg}
-                color={
-                  hasActiveFilters ? colors.brandPrimary : colors.iconSecondary
+        <View style={styles.stickyHeader}>
+          <SearchInputBar
+            query={query}
+            placeholder="Search routes, sectors, regions…"
+            onQueryChange={setQuery}
+            inputContainerStyle={{
+              backgroundColor: colors.surfaceCard,
+              shadowColor: colors.shadowColor,
+              ...shadows.sm,
+              elevation: 3,
+            }}
+            trailingAction={
+              <Pressable
+                onPress={handleFilterPress}
+                accessibilityRole="button"
+                accessibilityLabel={
+                  hasActiveFilters ? 'Filters (active)' : 'Filters'
                 }
-              />
-            </Pressable>
-          </View>
+                hitSlop={8}
+              >
+                <IconSymbol
+                  name="slider.horizontal.3"
+                  size={sizes.iconLg}
+                  color={colors.brandPrimary}
+                />
+              </Pressable>
+            }
+          />
         </View>
 
         <GuidebookDetailList
@@ -174,20 +167,5 @@ const styles = StyleSheet.create({
   stickyHeader: {
     paddingTop: spacing.md,
     paddingBottom: spacing.sm,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-  },
-  searchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: spacing.lg,
-  },
-  searchInputWrapper: {
-    flex: 1,
-  },
-  filterButton: {
-    minWidth: sizes.minTapTarget,
-    minHeight: sizes.minTapTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

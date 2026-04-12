@@ -1,7 +1,9 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { SvgPathConfig } from '@/services/topo/loadSvgPaths';
+import { theme } from '@/src/theme';
 import {
   Dimensions,
   ImageSourcePropType,
@@ -12,6 +14,8 @@ import {
 import Animated from 'react-native-reanimated';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { spacing, radii, typography } = theme;
+const { typeScale } = typography;
 
 type TopoPath = SvgPathConfig & {
   strokeWidth: number;
@@ -34,6 +38,9 @@ export default function TopoFullscreenViewer({
   onClose,
   onPathPress,
 }: TopoFullscreenViewerProps) {
+  const colorScheme = useColorScheme();
+  const colors = theme.colors(colorScheme ?? 'light');
+
   return (
     <Modal
       visible={visible}
@@ -41,9 +48,22 @@ export default function TopoFullscreenViewer({
       transparent={false}
       onRequestClose={onClose}
     >
-      <ThemedView style={styles.container}>
-        <Pressable onPress={onClose} style={styles.closeButton}>
-          <ThemedText style={styles.closeText}>X</ThemedText>
+      <ThemedView
+        style={[
+          styles.container,
+          { backgroundColor: colors.backgroundPrimary },
+        ]}
+      >
+        <Pressable
+          onPress={onClose}
+          style={[
+            styles.closeButton,
+            { backgroundColor: colors.surfaceOverlay },
+          ]}
+        >
+          <ThemedText style={[styles.closeText, { color: colors.textInverse }]}>
+            X
+          </ThemedText>
         </Pressable>
         <ThemedView style={styles.stage}>
           <Animated.Image
@@ -66,21 +86,17 @@ export default function TopoFullscreenViewer({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
   },
   closeButton: {
     position: 'absolute',
     top: 50,
-    right: 20,
+    right: spacing.xl,
     zIndex: 2,
-    padding: 12,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 18,
+    padding: spacing.md,
+    borderRadius: radii['2xl'],
   },
   closeText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: '700',
+    ...typeScale.titleLg,
   },
   stage: {
     flex: 1,

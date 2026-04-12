@@ -143,6 +143,8 @@ export interface Sector {
   styles: ClimbingStyle[];
   /** Walk-in time from parking in minutes */
   approachMinutes: number | null;
+  /** Human-readable sun exposure description, e.g. "Sun from 12:00", "Mostly Shady" */
+  sunExposure: string | null;
   /** GPS coordinates of the crag/sector itself */
   coords: LatLng;
   /** Parking spot(s) serving this sector */

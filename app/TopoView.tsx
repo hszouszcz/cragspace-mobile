@@ -1,5 +1,6 @@
 import { ThemedView } from '@/components/themed-view';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
+import { palette } from '@/src/theme';
 import TopoBottomSheet, { SNAP_POINTS } from '@/components/TopoBottomSheet';
 import { useLoadRouteSvgPaths } from '@/features/TopoPreview/useLoadRouteSvgPaths';
 import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimations';
@@ -157,7 +158,7 @@ export default function TopoView() {
                     pressedPaths={pressedPaths}
                     selectedPathId={focusedRouteId}
                     dimOpacity={0.45}
-                    ghostStroke="#0f172a"
+                    ghostStroke={palette.warmBrown950}
                     ghostOpacity={0.22}
                     ghostStrokeWidthMultiplier={2}
                     onPathPressIn={handlePathPressIn}
@@ -215,11 +216,5 @@ const styles = StyleSheet.create({
   //   },
   svgOverlay: {
     position: 'absolute',
-  },
-  colorIndicator: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 12,
   },
 });

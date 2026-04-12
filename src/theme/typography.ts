@@ -80,29 +80,28 @@
 import { Platform, TextStyle } from 'react-native';
 
 // ───────────────────────────────────────────────────────────────────────────────
-// Font family stacks — platform-aware
+// Font family stacks — Inter for sans, platform defaults for mono/serif
 // ───────────────────────────────────────────────────────────────────────────────
 
-export const fontFamily = Platform.select({
-  ios: {
-    sans: 'System', // Maps to SF Pro via React Native
-    serif: 'Georgia',
-    mono: 'Menlo',
-    rounded: 'System', // Can use SF Rounded via UIFontDescriptor
-  },
-  android: {
-    sans: 'Roboto',
-    serif: 'serif',
-    mono: 'monospace',
-    rounded: 'Roboto', // No native rounded; fall back to standard
-  },
-  default: {
-    sans: 'System',
-    serif: 'Georgia',
-    mono: 'Courier',
-    rounded: 'System',
-  },
-})!;
+export const fontFamily = {
+  // Inter weight variants (loaded via @expo-google-fonts/inter in app/_layout.tsx)
+  sans: 'Inter_400Regular',
+  sansMedium: 'Inter_500Medium',
+  sansSemibold: 'Inter_600SemiBold',
+  sansBold: 'Inter_700Bold',
+  sansExtrabold: 'Inter_800ExtraBold',
+  // Platform-native fallbacks for non-body uses
+  serif: Platform.select({
+    ios: 'Georgia',
+    android: 'serif',
+    default: 'Georgia',
+  })!,
+  mono: Platform.select({
+    ios: 'Menlo',
+    android: 'monospace',
+    default: 'Courier',
+  })!,
+} as const;
 
 // ───────────────────────────────────────────────────────────────────────────────
 // Font weights — React Native compatible string values
@@ -123,7 +122,7 @@ export const fontWeight = {
 export const typeScale = {
   /** 44/48 ExtraBold — Profile hero stats (total distance, hours) */
   heroStat: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansExtrabold,
     fontSize: 44,
     lineHeight: 48,
     fontWeight: fontWeight.extrabold,
@@ -132,7 +131,7 @@ export const typeScale = {
 
   /** 34/40 Bold — Onboarding headlines, large display text */
   displayLg: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansBold,
     fontSize: 34,
     lineHeight: 40,
     fontWeight: fontWeight.bold,
@@ -141,7 +140,7 @@ export const typeScale = {
 
   /** 28/34 Bold — Screen titles, modal headers */
   displaySm: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansBold,
     fontSize: 28,
     lineHeight: 34,
     fontWeight: fontWeight.bold,
@@ -150,7 +149,7 @@ export const typeScale = {
 
   /** 22/28 Bold — Section headers, prominent headings */
   headlineLg: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansBold,
     fontSize: 22,
     lineHeight: 28,
     fontWeight: fontWeight.bold,
@@ -159,7 +158,7 @@ export const typeScale = {
 
   /** 20/26 Semibold — Card titles, activity names */
   headlineSm: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansSemibold,
     fontSize: 20,
     lineHeight: 26,
     fontWeight: fontWeight.semibold,
@@ -168,7 +167,7 @@ export const typeScale = {
 
   /** 17/22 Semibold — List item primary, navigation titles */
   titleLg: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansSemibold,
     fontSize: 17,
     lineHeight: 22,
     fontWeight: fontWeight.semibold,
@@ -177,7 +176,7 @@ export const typeScale = {
 
   /** 15/20 Semibold — Compact list titles, secondary headers */
   titleSm: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansSemibold,
     fontSize: 15,
     lineHeight: 20,
     fontWeight: fontWeight.semibold,
@@ -204,7 +203,7 @@ export const typeScale = {
 
   /** 15/20 Medium — Button labels, tab labels, form labels */
   labelLg: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansMedium,
     fontSize: 15,
     lineHeight: 20,
     fontWeight: fontWeight.medium,
@@ -213,7 +212,7 @@ export const typeScale = {
 
   /** 13/18 Medium — Badges, timestamps, captions */
   labelSm: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansMedium,
     fontSize: 13,
     lineHeight: 18,
     fontWeight: fontWeight.medium,
@@ -240,7 +239,7 @@ export const typeScale = {
 
   /** 20/24 Bold — Inline stat values (distance, pace, time) */
   stat: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansBold,
     fontSize: 20,
     lineHeight: 24,
     fontWeight: fontWeight.bold,
@@ -249,7 +248,7 @@ export const typeScale = {
 
   /** 11/14 Medium Uppercase — Stat labels ("DISTANCE", "PACE") */
   statLabel: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansMedium,
     fontSize: 11,
     lineHeight: 14,
     fontWeight: fontWeight.medium,
@@ -277,7 +276,7 @@ export const typeScale = {
 
   /** 10/14 Medium — Tab bar labels (compact) */
   tabLabel: {
-    fontFamily: fontFamily.sans,
+    fontFamily: fontFamily.sansMedium,
     fontSize: 10,
     lineHeight: 14,
     fontWeight: fontWeight.medium,

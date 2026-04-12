@@ -1,5 +1,5 @@
 import { sizes, typeScale } from '@/src/theme';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import {
   Pressable,
   TextInput as RNTextInput,
@@ -22,6 +22,8 @@ interface TextInputProps extends Omit<RNTextInputProps, 'style'> {
   containerStyle?: ViewStyle;
   /** Input text style overrides */
   inputStyle?: RNTextInputProps['style'];
+  /** Optional trailing element rendered after the clear button */
+  trailingAction?: React.ReactNode;
 }
 
 /**
@@ -48,6 +50,7 @@ export function TextInput({
   showClearButton = true,
   containerStyle,
   inputStyle,
+  trailingAction,
   value,
   onChangeText,
   placeholder,
@@ -116,6 +119,8 @@ export function TextInput({
           />
         </Pressable>
       ) : null}
+
+      {trailingAction ?? null}
     </View>
   );
 }

@@ -37,24 +37,12 @@ function buildBrowseItems(
   const items: GuidebookListItem[] = [{ type: 'stats-bar', id: 'stats-bar' }];
 
   for (const region of regions) {
-    const isExpanded = expandedIds.has(region.id);
     items.push({
-      type: 'region-header',
+      type: 'region',
       id: `region-${region.id}`,
       region,
-      isExpanded,
+      isExpanded: expandedIds.has(region.id),
     });
-
-    if (isExpanded) {
-      for (const sector of region.sectors) {
-        items.push({
-          type: 'sector-row',
-          id: `sector-${sector.id}`,
-          sector,
-          regionId: region.id,
-        });
-      }
-    }
   }
 
   items.push({ type: 'spacer', id: 'bottom-spacer' });

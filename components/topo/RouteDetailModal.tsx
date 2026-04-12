@@ -2,6 +2,8 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
 import { SvgPathConfig } from '@/features/TopoPreview/topo.types';
+import { useColorScheme } from '@/hooks/use-color-scheme';
+import { theme } from '@/src/theme';
 import {
   Dimensions,
   Image,
@@ -15,6 +17,8 @@ import Animated from 'react-native-reanimated';
 import { IconSymbol } from '../ui/icon-symbol';
 
 const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { spacing, typography } = theme;
+const { typeScale } = typography;
 
 type RouteConfig = SvgPathConfig & {
   name: string;
@@ -40,6 +44,9 @@ export default function RouteDetailModal({
   imageSource,
   onClose,
 }: RouteDetailModalProps) {
+  const colorScheme = useColorScheme();
+  const colors = theme.colors(colorScheme ?? 'light');
+
   if (!route) return null;
 
   // Calculate actual image dimensions with resizeMode="contain"
@@ -74,14 +81,25 @@ export default function RouteDetailModal({
       onRequestClose={onClose}
     >
       <ThemedView style={styles.container}>
-        <ThemedView style={styles.header}>
+        <ThemedView
+          style={[styles.header, { borderBottomColor: colors.separatorOpaque }]}
+        >
           <ThemedText type="title">{route.name}</ThemedText>
           <Pressable onPress={onClose} style={styles.closeButton}>
-            <IconSymbol name="xmark.circle.fill" size={32} color="#007AFF" />
+            <IconSymbol
+              name="xmark.circle.fill"
+              size={32}
+              color={colors.brandTertiary}
+            />
           </Pressable>
         </ThemedView>
 
-        <ThemedView style={styles.imageContainer}>
+        <ThemedView
+          style={[
+            styles.imageContainer,
+            { backgroundColor: colors.backgroundPrimary },
+          ]}
+        >
           <Animated.Image
             source={imageSource}
             style={styles.image}
@@ -102,27 +120,52 @@ export default function RouteDetailModal({
           <ThemedView style={styles.detailSection}>
             <ThemedText type="subtitle">Szczegoly drogi</ThemedText>
 
-            <ThemedView style={styles.detailRow}>
+            <ThemedView
+              style={[
+                styles.detailRow,
+                { borderBottomColor: colors.separator },
+              ]}
+            >
               <ThemedText style={styles.label}>Nazwa:</ThemedText>
               <ThemedText style={styles.value}>{route.name}</ThemedText>
             </ThemedView>
 
-            <ThemedView style={styles.detailRow}>
+            <ThemedView
+              style={[
+                styles.detailRow,
+                { borderBottomColor: colors.separator },
+              ]}
+            >
               <ThemedText style={styles.label}>Dlugosc:</ThemedText>
               <ThemedText style={styles.value}>{route.length} m</ThemedText>
             </ThemedView>
 
-            <ThemedView style={styles.detailRow}>
+            <ThemedView
+              style={[
+                styles.detailRow,
+                { borderBottomColor: colors.separator },
+              ]}
+            >
               <ThemedText style={styles.label}>Ilosc przelotow:</ThemedText>
               <ThemedText style={styles.value}>{route.bolts}</ThemedText>
             </ThemedView>
 
-            <ThemedView style={styles.detailRow}>
+            <ThemedView
+              style={[
+                styles.detailRow,
+                { borderBottomColor: colors.separator },
+              ]}
+            >
               <ThemedText style={styles.label}>Trudnosc:</ThemedText>
               <ThemedText style={styles.value}>{route.grade}</ThemedText>
             </ThemedView>
 
-            <ThemedView style={styles.detailRow}>
+            <ThemedView
+              style={[
+                styles.detailRow,
+                { borderBottomColor: colors.separator },
+              ]}
+            >
               <ThemedText style={styles.label}>Typ:</ThemedText>
               <ThemedText style={styles.value}>{route.type}</ThemedText>
             </ThemedView>
@@ -150,20 +193,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    padding: 16,
+    padding: spacing.lg,
     paddingTop: 60,
     borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
   },
   closeButton: {
-    padding: 8,
+    padding: spacing.sm,
   },
   imageContainer: {
     height: SCREEN_HEIGHT * 0.5,
     width: SCREEN_WIDTH,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#000',
   },
   image: {
     width: SCREEN_WIDTH,
@@ -174,31 +215,28 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     flex: 1,
-    padding: 20,
+    padding: spacing.xl,
   },
   detailSection: {
-    gap: 16,
+    gap: spacing.lg,
   },
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   label: {
-    fontWeight: '600',
-    fontSize: 16,
+    ...typeScale.labelLg,
   },
   value: {
-    fontSize: 16,
+    ...typeScale.labelLg,
   },
   descriptionSection: {
-    marginTop: 16,
-    gap: 8,
+    marginTop: spacing.lg,
+    gap: spacing.sm,
   },
   description: {
-    fontSize: 14,
-    lineHeight: 20,
+    ...typeScale.bodySm,
   },
 });
