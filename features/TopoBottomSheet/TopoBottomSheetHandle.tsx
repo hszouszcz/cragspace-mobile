@@ -7,7 +7,7 @@ import { StyleSheet, View } from 'react-native';
 
 interface TopoBottomSheetHandleProps {
   canGoBack: boolean;
-  sheetNavigationRef: any; // Replace with correct type if available
+  sheetNavigationRef: { goBack: () => void };
   sectorName: string;
   sectorTitle: string;
   isFilterActive?: boolean;
