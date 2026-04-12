@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import {
   type SearchAppliedFiltersPayload,
   type SearchContextConfig,
@@ -53,14 +53,11 @@ export function useSearchFiltersState({
     ...new Set(initialSelectedValues),
   ]);
 
-  const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
+  const selectedSet = new Set(selectedValues);
 
-  const isSelected = useCallback(
-    (value: string) => selectedSet.has(value),
-    [selectedSet],
-  );
+  const isSelected = (value: string) => selectedSet.has(value);
 
-  const toggleFilter = useCallback((value: string) => {
+  const toggleFilter = (value: string) => {
     setSelectedValues((current) => {
       const hasValue = current.includes(value);
       if (hasValue) {
@@ -69,20 +66,22 @@ export function useSearchFiltersState({
 
       return [...current, value];
     });
-  }, []);
+  };
 
-  const clearAllFilters = useCallback(() => {
+  const clearAllFilters = () => {
     setSelectedValues([]);
-  }, []);
+  };
 
-  const resetAll = useCallback(() => {
+  const resetAll = () => {
     setQuery('');
     setSelectedValues([]);
-  }, []);
+  };
 
-  const appliedPayload = useMemo(
-    () => buildAppliedFiltersPayload(contextId, query, selectedValues, filters),
-    [contextId, filters, query, selectedValues],
+  const appliedPayload = buildAppliedFiltersPayload(
+    contextId,
+    query,
+    selectedValues,
+    filters,
   );
 
   return {

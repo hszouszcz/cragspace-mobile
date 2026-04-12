@@ -14,7 +14,7 @@ import type { Sector } from '@/services/guidebooks/types';
 import { shadows, sizes, spacing } from '@/src/theme';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useCallback, useRef } from 'react';
+import { useRef } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -61,31 +61,25 @@ export default function GuidebookDetailScreen() {
       expandedIds,
     });
 
-  const handleInfoPress = useCallback(() => {
+  const handleInfoPress = () => {
     router.push({ pathname: '/guidebook/info/[id]', params: { id: id ?? '' } });
-  }, [router, id]);
+  };
 
-  const handleFilterPress = useCallback(() => {
+  const handleFilterPress = () => {
     filtersSheetRef.current?.expand();
-  }, []);
+  };
 
-  const handleSectorPress = useCallback(
-    (_sector: Sector, _regionId: string) => {
-      // Navigate to sector detail — future feature
-    },
-    [],
-  );
+  const handleSectorPress = (_sector: Sector, _regionId: string) => {
+    // Navigate to sector detail — future feature
+  };
 
-  const handleSearchResultPress = useCallback(
-    (_result: GuidebookSearchResult) => {
-      // Future: navigate to sector/route detail
-    },
-    [],
-  );
+  const handleSearchResultPress = (_result: GuidebookSearchResult) => {
+    // Future: navigate to sector/route detail
+  };
 
-  const handleFiltersSheetClose = useCallback(() => {
+  const handleFiltersSheetClose = () => {
     filtersSheetRef.current?.close();
-  }, []);
+  };
 
   if (!detail) {
     router.back();

@@ -11,7 +11,7 @@ import type { Guidebook } from '@/services/guidebooks/types';
 import { sizes } from '@/src/theme';
 import { FlashList } from '@shopify/flash-list';
 import { Stack } from 'expo-router';
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Pressable, View } from 'react-native';
 import Animated, {
   Extrapolation,
@@ -101,26 +101,21 @@ export default function SearchScreen() {
 
   // Mutual exclusion for 'all' chip:
   // Tapping a specific style deselects 'all'; tapping 'all' clears all styles.
-  const handleToggleFilter = useCallback(
-    (value: string) => {
-      if (value === ALL_FILTER_VALUE) {
-        // Reset to 'all' only
-        selectedValues
-          .filter((v) => v !== ALL_FILTER_VALUE)
-          .forEach((v) => toggleFilter(v));
-        if (!selectedValues.includes(ALL_FILTER_VALUE)) {
-          toggleFilter(ALL_FILTER_VALUE);
-        }
-      } else {
-        // Deselect 'all' if currently selected, then toggle the style
-        if (selectedValues.includes(ALL_FILTER_VALUE)) {
-          toggleFilter(ALL_FILTER_VALUE);
-        }
-        toggleFilter(value);
+  const handleToggleFilter = (value: string) => {
+    if (value === ALL_FILTER_VALUE) {
+      selectedValues
+        .filter((v) => v !== ALL_FILTER_VALUE)
+        .forEach((v) => toggleFilter(v));
+      if (!selectedValues.includes(ALL_FILTER_VALUE)) {
+        toggleFilter(ALL_FILTER_VALUE);
       }
-    },
-    [selectedValues, toggleFilter],
-  );
+    } else {
+      if (selectedValues.includes(ALL_FILTER_VALUE)) {
+        toggleFilter(ALL_FILTER_VALUE);
+      }
+      toggleFilter(value);
+    }
+  };
 
   const { results, isSearchActive } = useGuidebookSearch(
     SEARCH_CORPUS,

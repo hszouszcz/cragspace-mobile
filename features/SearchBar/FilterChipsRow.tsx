@@ -1,6 +1,6 @@
 import { FilterPill } from '@/components/ui';
 import { spacing } from '@/src/theme';
-import { memo, useCallback, useMemo } from 'react';
+import { memo } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { type SearchFilterMeta } from './types';
 
@@ -15,23 +15,7 @@ function FilterChipsRowComponent({
   selectedValues,
   onToggleFilter,
 }: FilterChipsRowProps) {
-  const selectedSet = useMemo(() => new Set(selectedValues), [selectedValues]);
-
-  const renderChip = useCallback(
-    (filter: SearchFilterMeta) => {
-      const active = selectedSet.has(filter.value);
-
-      return (
-        <FilterPill
-          key={filter.id}
-          label={filter.label}
-          active={active}
-          onPress={() => onToggleFilter(filter.value)}
-        />
-      );
-    },
-    [onToggleFilter, selectedSet],
-  );
+  const selectedSet = new Set(selectedValues);
 
   return (
     <View style={styles.container}>
@@ -43,7 +27,14 @@ function FilterChipsRowComponent({
         accessibilityRole="list"
         accessibilityLabel="Search filters"
       >
-        {filters.map(renderChip)}
+        {filters.map((filter) => (
+          <FilterPill
+            key={filter.id}
+            label={filter.label}
+            active={selectedSet.has(filter.value)}
+            onPress={() => onToggleFilter(filter.value)}
+          />
+        ))}
       </ScrollView>
     </View>
   );
