@@ -148,6 +148,10 @@ export const sizes = {
   // Separator
   separatorHeight: 0.5, // Hairline on retina (StyleSheet.hairlineWidth)
 
+  // List items
+  /** Standard list item minimum height */
+  listItemHeight: 56,
+
   // Screen
   maxContentWidth: 600, // Max width for content on tablets
 } as const;

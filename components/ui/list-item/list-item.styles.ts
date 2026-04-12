@@ -7,7 +7,7 @@ export function createListItemStyles(colors: SemanticColors) {
     container: {
       flexDirection: 'row',
       alignItems: 'center',
-      minHeight: 56,
+      minHeight: sizes.listItemHeight,
       paddingHorizontal: spacing.lg,
       paddingVertical: spacing.md,
       gap: spacing.md,
@@ -51,7 +51,7 @@ export function createListItemStyles(colors: SemanticColors) {
     separatorWithLeading: {
       height: sizes.separatorHeight,
       backgroundColor: colors.separator,
-      marginLeft: 68, // 16px padding + 40px avatar + 12px gap
+      marginLeft: spacing.lg + sizes.avatarMd + spacing.md,
     },
   });
 }
