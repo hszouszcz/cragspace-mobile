@@ -1,96 +1,80 @@
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useBottomSheetAvailableHeight } from '@/hooks/topo/useBottomSheetAvailableHeight';
+import { theme } from '@/src/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 
-import { useState } from 'react';
-import {
-  Button,
-  Dimensions,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import { type RouteListItemData } from './types';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
+const { spacing, typography } = theme;
+const { typeScale } = typography;
 
 interface RouteDetailsProps {
   details: RouteListItemData;
   currentSnapPoint: number;
 }
 
-const CloneCompoent = () => {
-  return (
-    <View style={{ height: 200, backgroundColor: 'red' }}>
-      <Text>CLOOOONE</Text>
-    </View>
-  );
-};
 export const RouteDetails = ({
   details,
   currentSnapPoint,
 }: RouteDetailsProps) => {
-  const [dummyArray, setDummyArrau] = useState<number[]>([]);
+  const colorScheme = useColorScheme();
+  const colors = theme.colors(colorScheme ?? 'light');
   const { availableHeight } = useBottomSheetAvailableHeight(currentSnapPoint);
 
-  console.log('availableHeight', availableHeight);
-
-  const addCloneComponenttoDummyArray = () => {
-    setDummyArrau([...dummyArray, Math.random()]);
-    console.log(dummyArray);
-  };
   return (
     <View style={{ height: availableHeight }}>
       <ScrollView
         style={{ height: availableHeight }}
-        contentContainerStyle={{ padding: 20 }}
+        contentContainerStyle={styles.scrollContent}
       >
         <ThemedView style={styles.detailSection}>
           <ThemedText type="subtitle">Szczegoly drogi</ThemedText>
 
-          <ThemedView style={styles.detailRow}>
+          <ThemedView
+            style={[styles.detailRow, { borderBottomColor: colors.separator }]}
+          >
             <ThemedText style={styles.label}>Nazwa:</ThemedText>
             <ThemedText style={styles.value}>{details.name}</ThemedText>
           </ThemedView>
 
-          <ThemedView style={styles.detailRow}>
+          <ThemedView
+            style={[styles.detailRow, { borderBottomColor: colors.separator }]}
+          >
             <ThemedText style={styles.label}>Dlugosc:</ThemedText>
             <ThemedText style={styles.value}>{details.length} m</ThemedText>
           </ThemedView>
 
-          <ThemedView style={styles.detailRow}>
+          <ThemedView
+            style={[styles.detailRow, { borderBottomColor: colors.separator }]}
+          >
             <ThemedText style={styles.label}>Ilosc przelotow:</ThemedText>
             <ThemedText style={styles.value}>{details.bolts}</ThemedText>
           </ThemedView>
 
-          <ThemedView style={styles.detailRow}>
+          <ThemedView
+            style={[styles.detailRow, { borderBottomColor: colors.separator }]}
+          >
             <ThemedText style={styles.label}>Trudnosc:</ThemedText>
             <ThemedText style={styles.value}>{details.grade}</ThemedText>
           </ThemedView>
 
-          <ThemedView style={styles.detailRow}>
+          <ThemedView
+            style={[styles.detailRow, { borderBottomColor: colors.separator }]}
+          >
             <ThemedText style={styles.label}>Typ:</ThemedText>
             <ThemedText style={styles.value}>{details.type}</ThemedText>
           </ThemedView>
 
           {details.description && (
-            <>
-              <Button
-                onPress={addCloneComponenttoDummyArray}
-                title="Dodaj kloona"
-              />
-              <ThemedView style={styles.descriptionSection}>
-                <ThemedText style={styles.label}>Opis:</ThemedText>
-                <ThemedText style={styles.description}>
-                  {details.description}
-                </ThemedText>
-              </ThemedView>
-            </>
+            <ThemedView style={styles.descriptionSection}>
+              <ThemedText style={styles.label}>Opis:</ThemedText>
+              <ThemedText style={styles.description}>
+                {details.description}
+              </ThemedText>
+            </ThemedView>
           )}
-          {dummyArray.map((_, index) => (
-            <CloneCompoent key={index} />
-          ))}
         </ThemedView>
       </ScrollView>
     </View>
@@ -98,62 +82,29 @@ export const RouteDetails = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    // flex: 1,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 16,
-    paddingTop: 60,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-  },
-  closeButton: {
-    padding: 8,
-  },
-  imageContainer: {
-    height: SCREEN_HEIGHT * 0.5,
-    width: SCREEN_WIDTH,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#000',
-  },
-  image: {
-    width: SCREEN_WIDTH,
-    height: SCREEN_HEIGHT * 0.5,
-  },
-  svgOverlay: {
-    position: 'absolute',
-  },
-  detailsContainer: {
-    flex: 1,
-    padding: 20,
+  scrollContent: {
+    padding: spacing.xl,
   },
   detailSection: {
-    gap: 16,
+    gap: spacing.lg,
   },
   detailRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingVertical: 8,
+    paddingVertical: spacing.sm,
     borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   label: {
-    fontWeight: '600',
-    fontSize: 16,
+    ...typeScale.labelLg,
   },
   value: {
-    fontSize: 16,
+    ...typeScale.labelLg,
   },
   descriptionSection: {
-    marginTop: 16,
-    gap: 8,
+    marginTop: spacing.lg,
+    gap: spacing.sm,
   },
   description: {
-    fontSize: 14,
-    lineHeight: 20,
+    ...typeScale.bodySm,
   },
 });

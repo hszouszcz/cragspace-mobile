@@ -92,6 +92,11 @@ export const palette = {
   warmBrown400: '#86522a', // Tertiary / accent brown
   warmCream50: '#f8f7f5', // Page canvas — warm off-white
   warmCream100: '#f0ede8', // Inset / pressed — slightly darker warm gray
+  warmBrown500: '#a36a40', // Secondary — supporting warm brown (DESIGN.md secondary)
+  warmNeutral500: '#84746a', // Neutral — warm mid-tone (DESIGN.md neutral)
+
+  // Tertiary accent
+  skyBlue500: '#00a6f9', // Tertiary — accent blue (DESIGN.md tertiary)
 
   // Neutral — cool gray bias
   white: '#FFFFFF',
@@ -168,6 +173,9 @@ export const lightColors = {
   brandPrimaryPressed: '#d96c00', // Pressed state
   brandPrimaryMuted: palette.warmOrange50, // Light orange tint backgrounds
   brandPrimaryMutedPressed: palette.warmOrange100,
+  brandSecondary: palette.warmBrown500, // Secondary actions, chips
+  brandTertiary: palette.skyBlue500, // Accent highlights, badges
+  brandNeutral: palette.warmNeutral500, // Neutral brand surfaces
 
   // Borders & Separators
   borderDefault: palette.blackAlpha6,
@@ -253,6 +261,9 @@ export const darkColors = {
   brandPrimaryPressed: palette.orange400,
   brandPrimaryMuted: palette.orange900,
   brandPrimaryMutedPressed: palette.orange800,
+  brandSecondary: palette.warmBrown500,
+  brandTertiary: palette.skyBlue500,
+  brandNeutral: palette.warmNeutral500,
 
   // Borders & Separators
   borderDefault: palette.whiteAlpha8,

@@ -90,7 +90,6 @@ const styles = StyleSheet.create({
   },
   name: {
     ...typeScale.titleLg,
-    fontWeight: '700',
   },
   meta: {
     ...typeScale.labelSm,

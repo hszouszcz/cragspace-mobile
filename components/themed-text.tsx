@@ -1,6 +1,9 @@
+import { theme } from '@/src/theme';
 import { StyleSheet, Text, type TextProps } from 'react-native';
 
 import { useThemeColor } from '@/hooks/use-theme-color';
+
+const { typeScale } = theme.typography;
 
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
@@ -35,26 +38,18 @@ export function ThemedText({
 
 const styles = StyleSheet.create({
   default: {
-    fontSize: 16,
-    lineHeight: 24,
+    ...typeScale.bodyLg,
   },
   defaultSemiBold: {
-    fontSize: 16,
-    lineHeight: 24,
-    fontWeight: '600',
+    ...typeScale.labelLg,
   },
   title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    lineHeight: 32,
+    ...typeScale.displayLg,
   },
   subtitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    ...typeScale.headlineSm,
   },
   link: {
-    lineHeight: 30,
-    fontSize: 16,
-    color: '#0a7ea4',
+    ...typeScale.bodyLg,
   },
 });

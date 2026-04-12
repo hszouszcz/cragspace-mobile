@@ -88,7 +88,7 @@ export const GuidebookFiltersSheet = forwardRef<
             accessibilityLabel="Reset all filters"
             hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
           >
-            <Text style={[styles.resetText, { color: colors.brandPrimary }]}>
+            <Text style={[styles.resetText, { color: colors.brandSecondary }]}>
               Reset
             </Text>
           </Pressable>

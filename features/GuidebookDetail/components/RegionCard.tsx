@@ -103,7 +103,10 @@ function SectorItem({ sector, regionId, isLast, onPress }: SectorItemProps) {
               ]}
             >
               <Text
-                style={[styles.gradeBadgeText, { color: colors.brandPrimary }]}
+                style={[
+                  styles.gradeBadgeText,
+                  { color: colors.brandSecondary },
+                ]}
               >
                 {gradeRange}
               </Text>
@@ -260,7 +263,6 @@ const styles = StyleSheet.create({
   },
   regionName: {
     ...typeScale.titleLg,
-    fontWeight: '700',
   },
   regionMeta: {
     ...typeScale.labelSm,
@@ -291,7 +293,6 @@ const styles = StyleSheet.create({
   },
   sectorName: {
     ...typeScale.titleSm,
-    fontWeight: '600',
   },
   sectorMetaRow: {
     flexDirection: 'row',
@@ -323,6 +324,5 @@ const styles = StyleSheet.create({
   },
   gradeBadgeText: {
     ...typeScale.captionSm,
-    fontWeight: '600',
   },
 });

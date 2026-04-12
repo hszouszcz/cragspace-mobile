@@ -88,7 +88,7 @@ export function RouteListItem({ item, index, onPress }: RouteListItemProps) {
               <IconSymbol
                 name="star.fill"
                 size={sizes.iconSm}
-                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                color={rating ? colors.brandSecondary : colors.iconTertiary}
                 style={styles.starIcon}
               />
               <Typography variant="bodySm" color="secondary">
@@ -99,7 +99,7 @@ export function RouteListItem({ item, index, onPress }: RouteListItemProps) {
               <IconSymbol
                 name="star.fill"
                 size={sizes.iconSm}
-                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                color={rating ? colors.brandSecondary : colors.iconTertiary}
                 style={styles.starIcon}
               />
               <Typography variant="bodySm" color="secondary">
@@ -110,7 +110,7 @@ export function RouteListItem({ item, index, onPress }: RouteListItemProps) {
               <IconSymbol
                 name="star.fill"
                 size={sizes.iconSm}
-                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                color={rating ? colors.brandSecondary : colors.iconTertiary}
                 style={styles.starIcon}
               />
               <Typography variant="bodySm" color="secondary">
@@ -121,7 +121,7 @@ export function RouteListItem({ item, index, onPress }: RouteListItemProps) {
               <IconSymbol
                 name="star.fill"
                 size={sizes.iconSm}
-                color={rating ? colors.brandPrimary : colors.iconTertiary}
+                color={rating ? colors.brandSecondary : colors.iconTertiary}
                 style={styles.starIcon}
               />
               <Typography variant="bodySm" color="secondary">

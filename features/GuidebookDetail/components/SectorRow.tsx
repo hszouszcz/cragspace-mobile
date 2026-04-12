@@ -94,7 +94,10 @@ export function SectorRow({ sector, regionId, onPress }: SectorRowProps) {
               ]}
             >
               <Text
-                style={[styles.gradeBadgeText, { color: colors.brandPrimary }]}
+                style={[
+                  styles.gradeBadgeText,
+                  { color: colors.brandSecondary },
+                ]}
               >
                 {gradeRange}
               </Text>
@@ -130,7 +133,6 @@ const styles = StyleSheet.create({
   },
   name: {
     ...typeScale.titleSm,
-    fontWeight: '600',
   },
   metaRow: {
     flexDirection: 'row',
@@ -165,6 +167,5 @@ const styles = StyleSheet.create({
   },
   gradeBadgeText: {
     ...typeScale.captionSm,
-    fontWeight: '600',
   },
 });

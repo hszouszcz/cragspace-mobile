@@ -77,7 +77,7 @@ export function SearchResultRow({ result, onPress }: SearchResultRowProps) {
             {title}
           </Text>
           {grade != null && (
-            <Text style={[styles.grade, { color: colors.brandPrimary }]}>
+            <Text style={[styles.grade, { color: colors.brandSecondary }]}>
               {grade}
             </Text>
           )}
