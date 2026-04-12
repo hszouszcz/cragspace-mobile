@@ -2,7 +2,6 @@ import { Badge, Button, Typography } from '@/components/ui';
 import { palette, radii, spacing } from '@/src/theme';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { useCallback } from 'react';
 import { Dimensions, Pressable, StyleSheet, View } from 'react-native';
 import type { HeroGuidebook } from '../types';
 
@@ -15,9 +14,9 @@ interface GuidebookHeroCardProps {
 export function GuidebookHeroCard({ item }: GuidebookHeroCardProps) {
   const router = useRouter();
 
-  const handleExplore = useCallback(() => {
+  const handleExplore = () => {
     router.push({ pathname: '/guidebook/[id]', params: { id: item.id } });
-  }, [router, item.id]);
+  };
 
   return (
     <Pressable

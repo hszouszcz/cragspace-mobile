@@ -9,7 +9,7 @@ import BottomSheet, {
   BottomSheetView,
   type BottomSheetBackdropProps,
 } from '@gorhom/bottom-sheet';
-import { forwardRef, useCallback, useMemo } from 'react';
+import { forwardRef } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GradeRangeSlider } from './GradeRangeSlider';
 
@@ -22,6 +22,7 @@ const STYLE_FILTERS: SearchFilterMeta[] = [
 
 const DEFAULT_MIN = KURTYKI_GRADES[0];
 const DEFAULT_MAX = KURTYKI_GRADES[KURTYKI_GRADES.length - 1];
+const SNAP_POINTS = ['55%'];
 
 interface GuidebookFiltersSheetProps {
   styleValue: string;
@@ -39,37 +40,30 @@ export const GuidebookFiltersSheet = forwardRef<
   ref,
 ) {
   const colors = useThemeColors();
-  const snapPoints = useMemo(() => ['55%'], []);
 
-  const handleChange = useCallback(
-    (index: number) => {
-      if (index === -1) onClose();
-    },
-    [onClose],
+  const handleChange = (index: number) => {
+    if (index === -1) onClose();
+  };
+
+  const renderBackdrop = (props: BottomSheetBackdropProps) => (
+    <BottomSheetBackdrop
+      {...props}
+      disappearsOnIndex={-1}
+      appearsOnIndex={0}
+      opacity={0.4}
+    />
   );
 
-  const renderBackdrop = useCallback(
-    (props: BottomSheetBackdropProps) => (
-      <BottomSheetBackdrop
-        {...props}
-        disappearsOnIndex={-1}
-        appearsOnIndex={0}
-        opacity={0.4}
-      />
-    ),
-    [],
-  );
-
-  const handleReset = useCallback(() => {
+  const handleReset = () => {
     onStyleChange('all');
     onGradeRangeChange({ min: DEFAULT_MIN, max: DEFAULT_MAX });
-  }, [onStyleChange, onGradeRangeChange]);
+  };
 
   return (
     <BottomSheet
       ref={ref}
       index={-1}
-      snapPoints={snapPoints}
+      snapPoints={SNAP_POINTS}
       enablePanDownToClose
       onChange={handleChange}
       backdropComponent={renderBackdrop}
