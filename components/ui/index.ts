@@ -15,6 +15,7 @@ export { useCurrentScheme, useThemeColors } from './use-theme-colors';
 
 // Core components
 export { Avatar } from './avatar/avatar';
+export { BackButton } from './back-button/BackButton';
 export { Badge } from './badge/badge';
 export { Button } from './button/button';
 export { Card, CardSeparator } from './card/card';

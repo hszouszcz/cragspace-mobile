@@ -211,6 +211,7 @@ export default function SearchScreen() {
             data={listData}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
+            getItemType={(item) => item.type}
             onScroll={onScroll}
             scrollEventThrottle={16}
             showsVerticalScrollIndicator={false}

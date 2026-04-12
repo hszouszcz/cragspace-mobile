@@ -1,18 +1,17 @@
 import { Tabs } from 'expo-router';
-import React from 'react';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useThemeColors } from '@/components/ui/use-theme-colors';
+import { sizes } from '@/src/theme';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const colors = useThemeColors();
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: colors.tabBarActive,
         headerShown: false,
         tabBarButton: HapticTab,
       }}
@@ -22,16 +21,16 @@ export default function TabLayout() {
         options={{
           title: 'Home',
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="house.fill" color={color} />
+            <IconSymbol size={sizes.iconXl} name="house.fill" color={color} />
           ),
         }}
       />
       <Tabs.Screen
-        name="guidebooks"
+        name="library"
         options={{
-          title: 'Topos',
+          title: 'Library',
           tabBarIcon: ({ color }) => (
-            <IconSymbol size={28} name="book" color={color} />
+            <IconSymbol size={sizes.iconXl} name="book" color={color} />
           ),
         }}
       />

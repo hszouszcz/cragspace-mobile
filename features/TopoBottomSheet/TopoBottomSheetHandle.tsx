@@ -1,9 +1,7 @@
-import {
-  Button,
-  FilterPill,
-  Typography,
-  useThemeColors,
-} from '@/components/ui';
+import { BackButton } from '@/components/ui/back-button/BackButton';
+import { FilterPill } from '@/components/ui/filter-pill/filter-pill';
+import { Typography } from '@/components/ui/typography/typography';
+import { useThemeColors } from '@/components/ui/use-theme-colors';
 import { radii, sizes, spacing } from '@/src/theme';
 import { StyleSheet, View } from 'react-native';
 
@@ -12,6 +10,7 @@ interface TopoBottomSheetHandleProps {
   sheetNavigationRef: any; // Replace with correct type if available
   sectorName: string;
   sectorTitle: string;
+  isFilterActive?: boolean;
   onFilterPress: () => void;
   onGoBackPressed?: () => void;
 }
@@ -21,15 +20,14 @@ export const TopoBottomSheetHandle = ({
   sheetNavigationRef,
   sectorName,
   sectorTitle,
+  isFilterActive = false,
   onFilterPress,
   onGoBackPressed,
 }: TopoBottomSheetHandleProps) => {
   const colors = useThemeColors();
 
   const handleGoBack = () => {
-    if (onGoBackPressed) {
-      onGoBackPressed();
-    }
+    onGoBackPressed?.();
     sheetNavigationRef.goBack();
   };
 
@@ -38,16 +36,19 @@ export const TopoBottomSheetHandle = ({
       style={[styles.handleContainer, { backgroundColor: colors.surfaceSheet }]}
     >
       <View
+        accessible={false}
         style={[
           styles.handleIndicator,
           { backgroundColor: colors.separatorOpaque },
         ]}
       />
       <View style={styles.headerRow}>
-        {canGoBack && (
-          <Button variant="text" label="Back" onPress={handleGoBack} />
-        )}
-        <View style={styles.headerTitles}>
+        {canGoBack && <BackButton onPress={handleGoBack} />}
+        <View
+          style={styles.headerTitles}
+          accessible={true}
+          accessibilityLabel={`${sectorName}, ${sectorTitle}`}
+        >
           <Typography variant="statLabel" color="brand">
             {sectorName.toUpperCase()}
           </Typography>
@@ -59,7 +60,11 @@ export const TopoBottomSheetHandle = ({
             {sectorTitle}
           </Typography>
         </View>
-        <FilterPill label="Filter" active onPress={onFilterPress} />
+        <FilterPill
+          label="Filter"
+          active={isFilterActive}
+          onPress={onFilterPress}
+        />
       </View>
     </View>
   );
