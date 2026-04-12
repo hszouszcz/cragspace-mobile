@@ -1,4 +1,5 @@
 import { SvgPathConfig } from '@/features/TopoPreview/topo.types';
+import { palette } from '@/src/theme';
 import type { StyleProp, ViewStyle } from 'react-native';
 import Animated from 'react-native-reanimated';
 import Svg, { G, Path } from 'react-native-svg';
@@ -30,7 +31,7 @@ export function TopoSvgOverlay({
   pressedPaths,
   selectedPathId,
   dimOpacity = 0.5,
-  ghostStroke = '#000000',
+  ghostStroke = palette.black,
   ghostOpacity = 0.25,
   ghostStrokeWidthMultiplier = 1.8,
   onPathPress,
@@ -48,7 +49,7 @@ export function TopoSvgOverlay({
       >
         {paths.map((path) => {
           const strokeWidth = path.strokeWidth ?? defaultStrokeWidth ?? 1;
-          const stroke = pressedPaths?.[path.id] ? '#ff0000' : path.color;
+          const stroke = pressedPaths?.[path.id] ? palette.red500 : path.color;
           const isSelected = selectedPathId === path.id;
           const isDimmed = Boolean(selectedPathId) && !isSelected;
           const strokeOpacity = isDimmed ? dimOpacity : 1;
