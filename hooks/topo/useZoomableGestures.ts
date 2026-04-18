@@ -2,6 +2,8 @@ import type { ViewStyle } from 'react-native';
 import { Gesture } from 'react-native-gesture-handler';
 import {
   type DerivedValue,
+  runOnJS,
+  type SharedValue,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -17,8 +19,20 @@ type UseZoomableGestureOptions = {
   containerHeight?: number;
   contentWidth?: number;
   contentHeight?: number;
+  /**
+   * Called when the user pans the image to a horizontal boundary while zoomed in
+   * and continues swiping with sufficient velocity. Use this to navigate to the
+   * adjacent wall in a pager.
+   */
+  onEdgeSwipe?: (direction: 'next' | 'prev') => void;
   containerSize?: DerivedValue<{ width: number; height: number }>;
   contentSize?: DerivedValue<{ width: number; height: number }>;
+  /**
+   * Ref to an external pager gesture. When provided, the inner pan gesture runs
+   * simultaneously with the pager so the outer GestureDetector can also receive
+   * the touch and drive wall navigation.
+   */
+  pagerGestureRef?: React.RefObject<unknown>;
 };
 
 type UseZoomableGestureResult = {
@@ -31,6 +45,7 @@ type UseZoomableGestureResult = {
     animate?: boolean;
   }) => void;
   resetTransform: (animate?: boolean) => void;
+  scale: SharedValue<number>;
 };
 
 export const useZoomableGestures = (
@@ -170,6 +185,9 @@ export const useZoomableGestures = (
       savedScale.value = scale.value;
     });
 
+  const onEdgeSwipe = options.onEdgeSwipe;
+  const pagerGestureRef = options.pagerGestureRef;
+
   const panGesture = Gesture.Pan()
     .onUpdate((e) => {
       const nextX = savedTranslateX.value + e.translationX;
@@ -184,9 +202,25 @@ export const useZoomableGestures = (
         translateY.value = nextY;
       }
     })
-    .onEnd(() => {
+    .onEnd((e) => {
       savedTranslateX.value = translateX.value;
       savedTranslateY.value = translateY.value;
+
+      // Edge-release navigation: when zoomed in and the image is already at a
+      // horizontal boundary, a further swipe in that direction navigates to the
+      // adjacent wall in the parent pager.
+      if (onEdgeSwipe && scale.value > minScale + minScaleResetThreshold) {
+        const bounds = getBounds();
+        if (bounds && bounds.maxX > 0) {
+          const atRightEdge = translateX.value <= -bounds.maxX + 2;
+          const atLeftEdge = translateX.value >= bounds.maxX - 2;
+          if (atRightEdge && e.velocityX < -200) {
+            runOnJS(onEdgeSwipe)('next');
+          } else if (atLeftEdge && e.velocityX > 200) {
+            runOnJS(onEdgeSwipe)('prev');
+          }
+        }
+      }
     });
 
   const doubleTapGesture = Gesture.Tap()
@@ -208,9 +242,13 @@ export const useZoomableGestures = (
       onSingleTap?.();
     });
 
+  const resolvedPanGesture = pagerGestureRef
+    ? panGesture.simultaneousWithExternalGesture(pagerGestureRef)
+    : panGesture;
+
   const composedGesture = Gesture.Race(
     Gesture.Exclusive(doubleTapGesture, singleTapGesture),
-    Gesture.Simultaneous(pinchGesture, panGesture),
+    Gesture.Simultaneous(pinchGesture, resolvedPanGesture),
   );
 
   const animatedStyle = useAnimatedStyle<ViewStyle>(() => ({
@@ -226,5 +264,6 @@ export const useZoomableGestures = (
     animatedStyle,
     setTransform,
     resetTransform,
+    scale,
   };
 };

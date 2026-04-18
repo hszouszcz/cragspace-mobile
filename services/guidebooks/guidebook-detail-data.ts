@@ -13,6 +13,9 @@ import {
   type Sector,
 } from './types';
 
+const DEMO_IMAGE_ASSET = require('@/assets/topo/dSlonia.jpeg') as number;
+const DEMO_SVG_ASSET = require('@/assets/topo/dSlonia_test.svg') as number;
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 let _routeId = 0;
@@ -31,6 +34,11 @@ function rgid(): string {
 }
 function pid(): string {
   return `p${++_parkingId}`;
+}
+
+let _wallId = 0;
+function wid(): string {
+  return `w${++_wallId}`;
 }
 
 type RouteInput = [
@@ -73,6 +81,7 @@ function makeSector(
     parking,
     approachMinutes,
     sunExposure,
+    walls: [],
   };
 }
 
@@ -171,6 +180,33 @@ const sokolica = makeSector(
   ],
 );
 
+sokolica.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Główna',
+    facing: 'SW',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: sokolica.routes.slice(0, 8),
+  },
+  {
+    id: wid(),
+    name: 'Filar Południowy',
+    facing: 'S',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: sokolica.routes.slice(8),
+  },
+  {
+    id: wid(),
+    name: 'Rysa Wschodnia',
+    facing: 'E',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: sokolica.routes.slice(4, 12),
+  },
+];
+
 const turnia_zamkowa = makeSector(
   'Turnia Zamkowa',
   { lat: 50.248, lng: 19.762 },
@@ -190,6 +226,30 @@ const turnia_zamkowa = makeSector(
     ['Zacięcie Prawe', 'VI.3+', 'sport', 16, 8],
   ],
 );
+
+turnia_zamkowa.walls = [
+  {
+    id: wid(),
+    name: 'Lewa Ściana',
+    facing: 'W',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: turnia_zamkowa.routes.slice(
+      0,
+      Math.ceil(turnia_zamkowa.routes.length / 2),
+    ),
+  },
+  {
+    id: wid(),
+    name: 'Prawa Ściana',
+    facing: 'NW',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: turnia_zamkowa.routes.slice(
+      Math.ceil(turnia_zamkowa.routes.length / 2),
+    ),
+  },
+];
 
 const grodzisko_kobyl = makeSector(
   'Skała Grodzisko',

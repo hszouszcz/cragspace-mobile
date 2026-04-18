@@ -69,8 +69,12 @@ export default function GuidebookDetailScreen() {
     filtersSheetRef.current?.expand();
   };
 
-  const handleSectorPress = (_sector: Sector, _regionId: string) => {
-    // Navigate to sector detail — future feature
+  const handleSectorPress = (sector: Sector, _regionId: string) => {
+    if (sector.walls.length === 0) return;
+    router.push({
+      pathname: '/sector/[sectorId]',
+      params: { sectorId: sector.id, guidebookId: id ?? '' },
+    });
   };
 
   const handleSearchResultPress = (_result: GuidebookSearchResult) => {
