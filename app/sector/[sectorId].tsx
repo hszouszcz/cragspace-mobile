@@ -1,18 +1,22 @@
 import { ThemedView } from '@/components/themed-view';
 import TopoBottomSheet, { SNAP_POINTS } from '@/components/TopoBottomSheet';
-import type { RouteConfig } from '@/features/TopoPreview/topo.types';
-import type { RouteListItemData } from '@/features/TopoBottomSheet/types';
+import { FullscreenButton } from '@/features/FullscreenTopo/FullscreenButton';
+import { SvgLayerButton } from '@/features/TopoPreview/SvgLayerButton/SvgLayerButton';
+import { FullscreenTopoViewer } from '@/features/FullscreenTopo/FullscreenTopoViewer';
 import { sectorTopoStyles } from '@/features/SectorTopo/SectorTopo.styles';
 import { useSectorPager } from '@/features/SectorTopo/useSectorPager';
 import { WallViewer } from '@/features/SectorTopo/WallViewer';
+import type { RouteListItemData } from '@/features/TopoBottomSheet/types';
+import type { RouteConfig } from '@/features/TopoPreview/topo.types';
 import { GUIDEBOOK_DETAILS } from '@/services/guidebooks/guidebook-detail-data';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
+import { View } from 'react-native';
+import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import { GestureDetector } from 'react-native-gesture-handler';
 
 export default function SectorTopoScreen() {
   const { sectorId, guidebookId } = useLocalSearchParams<{
@@ -27,6 +31,8 @@ export default function SectorTopoScreen() {
     .find((s) => s.id === sectorId);
 
   const walls = sector?.walls ?? [];
+
+  const [routesSvgLayerVisiblity, setRoutesSvgLayerVisibility] = useState(true);
 
   // Shared values — must be before any early return
   const animatedIndexSharedValue = useSharedValue(1);
@@ -48,6 +54,9 @@ export default function SectorTopoScreen() {
   const [wallPathsCache, setWallPathsCache] = useState<
     Record<number, RouteConfig[]>
   >({});
+
+  // Fullscreen topo viewer
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Selected route (driven by SVG tap or sheet tap)
   const [selectedRouteId, setSelectedRouteId] = useState<string | null>(null);
@@ -136,12 +145,22 @@ export default function SectorTopoScreen() {
                     onRouteSelected={handleRouteSelected}
                     onEdgeSwipe={handleEdgeSwipe(idx)}
                     pagerGestureRef={pagerGestureRef}
+                    isRouteSvgLayerVisible={routesSvgLayerVisiblity}
                   />
                 </Animated.View>
               ))}
             </Animated.View>
           </Animated.View>
         </GestureDetector>
+        <View style={sectorTopoStyles.overlayControls}>
+          <FullscreenButton onPress={() => setIsFullscreen(true)} />
+          <SvgLayerButton
+            isVisible={routesSvgLayerVisiblity}
+            onPress={() =>
+              setRoutesSvgLayerVisibility(!routesSvgLayerVisiblity)
+            }
+          />
+        </View>
 
         <TopoBottomSheet
           data={routesForSheet}
@@ -157,6 +176,16 @@ export default function SectorTopoScreen() {
           wallName={currentWall?.name}
         />
       </ThemedView>
+
+      <FullscreenTopoViewer
+        visible={isFullscreen}
+        walls={walls}
+        initialWallIndex={currentWallIndex}
+        onClose={(activeWallIndex) => {
+          setIsFullscreen(false);
+          goToWall(activeWallIndex);
+        }}
+      />
     </>
   );
 }

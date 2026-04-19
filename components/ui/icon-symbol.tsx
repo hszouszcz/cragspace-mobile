@@ -35,6 +35,10 @@ const MAPPING = {
   map: 'map',
   'checkmark.seal.fill': 'verified',
   'info.circle': 'info-outline',
+  'arrow.up.left.and.arrow.down.right': 'fullscreen',
+  xmark: 'close',
+  eye: 'visibility',
+  'eye.slash': 'visibility-off',
 } as IconMapping;
 
 interface IconSymbolProps {

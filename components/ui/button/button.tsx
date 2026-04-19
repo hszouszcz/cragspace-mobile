@@ -12,8 +12,8 @@ const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface ButtonProps {
   /** Button visual variant */
-  variant?: 'primary' | 'secondary' | 'destructive' | 'text';
-  /** Button label text */
+  variant?: 'primary' | 'secondary' | 'destructive' | 'text' | 'icon';
+  /** Button label text — used as accessibilityLabel in icon variant */
   label: string;
   /** Press handler */
   onPress?: () => void;
@@ -80,9 +80,15 @@ export function Button({
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityState={{ disabled }}
     >
-      {leadingIcon}
-      <Text style={[textStyle, labelStyle]}>{label}</Text>
-      {trailingIcon}
+      {variant === 'icon' ? (
+        leadingIcon
+      ) : (
+        <>
+          {leadingIcon}
+          <Text style={[textStyle, labelStyle]}>{label}</Text>
+          {trailingIcon}
+        </>
+      )}
     </AnimatedPressable>
   );
 }
@@ -98,6 +104,8 @@ function getContainerStyles(
       return styles.destructiveContainer;
     case 'text':
       return styles.textContainer;
+    case 'icon':
+      return styles.iconContainer;
     default:
       return styles.primaryContainer;
   }
@@ -130,6 +138,8 @@ function getDisabledStyle(
       return styles.destructiveContainerDisabled;
     case 'text':
       return styles.textContainerDisabled;
+    case 'icon':
+      return styles.iconContainerDisabled;
     default:
       return styles.primaryContainerDisabled;
   }

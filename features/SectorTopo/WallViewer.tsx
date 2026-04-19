@@ -1,15 +1,15 @@
 import { TopoSvgOverlay } from '@/components/topo/TopoSvgOverlay';
+import type { RouteConfig } from '@/features/TopoPreview/topo.types';
 import { useLoadRouteSvgPaths } from '@/features/TopoPreview/useLoadRouteSvgPaths';
 import { useTopoViewAnimations } from '@/features/TopoPreview/useTopoViewAnimations';
-import type { RouteConfig } from '@/features/TopoPreview/topo.types';
 import { useFocusOnRoute } from '@/hooks/topo/useFocusOnRoute';
 import { useGalleryGestures } from '@/hooks/topo/useGalleryGestures';
 import { useViewBoxValues } from '@/hooks/topo/useViewBoxValues';
 import type { Wall } from '@/services/guidebooks/types';
 import { palette } from '@/src/theme';
-import type { GestureType } from 'react-native-gesture-handler';
 import { useEffect, useRef, useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
+import type { GestureType } from 'react-native-gesture-handler';
 import { GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   useAnimatedReaction,
@@ -29,6 +29,8 @@ interface Props {
   animatedIndexSharedValue: SharedValue<number>;
   /** Route id to focus from outside (e.g. from sheet tap). Null = no external selection. */
   selectedRouteId: string | null;
+
+  isRouteSvgLayerVisible: boolean;
   /** Called once when this wall's SVG paths finish loading */
   onRoutesReady: (paths: RouteConfig[]) => void;
   /** Called when user taps an SVG route path */
@@ -53,6 +55,7 @@ export function WallViewer({
   onRouteSelected,
   onEdgeSwipe,
   pagerGestureRef,
+  isRouteSvgLayerVisible = true,
 }: Props) {
   // ── Image ratio ──────────────────────────────────────────────────────────────
   const imageMeta = Image.resolveAssetSource(wall.imageAsset);
@@ -210,22 +213,25 @@ export function WallViewer({
               }}
               resizeMode="cover"
             />
-            {viewBox && isImageReady && imageRatio && (
-              <TopoSvgOverlay
-                viewBox={viewBox}
-                style={[styles.svgOverlay, contentViewAnimatedStyle]}
-                paths={paths}
-                pressedPaths={pressedPaths}
-                selectedPathId={localSelectedRouteId}
-                dimOpacity={0.45}
-                ghostStroke={palette.warmBrown950}
-                ghostOpacity={0.22}
-                ghostStrokeWidthMultiplier={2}
-                onPathPressIn={handlePathPressIn}
-                onPathPressOut={handlePathPressOut}
-                onPathPress={handlePathPress}
-              />
-            )}
+            {viewBox &&
+              isImageReady &&
+              imageRatio &&
+              isRouteSvgLayerVisible && (
+                <TopoSvgOverlay
+                  viewBox={viewBox}
+                  style={[styles.svgOverlay, contentViewAnimatedStyle]}
+                  paths={paths}
+                  pressedPaths={pressedPaths}
+                  selectedPathId={localSelectedRouteId}
+                  dimOpacity={0.45}
+                  ghostStroke={palette.warmBrown950}
+                  ghostOpacity={0.22}
+                  ghostStrokeWidthMultiplier={2}
+                  onPathPressIn={handlePathPressIn}
+                  onPathPressOut={handlePathPressOut}
+                  onPathPress={handlePathPress}
+                />
+              )}
           </Animated.View>
         </Animated.View>
       </GestureDetector>
