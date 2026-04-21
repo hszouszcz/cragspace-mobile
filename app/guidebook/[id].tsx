@@ -1,4 +1,5 @@
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { SegmentedControl } from '@/components/ui/segmented-control/segmented-control';
 import { useThemeColors } from '@/components/ui/use-theme-colors';
 import { GuidebookDetailList } from '@/features/GuidebookDetail/GuidebookDetailList';
 import { GuidebookFiltersSheet } from '@/features/GuidebookDetail/components/GuidebookFiltersSheet';
@@ -6,6 +7,7 @@ import { HeaderActions } from '@/features/GuidebookDetail/components/HeaderActio
 import { useExpandedRegions } from '@/features/GuidebookDetail/useExpandedRegions';
 import { useGroupedFiltersState } from '@/features/GuidebookDetail/useGroupedFiltersState';
 import { useGuidebookDetailSearch } from '@/features/GuidebookDetail/useGuidebookDetailSearch';
+import { GuidebookMapView } from '@/features/GuidebookMap/GuidebookMapView';
 import { SearchInputBar } from '@/features/SearchBar/SearchInputBar';
 import { useSearchFiltersState } from '@/features/SearchBar/useSearchFiltersState';
 import { GUIDEBOOK_DETAILS } from '@/services/guidebooks/guidebook-detail-data';
@@ -14,7 +16,7 @@ import type { Sector } from '@/services/guidebooks/types';
 import { shadows, sizes, spacing } from '@/src/theme';
 import BottomSheet from '@gorhom/bottom-sheet';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -23,6 +25,7 @@ export default function GuidebookDetailScreen() {
   const colors = useThemeColors();
   const router = useRouter();
   const filtersSheetRef = useRef<BottomSheet>(null);
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
 
   const detail = GUIDEBOOK_DETAILS[id ?? ''];
 
@@ -77,6 +80,13 @@ export default function GuidebookDetailScreen() {
     });
   };
 
+  const handleMapSectorPress = (sectorId: string) => {
+    router.push({
+      pathname: '/sector/[sectorId]',
+      params: { sectorId, guidebookId: id ?? '' },
+    });
+  };
+
   const handleSearchResultPress = (_result: GuidebookSearchResult) => {
     // Future: navigate to sector/route detail
   };
@@ -103,47 +113,63 @@ export default function GuidebookDetailScreen() {
         edges={['left', 'right']}
         style={[styles.screen, { backgroundColor: colors.backgroundPrimary }]}
       >
-        {/* Sticky search + filter row */}
+        {/* Sticky header: search bar (list mode only) + List/Map toggle */}
         <View style={styles.stickyHeader}>
-          <SearchInputBar
-            query={query}
-            placeholder="Search routes, sectors, regions…"
-            onQueryChange={setQuery}
-            inputContainerStyle={{
-              backgroundColor: colors.surfaceCard,
-              shadowColor: colors.shadowColor,
-              ...shadows.sm,
-              elevation: 3,
-            }}
-            trailingAction={
-              <Pressable
-                onPress={handleFilterPress}
-                accessibilityRole="button"
-                accessibilityLabel={
-                  hasActiveFilters ? 'Filters (active)' : 'Filters'
-                }
-                hitSlop={8}
-              >
-                <IconSymbol
-                  name="slider.horizontal.3"
-                  size={sizes.iconLg}
-                  color={colors.brandPrimary}
-                />
-              </Pressable>
-            }
-          />
+          {viewMode === 'list' && (
+            <SearchInputBar
+              query={query}
+              placeholder="Search routes, sectors, regions…"
+              onQueryChange={setQuery}
+              inputContainerStyle={{
+                backgroundColor: colors.surfaceCard,
+                shadowColor: colors.shadowColor,
+                ...shadows.sm,
+                elevation: 3,
+              }}
+              trailingAction={
+                <Pressable
+                  onPress={handleFilterPress}
+                  accessibilityRole="button"
+                  accessibilityLabel={
+                    hasActiveFilters ? 'Filters (active)' : 'Filters'
+                  }
+                  hitSlop={8}
+                >
+                  <IconSymbol
+                    name="slider.horizontal.3"
+                    size={sizes.iconLg}
+                    color={colors.brandPrimary}
+                  />
+                </Pressable>
+              }
+            />
+          )}
+          <View style={styles.viewToggle}>
+            <SegmentedControl
+              segments={['List', 'Map']}
+              selectedIndex={viewMode === 'list' ? 0 : 1}
+              onChange={(index) => setViewMode(index === 0 ? 'list' : 'map')}
+            />
+          </View>
         </View>
 
-        <GuidebookDetailList
-          isSearching={isSearching}
-          browseItems={browseItems}
-          searchResults={searchResults}
-          stats={stats}
-          gradeRange={detail.gradeRange}
-          onToggleRegion={toggleRegion}
-          onSectorPress={handleSectorPress}
-          onSearchResultPress={handleSearchResultPress}
-        />
+        {viewMode === 'list' ? (
+          <GuidebookDetailList
+            isSearching={isSearching}
+            browseItems={browseItems}
+            searchResults={searchResults}
+            stats={stats}
+            gradeRange={detail.gradeRange}
+            onToggleRegion={toggleRegion}
+            onSectorPress={handleSectorPress}
+            onSearchResultPress={handleSearchResultPress}
+          />
+        ) : (
+          <GuidebookMapView
+            detail={detail}
+            onSectorPress={handleMapSectorPress}
+          />
+        )}
       </SafeAreaView>
 
       <GuidebookFiltersSheet
@@ -165,5 +191,10 @@ const styles = StyleSheet.create({
   stickyHeader: {
     paddingTop: spacing.md,
     paddingBottom: spacing.sm,
+  },
+  viewToggle: {
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.sm,
+    paddingBottom: spacing.xs,
   },
 });

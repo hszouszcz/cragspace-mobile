@@ -377,6 +377,17 @@ const skala_olszowiecka = makeSector(
   'Sun from 12:00',
 );
 
+skala_olszowiecka.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Główna',
+    facing: 'W',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: skala_olszowiecka.routes.slice(0, 5),
+  },
+];
+
 const turnia_w_kurhanie = makeSector(
   'Turnia w Kurhanie',
   { lat: 50.2234, lng: 19.7978 },
@@ -482,6 +493,17 @@ const zebrownia = makeSector(
     ['Nowa Żebrowniana', 'VI.4', 'sport', 16, 8],
   ],
 );
+
+zebrownia.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Żebrowni',
+    facing: 'S',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: zebrownia.routes.slice(0, 5),
+  },
+];
 
 const bolechowicka_dolna = makeSector(
   'Ścianka Bolechowicka Dolna',
@@ -600,6 +622,25 @@ const maczuga_herkulesa = makeSector(
     ['Dach Herkulesa', 'VI.3+', 'sport', 16, 8],
   ],
 );
+
+maczuga_herkulesa.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Zachodnia',
+    facing: 'W',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: maczuga_herkulesa.routes.slice(0, 6),
+  },
+  {
+    id: wid(),
+    name: 'Ściana Wschodnia',
+    facing: 'E',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: maczuga_herkulesa.routes.slice(6),
+  },
+];
 
 const okap_ojcowski = makeSector(
   'Okap Ojcowski',
@@ -724,6 +765,17 @@ const pazurek = makeSector(
     ['Mały Pazurek', 'V-', 'sport', 10, 5],
   ],
 );
+
+pazurek.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Główna',
+    facing: 'SE',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: pazurek.routes.slice(0, 5),
+  },
+];
 
 const wolbromska = makeSector(
   'Skała Wolbromska',
@@ -926,9 +978,9 @@ const regionPradnika = {
   description:
     'Serce Ojcowskiego Parku Narodowego. Wyjątkowe formacje skalne, klasyki tradycyjne i kilka dróg sportowych. Część sektorów ma ograniczenia sezonowe z uwagi na lęgi sokołów.',
   bounds: {
-    nw: { lat: 50.224, lng: 19.826 },
-    se: { lat: 50.213, lng: 19.834 },
-    center: { lat: 50.218, lng: 19.83 },
+    nw: { lat: 50.226, lng: 19.826 },
+    se: { lat: 50.212, lng: 19.834 },
+    center: { lat: 50.219, lng: 19.83 },
   },
 };
 
