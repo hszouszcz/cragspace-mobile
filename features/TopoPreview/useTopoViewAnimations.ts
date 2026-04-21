@@ -31,15 +31,12 @@ export const useTopoViewAnimations = ({
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
     Dimensions.get('window');
 
+  // At each snap point, the image should fill exactly the space not covered by the sheet.
+  // SNAP_POINTS = ['12%', '52%', '100%'] → image heights: full, 48%, small.
+  const imageHeightAtSnap1 =
+    SCREEN_HEIGHT * (1 - SNAP_POINTS_IN_NUMBERS[1] / 100);
+
   const containerSize = useDerivedValue(() => {
-    const ratio = imageRatio.value || 1;
-    // const baseWidth = viewBox
-    //   ? parseFloat(viewBox.split(' ')[2]) / ratio
-    //   : SCREEN_WIDTH;
-    // const baseHeight = viewBox
-    //   ? parseFloat(viewBox.split(' ')[3])
-    //   : SCREEN_HEIGHT;
-    // const maxWidth = (baseWidth * SCREEN_HEIGHT) / baseHeight;
     const width = interpolate(
       animatedIndexSharedValue.value,
       [0, 1, 2],
@@ -48,7 +45,7 @@ export const useTopoViewAnimations = ({
     const height = interpolate(
       animatedIndexSharedValue.value,
       [0, 1, 2],
-      [SCREEN_HEIGHT, SCREEN_HEIGHT * 0.45, SCREEN_WIDTH * 0.45],
+      [SCREEN_HEIGHT, imageHeightAtSnap1, SCREEN_WIDTH * 0.45],
     );
     return { width, height };
   });

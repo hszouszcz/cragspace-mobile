@@ -123,6 +123,21 @@ export interface Route {
   bolts: number | null;
 }
 
+// ── Wall ──────────────────────────────────────────────────────────────────────
+
+export interface Wall {
+  id: string;
+  name: string;
+  /** Cardinal facing direction, e.g. "N", "SE", "SW" */
+  facing: string | null;
+  /** require()'d topo photo asset — React Native image source number */
+  imageAsset: number;
+  /** require()'d SVG route paths asset — React Native asset source number */
+  svgAsset: number;
+  /** Routes visible on this wall (subset of the parent sector's routes) */
+  routes: Route[];
+}
+
 // ── Parking ───────────────────────────────────────────────────────────────────
 
 export interface Parking {
@@ -149,6 +164,8 @@ export interface Sector {
   coords: LatLng;
   /** Parking spot(s) serving this sector */
   parking: Parking[];
+  /** Topo walls that make up this sector, each with its own photo and route overlays */
+  walls: Wall[];
 }
 
 // ── Region ────────────────────────────────────────────────────────────────────

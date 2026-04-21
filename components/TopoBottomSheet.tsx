@@ -26,6 +26,9 @@ type TopoBottomSheetProps = {
   snapPoints?: string[];
   onSnapPointChange?: (fromIndex: number, toIndex: number) => void;
   onGoBack?: () => void;
+  wallIndex?: number;
+  wallCount?: number;
+  wallName?: string;
 };
 
 const TopoBottomSheet = ({
@@ -38,6 +41,9 @@ const TopoBottomSheet = ({
   animatedIndex,
   onSnapPointChange,
   onGoBack,
+  wallIndex,
+  wallCount,
+  wallName,
 }: TopoBottomSheetProps) => {
   const sheetNavigationRef = useNavigationContainerRef();
   const colors = useThemeColors();
@@ -94,6 +100,9 @@ const TopoBottomSheet = ({
           canGoBack={canGoBack}
           sheetNavigationRef={sheetNavigationRef}
           onGoBackPressed={handleOnGoBack}
+          wallIndex={wallIndex}
+          wallCount={wallCount}
+          wallName={wallName}
         />
       )}
       animateOnMount={false}

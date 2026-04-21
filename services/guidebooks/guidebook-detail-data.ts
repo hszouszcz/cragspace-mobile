@@ -13,6 +13,9 @@ import {
   type Sector,
 } from './types';
 
+const DEMO_IMAGE_ASSET = require('@/assets/topo/dSlonia.jpeg') as number;
+const DEMO_SVG_ASSET = require('@/assets/topo/dSlonia_test.svg') as number;
+
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
 let _routeId = 0;
@@ -31,6 +34,11 @@ function rgid(): string {
 }
 function pid(): string {
   return `p${++_parkingId}`;
+}
+
+let _wallId = 0;
+function wid(): string {
+  return `w${++_wallId}`;
 }
 
 type RouteInput = [
@@ -73,6 +81,7 @@ function makeSector(
     parking,
     approachMinutes,
     sunExposure,
+    walls: [],
   };
 }
 
@@ -171,6 +180,33 @@ const sokolica = makeSector(
   ],
 );
 
+sokolica.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Główna',
+    facing: 'SW',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: sokolica.routes.slice(0, 8),
+  },
+  {
+    id: wid(),
+    name: 'Filar Południowy',
+    facing: 'S',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: sokolica.routes.slice(8),
+  },
+  {
+    id: wid(),
+    name: 'Rysa Wschodnia',
+    facing: 'E',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: sokolica.routes.slice(4, 12),
+  },
+];
+
 const turnia_zamkowa = makeSector(
   'Turnia Zamkowa',
   { lat: 50.248, lng: 19.762 },
@@ -190,6 +226,30 @@ const turnia_zamkowa = makeSector(
     ['Zacięcie Prawe', 'VI.3+', 'sport', 16, 8],
   ],
 );
+
+turnia_zamkowa.walls = [
+  {
+    id: wid(),
+    name: 'Lewa Ściana',
+    facing: 'W',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: turnia_zamkowa.routes.slice(
+      0,
+      Math.ceil(turnia_zamkowa.routes.length / 2),
+    ),
+  },
+  {
+    id: wid(),
+    name: 'Prawa Ściana',
+    facing: 'NW',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: turnia_zamkowa.routes.slice(
+      Math.ceil(turnia_zamkowa.routes.length / 2),
+    ),
+  },
+];
 
 const grodzisko_kobyl = makeSector(
   'Skała Grodzisko',
@@ -317,6 +377,17 @@ const skala_olszowiecka = makeSector(
   'Sun from 12:00',
 );
 
+skala_olszowiecka.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Główna',
+    facing: 'W',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: skala_olszowiecka.routes.slice(0, 5),
+  },
+];
+
 const turnia_w_kurhanie = makeSector(
   'Turnia w Kurhanie',
   { lat: 50.2234, lng: 19.7978 },
@@ -422,6 +493,17 @@ const zebrownia = makeSector(
     ['Nowa Żebrowniana', 'VI.4', 'sport', 16, 8],
   ],
 );
+
+zebrownia.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Żebrowni',
+    facing: 'S',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: zebrownia.routes.slice(0, 5),
+  },
+];
 
 const bolechowicka_dolna = makeSector(
   'Ścianka Bolechowicka Dolna',
@@ -540,6 +622,25 @@ const maczuga_herkulesa = makeSector(
     ['Dach Herkulesa', 'VI.3+', 'sport', 16, 8],
   ],
 );
+
+maczuga_herkulesa.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Zachodnia',
+    facing: 'W',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: maczuga_herkulesa.routes.slice(0, 6),
+  },
+  {
+    id: wid(),
+    name: 'Ściana Wschodnia',
+    facing: 'E',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: maczuga_herkulesa.routes.slice(6),
+  },
+];
 
 const okap_ojcowski = makeSector(
   'Okap Ojcowski',
@@ -664,6 +765,17 @@ const pazurek = makeSector(
     ['Mały Pazurek', 'V-', 'sport', 10, 5],
   ],
 );
+
+pazurek.walls = [
+  {
+    id: wid(),
+    name: 'Ściana Główna',
+    facing: 'SE',
+    imageAsset: DEMO_IMAGE_ASSET,
+    svgAsset: DEMO_SVG_ASSET,
+    routes: pazurek.routes.slice(0, 5),
+  },
+];
 
 const wolbromska = makeSector(
   'Skała Wolbromska',
@@ -866,9 +978,9 @@ const regionPradnika = {
   description:
     'Serce Ojcowskiego Parku Narodowego. Wyjątkowe formacje skalne, klasyki tradycyjne i kilka dróg sportowych. Część sektorów ma ograniczenia sezonowe z uwagi na lęgi sokołów.',
   bounds: {
-    nw: { lat: 50.224, lng: 19.826 },
-    se: { lat: 50.213, lng: 19.834 },
-    center: { lat: 50.218, lng: 19.83 },
+    nw: { lat: 50.226, lng: 19.826 },
+    se: { lat: 50.212, lng: 19.834 },
+    center: { lat: 50.219, lng: 19.83 },
   },
 };
 

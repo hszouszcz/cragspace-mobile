@@ -95,5 +95,17 @@ export function createButtonStyles(colors: SemanticColors, isDark: boolean) {
     textLabelPressed: {
       color: colors.brandPrimaryPressed,
     },
+
+    // Icon Button
+    iconContainer: {
+      width: sizes.minTapTarget,
+      height: sizes.minTapTarget,
+      borderRadius: radii.full,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    iconContainerDisabled: {
+      opacity: colors.disabledOpacity,
+    },
   });
 }
